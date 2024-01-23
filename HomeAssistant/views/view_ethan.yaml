@@ -1,0 +1,138 @@
+
+      #################################################
+      #                                               #
+      #                    SIDEBAR                    #
+      #                                               #
+      #################################################
+      - type: vertical-stack
+        view_layout:
+          grid-area: sidebar
+        cards:
+          !include sidebar/ethan.yaml
+
+      #################################################
+      #                                               #
+      #                    DEVICES                    #
+      #                                               #
+      #################################################
+      - type: grid
+        view_layout:
+          grid-area: devices
+        columns: 4
+        title: Dispositivos
+        cards:
+          - type: custom:button-card
+            entity: light.studio_dator
+            name: Luz
+            template:
+              - light
+              - icon_hue
+
+          - type: custom:button-card
+            entity: switch.fvicente_backlight_backlight
+            name: Respaldo
+            template:
+              - light
+              - icon_spot
+
+          - type: custom:button-card
+            entity: fan.fvicente_fan
+            name: Ventilador
+            template:
+              - light
+              - icon_fan2
+              
+
+          - type: custom:button-card
+            entity: switch.fvicente_wfan
+            name: wFan
+            template:
+              - light
+              - icon_fan2
+            
+
+          - type: custom:button-card
+            entity: switch.fvicente_monitor_monitor
+            name: Monitor
+            #double_tap_action: !include popup/studio_monitorer.yaml
+            template:
+              - base
+              - icon_tv
+              - loader
+
+      #################################################
+      #                                               #
+      #                    PERSON                     #
+      #                                               #
+      #################################################
+      - type: grid
+        view_layout:
+          grid-area: person
+        columns: 2
+        title: ' '
+        cards:
+          - type: custom:button-card
+            color_type: blank-card
+
+          - type: custom:button-card
+            entity: person.ethan
+            name: Ethan
+            triggers_update:
+              - sensor.fvicente_last_changed
+            #double_tap_action: !include popup/person_fvicente.yaml
+            variables:
+              retain: sensor.fvicente_last_changed
+            template:
+              - person
+              - circle
+      #################################################
+      #                                               #
+      #                    TEMPERATURE                #
+      #                                               #
+      #################################################                   
+      - type: horizontal-stack
+        view_layout:
+          grid-area: sensor
+        cards:
+
+            - type: custom:apexcharts-card
+              apex_config:
+                chart:
+                  height: 150%
+              graph_span: 1d
+              now:
+                show: true
+                color: red
+                label: Ahora
+              header:
+                show: true
+                show_states: true
+                colorize_states: true
+                standard_format: true
+              series:
+                - entity: sensor.fvicente_th_temperatura      
+                  name: Temperatura
+                  type: area
+                  color: '#fa2f2f'
+                  stroke_width: 3
+                  opacity: 0.1
+
+                - entity: sensor.fvicente_th_humedad
+                  name: Humedad
+                  type: column
+
+                - entity: sensor.openweathermap_temperature
+                  name: Exterior
+                  type: line
+                  color: orange
+                  stroke_width: 2
+
+                  
+              style: |
+                ha-card {
+                  background: none  !important;
+                  box-shadow: none !important;
+                  border: none !important;
+                  padding: 0 !important;
+                }
+            

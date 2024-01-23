@@ -1,0 +1,20 @@
+action: fire-dom-event
+theme: Transparent
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Clima
+    card_mod:
+      theme: transparent
+    style: |
+      --popup-max-width: calc(900px);
+    content:
+      type: vertical-stack
+      cards:
+        - type: custom:weather-card
+          entity: weather.openweathermap
+          number_of_forecasts: "5"
+          hourly_forecast: false
+          details: true
+          forecast: true
+          current: true

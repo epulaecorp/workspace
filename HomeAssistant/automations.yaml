@@ -1,1 +1,333 @@
-[]
+- id: '1699476318512'
+  alias: GoogleTV - Monitor
+  description: Turn ON/OFF monitor with Chromecast
+  trigger:
+  - alias: Chromecast ON
+    platform: state
+    entity_id:
+    - remote.fvicente_tv
+    from: 'off'
+    to: 'on'
+    id: Turn ON Chromecast
+  - alias: Chromecast OFF
+    platform: state
+    entity_id:
+    - remote.fvicente_tv
+    from: 'on'
+    to: 'off'
+    id: Turn OFF Chromecast
+  condition: []
+  action:
+  - alias: Chromecast ON / OFF
+    choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Turn ON Chromecast
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.fvicente_monitor_switch
+      alias: 'ON'
+    - conditions:
+      - condition: trigger
+        id:
+        - Turn OFF Chromecast
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.fvicente_monitor_switch
+      alias: 'OFF'
+  mode: single
+- id: '1699591191220'
+  alias: Phone Chargig
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.fvicente_iphone_battery_level
+    alias: Battery Changes
+  condition: []
+  action:
+  - alias: CHARGE > 90 / CHARGE < 10
+    choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.fvicente_iphone_battery_level
+        above: 90
+      sequence:
+      - alias: 'CHARGING '
+        choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.fvicente_iphone_battery_state
+            state: Charging
+          sequence:
+          - alias: DAY / NIGHT
+            choose:
+            - conditions:
+              - condition: sun
+                before: sunset
+                after: sunrise
+              sequence:
+              - alias: HOME / AWAY
+                choose:
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: home
+                  sequence:
+                  - service: notify.alexa_media_echo_recamara
+                    data:
+                      message: Tu teléfono ya está cargado, sería buena idea desconectarlo
+                  - service: notify.mobile_app_fvicente_iphone
+                    data:
+                      data:
+                        push:
+                          sound:
+                            name: findmy.wav
+                            critical: 1
+                            volume: 1
+                      title: BATERÍA
+                      message: Carga completada
+                  alias: HOME
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: not_home
+                  sequence:
+                  - service: notify.mobile_app_fvicente_iphone
+                    data:
+                      message: Tu teléfono ya está cargado, sería buena idea desconectarlo
+                  alias: AWAY
+              alias: DAY
+            - conditions:
+              - condition: sun
+                before: sunrise
+                after: sunset
+              sequence:
+              - alias: HOME / AWAY
+                choose:
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: home
+                  sequence:
+                  - service: notify.alexa_media_echo_recamara
+                    data:
+                      message: Tu teleéfono está cargado, sería buena idea desconectarlo
+                  - service: notify.mobile_app_fvicente_iphone
+                    data:
+                      message: Carga completa
+                      title: BATERÍA
+                      data:
+                        push:
+                          sound:
+                            name: findmy.wav
+                            critical: 1
+                            volume: 1
+                  alias: HOME
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: not_home
+                  sequence: []
+                  alias: AWAY
+              alias: NIGHT
+          alias: CHARGING
+      alias: BATERY > 90
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.fvicente_iphone_battery_level
+        below: 10
+      sequence:
+      - alias: CHARGING / NO CHARGING
+        choose:
+        - conditions:
+          - condition: state
+            entity_id: sensor.fvicente_iphone_battery_state
+            state: Not Charging
+          sequence:
+          - alias: DAY / NIGHT
+            choose:
+            - conditions:
+              - condition: sun
+                before: sunset
+                after: sunrise
+              sequence:
+              - alias: HOME / AWAY
+                choose:
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: home
+                  sequence:
+                  - service: notify.alexa_media_echo_recamara
+                    data:
+                      message: Tu teléfono se está quedando sin batería , seria bueno
+                        ponerlo a cargar
+                  - service: notify.mobile_app_fvicente_iphone
+                    data:
+                      message: Tu teléfono se está quedando sin batería , seria bueno
+                        ponerlo a cargar
+                  alias: HOME
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: not_home
+                  sequence:
+                  - service: notify.mobile_app_fvicente_iphone
+                    data:
+                      message: Tu teléfono se está quedando sin batería , seria bueno
+                        ponerlo a cargar
+                  alias: AWAY
+              alias: DAY
+            - conditions:
+              - condition: sun
+                before: sunrise
+                after: sunset
+              sequence:
+              - alias: HOME / AWAY
+                choose:
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: home
+                  sequence:
+                  - service: notify.alexa_media_echo_recamara
+                    data:
+                      message: Tu teléfono se está descargando, sería buena idea ponerlo
+                        a cargar
+                  alias: HOME
+                - conditions:
+                  - condition: state
+                    entity_id: device_tracker.fvicente_iphone
+                    state: not_home
+                  sequence: []
+                  alias: AWAY
+              alias: NIGHT
+          alias: NO CHARGING
+      alias: BATERY < 10
+  mode: single
+- id: '1700683055787'
+  alias: Turn OFF on sunrise if AWAY
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.fvicente_backlight_backlight
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+  condition:
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.fvicente
+      zone: zone.home
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      device_id: 8976e33a25d26202fe2025cd680e00f8
+  mode: single
+- id: '1704934376320'
+  alias: fvicente - leave
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.fvicente
+    zone: zone.home
+    event: leave
+  condition: []
+  action:
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.fvicente_backlight_switch
+  - service: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.fvicente
+  - service: remote.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: remote.fvicente_tv
+  - service: fan.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: fan.fvicente_fan
+  - service: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.echo_recamara
+  mode: single
+- id: '1704934606210'
+  alias: fvicente - arrive
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.fvicente
+    zone: zone.home
+    event: leave
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - service: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.fvicente
+  mode: single
+- id: '1705062235153'
+  alias: fvicente - wake up
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.fvicente
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    after: 05:00:00
+  action:
+  - service: light.turn_on
+    metadata: {}
+    data:
+      color_name: cyan
+      brightness_step_pct: 75
+      transition: 60
+    target:
+      entity_id: light.fvicente
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.fvicente_backlight_switch
+  mode: single

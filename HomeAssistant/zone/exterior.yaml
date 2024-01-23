@@ -1,0 +1,73 @@
+          - type: custom:swipe-card
+            parameters:
+              parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+              - type: grid
+                columns: 2
+                cards:
+
+                  # frente
+                  - type: custom:button-card
+                    entity: 
+                    name: Frente
+                    template:
+                      - switch
+                      - icon_luzExterior
+
+                  # Patio
+                  - type: custom:button-card
+                    entity: 
+                    name: Patio
+                    template:
+                      - switch
+                      - icon_luzExterior
+                  
+                  # Taller
+                  - type: custom:button-card
+                    entity: 
+                    name: Taller
+                    #double_tap_action: !include popup/vardagsrum_tv.yaml
+                    template:
+                      - switch
+                      - icon_taller
+
+                  # Asador
+                  - type: custom:button-card
+                    entity: 
+                    name: Asador
+                    #double_tap_action: !include popup/vardagsrum_balkong.yaml
+                    template:
+                      - switch
+                      - icon_asador                    
+
+              - type: grid
+                columns: 2
+                cards:
+                  - type: custom:button-card
+                    entity: 
+                    name: Casita
+                    template:
+                      - switch
+                      - icon_casita
+
+                  - type: custom:button-card
+                    entity: 
+                    name: Gallinero
+                    template:
+                      - switch
+                      - icon_gallinero
+                  
+                  - type: custom:button-card
+                    entity:
+                    name: Porton
+                    template:
+                      - switch
+                      - icon_porton

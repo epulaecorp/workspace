@@ -1,11 +1,126 @@
+homeassistant:
+  packages: !include_dir_named packages
+  customize_domain:
+    automation:
+      initial_state: false
+  allowlist_external_dirs:
+    - /config
+
+# Code automations
+automation manual: !include_dir_merge_list automations/
+# UI Automations
+automation ui: !include automations.yaml
+
+script: !include scripts.yaml
+scene: !include scenes.yaml
+#switch: !include switch.yaml
+
+#mqtt:
+#  sensor: !include sensors.yaml
+#  binary_sensor: !include binary_sensors.yaml
 
 # Loads default set of integrations. Do not remove.
 default_config:
+template: !include sidebar.yaml
+lovelace:
+  mode: yaml
+  resources:
+    [
+      { url: /hacsfiles/tabbed-card/tabbed-card.js,                                 type: module },
+      { url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,           type: module },
+      { url: /hacsfiles/apexcharts-card/apexcharts-card.js,                         type: module },
+      { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
+      { url: /hacsfiles/button-card/button-card.js,                                 type: module },
+      { url: /hacsfiles/custom-icons/custom-icons.js,                               type: module },
+
+      { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
+      { url: /hacsfiles/lovelace-hui-element/hui-element.js,                        type: module },
+      { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
+      { url: /hacsfiles/lovelace-mushroom/mushroom.js,                              type: module },
+      { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
+
+      { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
+      { url: /hacsfiles/ha-card-weather-conditions/ha-card-weather-conditions.js,   type: module },
+      { url: /hacsfiles/spotify-card/spotify-card.js,                               type: module },
+      { url: /hacsfiles/weather-card/weather-card.js,                               type: module },
+      { url: /hacsfiles/scheduler-card/scheduler-card.js,                           type: module },
+      { url: /hacsfiles/thermal_comfort_icons/thermal_comfort_icons.js,             type: module },
+      { url: /hacsfiles/Bubble-Card/bubble-card.js,                                 type: module },
+
+      { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
+      { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
+      { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },
+      { url: '/local/fonts.css?v=2.1',                                              type: css }
+    ]
 
 # Load frontend themes from the themes folder
 frontend:
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+    - /hacsfiles/Bubble-Card/bubble-pop-up.js?v=1.6.4
   themes: !include_dir_merge_named themes
 
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
+http:
+  # Cloudflare setting to unlock reverse proxy
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.17.0.2
+
+input_text:
+  alexa_actionable_notification:
+    name: Alexa Actionable Notification Holder
+    max: 255
+    initial: '{"text": "This is a test of the alexa actions custom skill. Did it work?", "event": "actionable.skill.test"}'
+    
+alexa: !include alexa.yaml
+
+wake_on_lan:
+
+monitor_docker:
+  - name: Docker
+    monitored_conditions:
+      - version
+      - containers_running
+      - containers_paused
+      - containers_stopped
+      - containers_total
+
+sensor:
+
+  # Date / Time
+  - platform: time_date
+    display_options:
+      - time
+      - date
+
+  # SQL
+  - platform: sql
+    db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
+    scan_interval: 3600
+    queries:
+      - name: 'DataBase size'
+        query: 'SELECT table_schema "hass_db", Round(Sum(data_length + index_length) / POWER(1024,2), 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+        column: 'value'
+        unit_of_measurement: MB
+  
+  # wheather
+  - platform: template
+    sensors: 
+      forecast_temperature:
+        friendly_name: "forecast_temperature"
+        unit_of_measurement: '°C'
+        value_template: "{{ state_attr('weather.home', 'temperature') }}"
+        device_class: temperature
+
+  - platform: template
+    sensors:
+      forecast_humidity:
+        friendly_name: "forecast_humidity"
+        unit_of_measurement: '%'
+        value_template: "{{ state_attr('weather.home', 'humidity') }}"
+        device_class: humidity
+
+
+recorder:
+  db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
+  purge_keep_days: 30

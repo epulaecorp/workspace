@@ -1,0 +1,42 @@
+  smart_home:
+    locale: es-MX
+    endpoint: https://api.amazonalexa.com/v3/events
+    client_id: amzn1.ask.skill.e0a27479-8539-4f9a-ba12-bb128457a597
+    client_secret: Pa$$w0rd
+    filter:
+      include_entities:
+        - switch.fvicente_backlight_switch
+        - switch.fvicente_monitor_switch
+        - fan.fvicente_fan
+        - light.fvicente
+        
+        - input_boolean.sleep_interruption
+#      include_entity_globs:
+#        - binary_sensor.*_motion
+#      include_domains:
+#        - switch
+#      exclude_entities:
+#        - switch.outside
+    
+    entity_config:
+      
+      switch.fvicente_backlight_switch:
+        name: "Mi Respaldo"
+        description: "fvicente Backlight"
+      
+      switch.fvicente_monitor_switch:
+        name: "Mi Monitor"
+        description: "fvicente Monitor"
+
+      fan.fvicente_fan:
+        name: "Mi Ventilador"
+        description: "fvicente Ventilador"
+
+      light.fvicente:
+        name: "Mi Luz"
+        description: "fvicente Light"
+
+
+      input_boolean.sleep_interruption:
+        name: "sleep interruption"
+

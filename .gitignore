@@ -6,3 +6,4 @@ HomeAssistant/*.log.*
 HomeAssistant/*.db
 HomeAssistant/*.db*
 HomeAssistant/.HA_VERSION
+HomeAssistant/.cloud

@@ -1,0 +1,20 @@
+          - type: custom:button-card
+            entity: 
+            name: Luces
+            template:
+              - light
+              - icon_hue
+              
+          - type : custom:button-card
+            entity:
+            name: Puerta
+            template:
+              - base
+              - icon_puerta
+
+          - type : custom:button-card
+            entity:
+            name: Microondas
+            template:
+              - base
+              - icon_microondas

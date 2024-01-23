@@ -1,0 +1,44 @@
+- sensor:
+    - unique_id: sidebar
+      state: template
+      attributes:
+        time: >
+          {% set hours = now().strftime('%H') %}
+          {% set minutes = now().strftime('%M') %}
+          <span class="time">
+            {{ hours }}<span class="time-colon">:</span>{{ minutes }}
+          </span>
+
+        date: >
+          <font color='#6a7377'><b>
+          {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %}
+          {% set days = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'] %}
+          {% set months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
+            {{ days[now().weekday()] }} {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+          {% endif %}
+          </b></font>
+
+        greet: >
+          <b>
+          {% set time = now().hour %}        
+          {% if time  < 4 %} Buenas noches {{'\U0001F634'}}
+          {% elif time < 12 %} Buenos días {{'\u2615\uFE0F'}}
+          {% elif time < 19 %} Buenas tardes {{'\U0001F44B\U0001F3FB'}}
+          {% else %} Buenas noches {{'\U0001F44B\U0001F3FB'}}
+          {% endif %}
+          </b>
+
+        battery: >
+
+          {% set entities = states.sensor 
+            | selectattr('entity_id', 'search', 'bateria')
+            | rejectattr('entity_id', 'search', 'iphone')
+            | map(attribute = 'entity_id') | list %}
+
+          {% for sensor in entities if states(sensor) != 'unknown' and states(sensor) !=
+          'unavailable' and states(sensor) != 'None' and states(sensor) | int(default=0) <= 10 %}
+
+            {% if loop.first %} {{'\u26A0\uFE0F'}}  {% else %}, {% endif %}
+            {{ state_attr(sensor, 'friendly_name') }} {{ states(sensor) }}%
+          {% endfor %}

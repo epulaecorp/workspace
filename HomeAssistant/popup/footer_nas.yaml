@@ -1,0 +1,303 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: NAS
+    style: >
+      --popup-max-width: calc(385px + 385px + 385px + 50px);
+      --ha-card-border-radius: 0;
+    card_mod:
+      style:
+        layout-card:
+          $grid-layout$:
+            # card divider border
+            .: |
+              #root {
+                  margin: -21px 2 !important;
+              }
+            hui-entities-card:
+              $: |
+                .card-content {
+                  padding: var(--tablet-popup-content-padding);
+                  padding-bottom: 0.3em;
+                }
+                ha-card {
+                  border-right: 1.5px solid rgba(0, 0, 0, 0.2);
+                  border-radius: 0;
+                  transition: none;
+                }
+                /* portrait */
+                @media screen and (max-width: 1200px) {
+                  ha-card {
+                    border-right: none;
+                    border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
+                  }
+                }
+              $hui-horizontal-stack-card:
+                # horizontal bottom buttons
+                $: |
+                  #root {
+                    justify-content: space-evenly;
+                    margin-top: 1.7em;
+                    max-width: 82vw; /* iphonex */
+                  }
+    content:
+      type: custom:layout-card
+      layout_type: custom:grid-layout
+      layout:
+        margin: 0
+        grid-template-columns: 385px 385px 385px
+        grid-template-rows: 1fr
+        grid-template-areas: |
+          "hass docker nas"
+        mediaquery:
+          #portrait
+          "(max-width: 1200px)":
+            grid-template-columns: 1fr
+            grid-template-rows: repeat(3, 1fr)
+            grid-template-areas: |
+              "hass"
+              "docker"
+              "nas"
+      cards:
+
+        ### HOME ASSISTANT
+
+        - type: vertical-stack
+          view_layout:
+            grid-area: hass
+          cards:
+
+            - type: entities
+              title: Home Assistant
+              show_header_toggle: false
+              card_mod:
+                class: header
+              style: |
+                ha-card {
+                  border: none !important;
+                }  
+              entities:
+                - entity: sensor.docker_hub
+                  name: Version
+                  icon: mdi:home-assistant
+
+                - entity: binary_sensor.docker_hub_update_available
+                  name: Estado
+                  icon: mdi:arrow-up-bold-hexagon-outline
+
+                - type: custom:hui-horizontal-stack-card
+                  cards:
+                    - type: custom:button-card
+                      name: HomeAssistant
+                      icon: mdi:reload
+                      tap_action:
+                        action: call-service
+                        service: browser_mod.sequence
+                        service_data:
+                          sequence:
+                            - service: browser_mod.notification
+                              data:
+                                message: Reiniciando homeassitant...
+                            - service: browser_mod.delay
+                              data:
+                                time: 3000
+                            - service: homeassistant.restart
+                      template: icon_name
+
+                    - type: custom:button-card
+                      name: Cotenedor
+                      icon: mdi:reload
+                      tap_action:
+                        action: call-service
+                        service: browser_mod.sequence
+                        service_data:
+                          sequence:
+                            - service: browser_mod.notification
+                              data:
+                                message: Reiniciando el contenedor...
+                            - service: homeassistant.save_persistent_states
+                            - service: browser_mod.delay
+                              data:
+                                time: 3000
+                            - service: shell_command.restart_container
+                      template: icon_name
+
+            - type: entities
+              title: Containers
+              show_header_toggle: false
+              card_mod:
+                class: header
+              style: |
+                ha-card {
+                  border: none !important;
+                } 
+              entities:
+
+                - entity: sensor.docker_containers_total
+                  name: Cantidad
+
+                - entity: sensor.docker_containers_running
+                  name: Funcionando
+
+                - entity: sensor.docker_containers_paused
+                  name: Pausados
+
+                - entity: sensor.docker_containers_stopped
+                  name: Detenidos
+
+        ### DOCKER
+
+        - type: entities
+          view_layout:
+            grid-area: docker
+          title: Docker
+          state_color: true
+          show_header_toggle: false
+          card_mod:
+            class: header
+          style: |
+            ha-card {
+              border: none !important;
+            } 
+          entities:
+
+            - entity: switch.docker_watchtower
+              name: WatchTower
+              icon: mdi:tower-fire
+
+            - entity: switch.docker_duplicati
+              name: Duplicati
+              icon: mdi:cloud-upload-outline
+
+            - entity: switch.docker_cloudflarevpn
+              name: CloudFlare
+              icon: mdi:cloud-check-outline
+
+            - entity: switch.docker_zigbee2mqtt
+              name: Zigbee2MQTT
+              icon: mdi:broadcast  
+
+            - entity: switch.docker_nodered
+              name: Nodered
+              icon: mdi:sitemap-outline
+            
+            - entity: switch.docker_esphome
+              name: ESPHome
+              icon: mdi:cpu-64-bit
+
+            - entity: switch.docker_codeserver
+              name: CodeServer
+              icon: mdi:microsoft-visual-studio-code
+        
+
+        ### NAS
+
+        - type: entities
+          view_layout:
+            grid-area: nas
+          title: Synology DS1621+
+          show_header_toggle: false
+          card_mod:
+            class: header
+            # no border on last card
+            style: |
+              ha-card {
+                border: none !important;
+              }
+          entities:
+            - entity: sensor.synologynas_drive_1_status
+              name: Estado
+
+            - entity: binary_sensor.synologynas_security_status
+              name: Seguridad
+
+            - entity: sensor.synologynas_drive_1_temperature
+              name: Temperatura
+
+            - entity: update.synologynas_dsm_update
+              icon: mdi:package-up
+              name: Actualizacion
+
+            - type: custom:bar-card
+              width: 55%
+              height: 2em
+              decimal: 0
+              style: |
+                ha-card {
+                  border: none !important;
+                } 
+              unit_of_measurement: '%'
+              positions: &bar_card_positions
+                icon: outside
+                indicator: 'off'
+                name: outside
+              severity: &bar_card_severity
+                - color: '#6d2525'
+                  from: 85
+                  to: 999
+              entity_row: true
+              entities:
+
+                - entity: sensor.synologynas_cpu_utilization_total
+                  name: Processor
+                  icon: mdi:chip
+                  tap_action:
+                    action: call-service
+                    service: homeassistant.update_entity
+                    service_data:
+                      entity_id: sensor.synologynas_cpu_utilization_total
+
+                - entity: sensor.synologynas_memory_usage_real
+                  name: Memoria
+                  tap_action:
+                    action: call-service
+                    service: homeassistant.update_entity
+                    service_data:
+                      entity_id: sensor.synologynas_memory_usage_real
+
+                - entity: sensor.synologynas_volume_1_volume_used
+                  name: Almacenamiento
+                  tap_action:
+                    action: call-service
+                    service: homeassistant.update_entity
+                    service_data:
+                      entity_id: sensor.synologynas_volume_1_volume_used
+
+            - type: custom:hui-horizontal-stack-card
+              cards:
+                - type: custom:button-card
+                  name: Reiniciar
+                  icon: mdi:restart-alert
+                  confirmation:
+                    text: ¿Está seguro de que desea reiniciar el NAS??
+                  tap_action:
+                    action: call-service
+                    service: browser_mod.sequence
+                    service_data:
+                      sequence:
+                        - service: browser_mod.notification
+                          data:
+                            message: Reiniciando la NAS...
+                        - service: button.press
+                          data:
+                            entity_id: button.synologynas_reboot
+                  template: icon_name
+
+                - type: custom:button-card
+                  name: Apagar...
+                  icon: mdi:alert
+                  confirmation:
+                    text: ¿Está seguro de que desea apagar el NAS??
+                  tap_action:
+                    action: call-service
+                    service: browser_mod.sequence
+                    service_data:
+                      sequence:
+                        - service: browser_mod.notification
+                          data:
+                            message: Apaganod la NAS...
+                        - service: button.press
+                          data:
+                            entity_id: button.synologynas_shutdown
+                  template: icon_name

@@ -1,0 +1,17 @@
+          - type: custom:button-card
+            entity: switch.comedor_lampara
+            name: Lámpara
+            template:
+              - switch
+              - icon_lampara
+
+          - type: custom:button-card
+            entity: switch.comedor_cafetera
+            name: Cafetera
+            template:
+              - switch
+              - icon_cafetera
+              
+
+
+

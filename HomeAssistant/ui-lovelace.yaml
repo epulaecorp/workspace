@@ -1,0 +1,327 @@
+button_card_templates: 
+  !include_dir_merge_named button_card_templates
+
+views:
+  # Home
+  - type: custom:grid-layout
+    title: Home
+    icon: mdi:home
+    layout:
+      #default
+      margin: 0
+      grid-gap: var(--custom-layout-card-padding)
+      grid-template-columns: repeat(4, 1fr) 0
+      grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+      grid-template-areas: |
+        "  sidebar  .         .         .           ."
+        "  sidebar  sala      comedor   cocina      ."
+        "  sidebar  media     baño      exterior    ."
+        "  sidebar  footer    footer    footer      ."
+
+    cards:
+
+      - type: custom:button-card
+        view_layout:
+          grid-area: 1 / 2 / 2 / 5
+        name: SET THEME TO "tablet" IN PROFILE
+        tap_action:
+          action: navigate
+          navigation_path: /profile
+        styles:
+          card:
+            - display: >
+                [[[
+                  return hass.themes.theme === 'tablet'
+                      ? 'none'
+                      : 'initial';
+                ]]]
+          name:
+            - z-index: 1
+            - overflow: visible
+            - color: red
+            - font-weight: bolder
+            - font-size: xxx-large
+            - background: yellow
+
+      #################################################
+      #                                               #
+      #                    SIDEBAR                    #
+      #                                               #
+      #################################################
+      - type: vertical-stack
+        view_layout:
+          grid-area: sidebar
+        cards: 
+                
+          # Sidebar sensor
+          - type: custom:button-card
+            entity: sensor.template_sidebar
+            template: sidebar
+
+          - type: vertical-stack
+            cards:
+
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#people'
+                is_sidebar_hiidden: true
+
+              - type: custom:mushroom-person-card
+                entity: person.fvicente
+                fill_container: false
+                icon_type: entity-picture
+                layout: horizontal
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace/2
+                card_mod:
+                  style: &person |
+                    ha-card {
+                      margin: 0 1em 1em 1em;
+                      border: none !important;
+                      max-width: 200px
+                    }
+              - type: custom:mushroom-person-card
+                entity: person.fvicente
+                fill_container: false
+                icon_type: entity-picture
+                layout: horizontal
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace/2
+                card_mod:
+                  style: *person 
+
+          
+          - type: custom:bubble-card
+            card_type: horizontal-buttons-stack
+                
+            1_link: '#people'
+            1_name: Habitaciones
+
+      #################################################
+      #                                               #
+      #                  SALA                         #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Sala
+        view_layout:
+          grid-area: sala
+        columns: 1
+        cards: !include zone/sala.yaml
+          
+      #################################################
+      #                                               #
+      #                    COMEDOR                    #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Comedor
+        view_layout:
+          grid-area: comedor
+        columns: 2
+        cards: !include zone/comedor.yaml
+
+      #################################################
+      #                                               #
+      #                    COCINA                     #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Cocina
+        view_layout:
+          grid-area: cocina
+        columns: 2
+        cards: !include zone/cocina.yaml
+
+      #################################################
+      #                                               #
+      #                     MEDIA                     #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Multimedia
+        view_layout:
+          grid-area: media
+        columns: 1
+        cards:
+          - type: custom:swipe-card
+            parameters:
+              parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: media_player.spotify_fvicente
+                    name: Spotify
+                    template:
+                      - conditional_media
+                      - icon_spotify
+
+              - type: grid
+                columns: 2
+                cards:
+                  - type: custom:button-card
+                    entity: media_player.vardagsrum
+                    triggers_update: sensor.youtube_watching
+                    name: Sala
+                    template:
+                      - media
+                      - icon_apple_tv
+
+                  - type: custom:button-card
+                    entity: media_player.sovrum
+                    triggers_update: sensor.youtube_watching
+                    name: Comedor
+                    template:
+                      - media
+                      - icon_apple_tv
+
+                  - type: custom:button-card
+                    entity: media_player.spotify
+                    name: Spotify
+                    template:
+                      - media
+                      - icon_spotify
+
+                  - type: custom:button-card
+                    entity: media_player.kok
+                    name: Nest Mini
+                    template:
+                      - media
+                      - icon_nest_mini
+
+      #################################################
+      #                                               #
+      #                    BAÑO                       #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Baño
+        view_layout:
+          grid-area: baño
+        columns: 2
+        cards: !include zone/baño.yaml
+
+      #################################################
+      #                                               #
+      #                    Exterior                   #
+      #                                               #
+      #################################################
+      - type: grid
+        title: Exterior
+        view_layout:
+          grid-area: exterior
+        columns: 1
+        cards: !include zone/exterior.yaml
+
+      #################################################
+      #                                               #
+      #                    FOOTER                     #
+      #                                               #
+      #################################################
+      - type: horizontal-stack
+        view_layout:
+          grid-area: footer
+        cards:
+          # WIFI
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:qrcode-scan"></ha-icon> WIFI
+            tap_action: !include popup/footer_qr_wifi.yaml
+            template: footer
+
+          # NAS
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:nas"></ha-icon> NAS
+            tap_action: !include popup/footer_nas.yaml
+            triggers_update:
+              - update.nas_dsm_update
+              - sensor.nas_volume_1_status
+              - binary_sensor.nas_security_status
+              - sensor.disk_use_percent
+            variables:
+              notify: >
+                [[[
+                  let id = this._config.triggers_update;
+                  if (id.every(e => states[e]))
+                      return states[id[0]].state === 'on'
+                          ? 1
+                          : states[id[1]].state === 'background_scrubbing' ||
+                            states[id[2]].state === 'on' ||
+                            parseFloat(states[id[3]].state) >= 85;
+                ]]]
+            template: footer
+
+          # Updates
+          - type: custom:button-card
+            entity: sensor.template_updates
+            name: >
+              <ha-icon icon="mdi:washing-machine"></ha-icon> Lavanderia
+            tap_action: !include popup/footer_updates.yaml
+            variables:
+              notify: >
+                [[[
+                  return parseInt(entity?.state);
+                ]]]
+            template: footer
+
+          # Vacuum
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:robot-vacuum-variant"></ha-icon> Aspiradora
+            tap_action: !include popup/footer_vacuum.yaml
+            triggers_update:
+              - sensor.date
+            variables:
+              notify: >
+                [[[
+                  let id = states['sensor.morty_last_clean_end'];
+                  if (id) return (Date.now() - Date.parse(id.state)) > 6048e5;
+                ]]]
+            template: footer
+
+  # Mariquita 
+  - type: custom:grid-layout
+    title: mariquita
+    visible: false
+    layout: !include  views/layout.yaml
+    cards: !include views/view_mariquita.yaml
+
+  # Fvicente 
+  - type: custom:grid-layout
+    title: fvicente
+    visible: false
+    layout: !include  views/layout.yaml
+    cards: !include views/view_fvicente.yaml
+
+  # Zahid
+  - type: custom:grid-layout
+    title: zahid
+    visible: false
+    layout: !include  views/layout.yaml
+    cards: !include views/view_zahid.yaml 
+
+  # Ethan
+  - type: custom:grid-layout
+    title: ethan
+    visible: false
+    layout: !include  views/layout.yaml
+    cards: !include views/view_ethan.yaml 
+
+  # Dayreth
+  - type: custom:grid-layout
+    title: dayreth
+    visible: false
+    layout: !include  views/layout.yaml
+    cards: !include views/view_dayreth.yaml 

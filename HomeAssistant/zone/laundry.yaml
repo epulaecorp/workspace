@@ -1,0 +1,61 @@
+input_boolean:
+  dryer:
+  washer:
+  
+input_datetime:
+  dryer_start:
+    has_date: true
+    has_time: true
+  washer_start:
+    has_date: true
+    has_time: true 
+
+input_select:
+  wasmachine_status:
+    name: Washingmachine Status
+    options:
+      - "Uit"
+      - "Bezig"
+    initial: "Uit"
+    icon: mdi:washing-machine
+    
+  droogkast_status:
+    name: Droogkast Status
+    options:
+      - "Uit"
+      - "Bezig"
+    initial: "Uit"
+    icon: mdi:washing-machine
+
+sensor:
+  - platform: template
+    sensors:
+      dryer_on_time:
+        value_template: >
+          {{ (as_timestamp(now())
+              - state_attr('input_datetime.dryer_start', 'timestamp'))
+              |timestamp_custom('%H:%M:%S', false) }}
+
+      dryer_on_time_complete:
+        friendly_name: Dryer on Timer
+        value_template: >
+            {% if is_state('input_select.droogkast_status', 'Bezig') %}
+              {{ states('sensor.dryer_on_time') }}
+            {% else %}
+              ---
+            {% endif %}
+
+      washer_on_time:
+        value_template: >
+          {{ (as_timestamp(now())
+              - state_attr('input_datetime.washer_start', 'timestamp'))
+              |timestamp_custom('%H:%M:%S', false) }}
+
+      washer_on_time_complete:
+        friendly_name: Washer on Timer
+        value_template: >
+            {% if is_state('input_select.wasmachine_status', 'Bezig') %}
+              {{ states('sensor.washer_on_time') }}
+            {% else %}
+              ---
+            {% endif %}

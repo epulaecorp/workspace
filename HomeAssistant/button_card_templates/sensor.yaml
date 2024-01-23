@@ -1,0 +1,52 @@
+sensor:
+  aspect_ratio: 1/1
+  custom_fields:
+    graph:
+      card:
+
+          type: custom:mini-graph-card
+          #height: 210
+          align_state: left
+          show:
+            name: true
+            icon: true
+            state: true
+            legend: false
+            labels: false
+            style: |
+              ha-card {
+                box-shadow: none;
+                background: transparent;
+                border-radius: 0;
+              }type: ''
+          
+  styles:
+    custom_fields:
+    
+      graph: 
+        - bottom: 0% 
+        - left: 0% 
+        - width: 100%
+        - position: absolute
+        #- z-index: -1
+        - filter: opacity(75%)
+        - overflow: unset
+      grid:
+        - grid-template-areas: '"i" "n" "graph"'
+        - grid-template-columns: 1fr
+        - grid-template-rows: 1fr min-content min-content     
+    name:
+      - z-index: 1
+    state:
+      - z-index: 1      
+    hold_action:
+      action: more-info
+    card:
+      #- overflow: unset
+      - border-radius: var(--button-card-border-radius)
+      - border-width: 0
+      - transition: none
+    
+
+
+      

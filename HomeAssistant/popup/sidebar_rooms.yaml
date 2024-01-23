@@ -1,0 +1,145 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: ROOMS
+    style: >
+      --popup-max-width: calc(385px + 385px + 385px + 50px);
+      --ha-card-border-radius: 0;
+    card_mod:
+      style:
+        layout-card:
+          $grid-layout$:
+            # card divider border
+            .: |
+              #root {
+                  margin: -24px 2 !important;
+              }
+            hui-entities-card:
+              $: |
+                .card-content {
+                  padding: var(--tablet-popup-content-padding);
+                  padding-bottom: 0.3em;
+                }
+                ha-card {
+                  border-right: 1.5px solid rgba(0, 0, 0, 0.2);
+                  border-radius: 0;
+                  transition: none;
+                }
+                /* portrait */
+                @media screen and (max-width: 1200px) {
+                  ha-card {
+                    border-right: none;
+                    border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
+                  }
+                }
+              $hui-horizontal-stack-card:
+                # horizontal bottom buttons
+                $: |
+                  #root {
+                    justify-content: space-evenly;
+                    margin-top: 1.7em;
+                    max-width: 82vw; /* iphonex */
+                  }
+    content:
+      type: custom:layout-card
+      layout_type: custom:grid-layout
+      layout:
+        margin: 0
+        grid-template-columns: 300px 340px 300px
+        grid-template-rows: 100%
+        grid-template-areas: |
+          "mariquita  fvicente  Zahid ."
+          "dayret     info      ethan ."
+        mediaquery:
+          #portrait
+          "(max-width: 1200px)":
+            grid-template-columns: 1fr
+            grid-template-rows: repeat(3, 1fr)
+            grid-template-areas: |
+              "mariquita"
+              "fvicente"
+              "zahid"
+              "ethan"
+              "dayreth"
+
+      cards:
+        # FVICENTE
+        - type: custom:room-card
+          view_layout:
+            grid-area: fvicente
+          title: Fvicente
+          icon: mdi:bed-double-outline
+          show_icon: true
+          state_color: true
+          entity: switch.fvicente_backlight_backlight
+          tap_action:
+            action: toggle
+
+          templates:
+            - name: device
+              template:
+                show_icon: true
+                state_color: true
+                icon_color: 
+                  template:
+                    styles: >
+                      if (entity.state == "on") return 'color: #3285a8';    
+                      else return 'color: gray';
+            - name: temp_sensor
+              template:
+                show_icon: false
+                show_state: true
+                state:
+                  template:
+                    styles:
+                      
+
+
+          entities:
+
+            - entity: binary_sensor.fvicente_pir
+              name: Motion
+              template: device
+
+            - entity: switch.fvicente_backlight_backlight
+              name: Backlight
+            
+              template: device
+              tap_action: 
+                action: toggle
+
+            - entity: fan.fvicente_fan
+              name: Ventilador
+              icon: mdi:fan
+              template: device
+              tap_action:
+                action: toggle
+
+            - entity: switch.fvicente_monitor_monitor
+              name: Monitor
+              template: device
+              icon: mdi:television
+              tap_action:
+                action: toggle
+
+            - entity: switch.fvicente_wfan
+              name: wFan
+              icon: mdi:fan
+              template: device
+              tap_action: 
+                action: toggle
+        
+          info_entities:
+
+              
+            - entity: sensor.fvicente_th_temperatura
+              show_icon: false
+              show_state: true
+                
+            - entity: sensor.fvicente_th_humedad
+              show_icon: false
+              show_state: true
+
+        # fvicente
+        

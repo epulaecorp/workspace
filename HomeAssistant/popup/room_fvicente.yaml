@@ -1,0 +1,71 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Fvicente Room
+    style: |
+      --popup-min-width: calc(540px);
+      
+    card_mod:
+      style:
+        #popup header
+        .:
+    content:
+      type: vertical-stack
+      cards:
+
+        - type: grid
+          columns: 3
+          cards:
+
+            - type: custom:button-card
+              entity: switch.fvicente_backlight_switch
+              name: BackLight
+              template:
+                - light
+                - icon_hue
+
+            - type: custom:button-card
+              entity: fan.fvicente_fan
+              name: Ventilador
+              template:
+                - base
+                - icon_fan2
+                - loader
+
+            - type: custom:button-card
+              entity: switch.fvicente_wfan
+              name: WindosFan
+              template:
+                - base
+                - icon_fan2
+                - loader
+
+            - type: custom:button-card
+              entity: switch.fvicente_monitor_switch
+              name: Monitor
+              template:
+                - base
+                - icon_imac
+                - loader
+
+            - type: custom:button-card
+              custom_fields:
+                graph:
+                  card:
+                    entities: 
+                      - sensor.fvicente_t_h_temperature
+                    name: Temperatura
+              template: 
+                - sensor
+
+            - type: custom:button-card
+              custom_fields:
+                graph:
+                  card:
+                    entities: 
+                      - sensor.fvicente_t_h_humidity
+                    line_color: "#3e77B6"
+                    name: Humedad
+              template: 
+                - sensor

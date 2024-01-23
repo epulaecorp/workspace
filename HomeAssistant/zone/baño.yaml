@@ -1,0 +1,29 @@
+          - type: custom:button-card
+            entity: 
+            name: WC
+            template:
+              - switch
+              - icon_baño
+
+          - type: custom:button-card
+            entity: 
+            name: "Extractor"
+            #double_tap_action: !include popup/studio_flakt.yaml
+            template:
+              - switch
+              - icon_ventilador
+              
+
+          - type: custom:button-card
+            entity: 
+            name: Puerta
+            template:
+              - switch
+              - icon_puerta
+
+          - type: custom:button-card
+            entity: 
+            name: Regadera
+            template:
+              - switch
+              - icon_spot

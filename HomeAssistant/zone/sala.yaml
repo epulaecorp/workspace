@@ -1,0 +1,71 @@
+          - type: custom:swipe-card
+            parameters:
+              parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+              - type: grid
+                columns: 2
+                cards:
+
+                  # Luces
+                  - type: custom:button-card
+                    entity: 
+                    name: Luces
+                    template:
+                      - switch
+                      - icon_hue
+
+                  # Ventilador
+                  - type: custom:button-card
+                    entity: 
+                    name: Ventilador
+                    template:
+                      - switch
+                      - icon_ventilador
+
+                  - type: custom:button-card
+                    entity: 
+                    name: Tv
+                    #double_tap_action: !include popup/vardagsrum_tv.yaml
+                    template:
+                      - switch
+                      - icon_tv
+
+                  - type: custom:button-card
+                    entity: 
+                    name: PS
+                    #double_tap_action: !include popup/vardagsrum_balkong.yaml
+                    template:
+                      - switch
+                      - icon_ps5                    
+
+              - type: grid
+                columns: 2
+                cards:
+                  - type: custom:button-card
+                    entity: 
+                    name: Stereo
+                    template:
+                      - switch
+                      - icon_baffle
+
+                  - type: custom:button-card
+                    entity: 
+                    name: PC
+                    template:
+                      - switch
+                      - icon_monitor
+                  
+                  - type: custom:button-card
+                    entity:
+                    name: Puerta
+                    template:
+                      - switch
+                      - icon_puerta
