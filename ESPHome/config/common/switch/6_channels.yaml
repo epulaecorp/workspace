@@ -1,0 +1,50 @@
+#platform: gpio
+#name: ${device_name}
+#state_topic: "${mqtt_stat_topic}STATE"
+#command_topic: "${mqtt_cmnd_topic}POWER"
+#pin: ${gpio_Relay}
+#id: relay
+#restore_mode: RESTORE_DEFAULT_OFF
+
+
+- platform: gpio
+  name: switch 1
+  id: relay1
+  pin: ${gpio_Relay1}
+  state_topic: "${mqtt_stat_topic}STATE_1"
+  command_topic: "${mqtt_cmnd_topic}POWER_1"
+
+- platform: gpio
+  name: switch 2
+  id: relay2
+  pin: ${gpio_Relay2}
+  state_topic: "${mqtt_stat_topic}STATE_2"
+  command_topic: "${mqtt_cmnd_topic}POWER_2"
+
+- platform: gpio
+  name: switch 3
+  id: relay3
+  pin: ${gpio_Relay3}
+  state_topic: "${mqtt_stat_topic}STATE_3"
+  command_topic: "${mqtt_cmnd_topic}POWER_3"
+
+- platform: gpio
+  name: switch 4
+  id: relay4
+  pin: ${gpio_Relay4}
+  state_topic: "${mqtt_stat_topic}STATE_4"
+  command_topic: "${mqtt_cmnd_topic}POWER_4"
+
+- platform: gpio
+  name: switch 5
+  id: relay5
+  pin: ${gpio_Relay5}
+  state_topic: "${mqtt_stat_topic}STATE_5"
+  command_topic: "${mqtt_cmnd_topic}POWER_5"
+
+- platform: gpio
+  name: switch 6
+  id: relay6
+  pin: ${gpio_Relay6}
+  state_topic: "${mqtt_stat_topic}STATE_6"
+  command_topic: "${mqtt_cmnd_topic}POWER_6"

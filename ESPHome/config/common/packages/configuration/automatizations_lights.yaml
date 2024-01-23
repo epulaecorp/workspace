@@ -1,0 +1,9 @@
+sun:
+  latitude: !secret latitude
+  longitude: !secret longitude
+  on_sunrise:
+    then:
+      - switch.turn_off: relay
+  on_sunset:
+    then:
+      - switch.turn_on: relay

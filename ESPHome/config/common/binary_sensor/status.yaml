@@ -1,0 +1,11 @@
+
+- platform: gpio
+  name: ${device_name}
+  pin:
+    number: ${gpio_Relay}
+    inverted: true
+    mode:
+      input: true
+      pullup: true
+  device_class: switch
+  icon: mdi:light-switch

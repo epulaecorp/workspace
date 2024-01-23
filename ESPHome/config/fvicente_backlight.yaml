@@ -1,0 +1,18 @@
+substitutions:
+  zone: Home
+  area: fvicente
+  device: backlight
+
+packages:
+  gpio: 
+    !include common/packages/gpio/sonoff_basic.yaml
+  configuration: 
+    <<: !include common/packages/configuration/base.yaml
+#    <<: !include common/packages/configuration/automatizations_lights.yaml
+#    <<: !include common/packages/configuration/ble_tracker.yaml
+    
+switch:
+  !include common/switch/1_channel.yaml
+  
+binary_sensor:
+  !include common/binary_sensor/pushButton.yaml

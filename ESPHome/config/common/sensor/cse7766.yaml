@@ -1,0 +1,69 @@
+#logger:
+# baud_rate : 0
+ 
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+  
+globals:
+  - id: _measureCycles
+    type: int
+    restore_value: false
+    initial_value: "0"
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "Current"
+      accuracy_decimals: 1
+      unit_of_measurement: A
+      filters:
+        - filter_out: nan
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+            send_first_at: 1
+                
+    voltage:
+      name: "Voltage"
+      accuracy_decimals: 1
+      unit_of_measurement: V
+      
+    power:
+      name: "Load"
+      accuracy_decimals: 1
+      unit_of_measurement: W
+      id: loadid
+      filters:
+       - filter_out: nan
+       - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+            send_first_at: 1
+      on_value:
+          then:
+            - lambda: |-
+                if (x > 5){
+                  id(_measureCycles) = 0;
+                } else {
+                    id(_measureCycles) += 1;
+                    
+                    if (id(_measureCycles) >= 3 ){
+                      if (id(relay).state){
+                        id(relay).turn_off();
+                        id(_measureCycles) = 0;
+                      } else {
+                        id(_measureCycles)=0;
+                      }
+                    }
+                }
+      
+  - platform: total_daily_energy
+    name: "Daily Energy"
+    power_id: "loadid"
+    device_class: energy
+    state_class: measurement
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+    

@@ -1,0 +1,9 @@
+
+esp32_ble_tracker:
+
+# Example configuration entry
+binary_sensor:
+  - platform: ble_presence
+    mac_address: 38:65:B2:3B:17:EB
+    id: mibandpresence
+    name: "fvicente_phone"

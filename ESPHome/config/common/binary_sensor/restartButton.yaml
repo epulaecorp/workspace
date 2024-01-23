@@ -1,0 +1,9 @@
+platform: gpio
+id: restart_button
+pin:
+  number: ${gpio_Restart_Botton}
+  mode: INPUT_PULLUP
+on_press:
+  - switch.turn_on: reboot
+filters:
+  - delayed_on: 10ms

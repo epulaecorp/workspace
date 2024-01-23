@@ -1,0 +1,23 @@
+- platform: gpio
+  name: "Contact 1"
+  id: "Relay_1"
+  pin: ${Relay_1}
+  inverted: no
+  restore_mode: RESTORE_DEFAULT_OFF
+- platform: gpio
+  name: "Contact 2"
+  id: "Relay_2"
+  pin: ${Relay_2}
+  inverted: no
+  restore_mode: RESTORE_DEFAULT_OFF
+- platform: gpio
+  name: "Contact 3"
+  id: "Relay_3"
+  pin: ${Relay_3}
+  inverted: no
+  restore_mode: RESTORE_DEFAULT_OFF
+- platform: gpio
+  name: "USB"
+  id: "$Relay_usb"
+  pin: ${Relay_usb}
+  inverted: no

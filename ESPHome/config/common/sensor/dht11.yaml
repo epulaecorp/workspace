@@ -1,0 +1,8 @@
+- platform: dht
+  model: DHT11
+  pin: D1
+  temperature:
+    name: "Temperature"
+
+  humidity:
+    name: "Humidity"

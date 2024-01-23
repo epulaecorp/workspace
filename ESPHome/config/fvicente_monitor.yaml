@@ -1,0 +1,17 @@
+substitutions:
+  zone: Home
+  area: fvicente
+  device: monitor
+
+packages:
+  gpio: 
+    <<: !include common/packages/gpio/sonoff_S31.yaml
+  configuration: 
+    <<: !include common/packages/configuration/base.yaml
+
+switch:
+  <<: !include common/switch/1_channel.yaml
+
+binary_sensor:
+  <<: !include common/binary_sensor/pushButton.yaml
+  

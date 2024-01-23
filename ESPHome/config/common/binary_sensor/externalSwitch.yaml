@@ -1,0 +1,13 @@
+platform: gpio
+pin:
+  number: ${gpio_Switch}
+filters:
+  - delayed_on_off: 50ms # small delay to prevent debouncing
+name: "External SW"
+on_press:
+  then:
+    - switch.turn_on: relay
+on_release:
+  then:
+    - switch.turn_off: relay
+id: switchid

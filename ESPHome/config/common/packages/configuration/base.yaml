@@ -1,0 +1,60 @@
+substitutions:
+  device_name: "${area}-${device}"
+  
+esphome:
+  name: "${device_name}"
+  friendly_name: "${area}.${device}"
+  
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+  ap:
+    ssid: "${device_name}"
+    password: !secret ap_password
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  password: !secret ota_password
+
+web_server:
+captive_portal:
+
+time:
+  - platform: sntp
+    id: ntp_time
+    servers: "2.mx.pool.ntp.org"
+    timezone: America/Mexico_City
+  - platform: homeassistant
+    id: hass_time
+
+
+text_sensor:
+  
+  - platform: wifi_info
+    ip_address:
+      name: ADDR
+      update_interval: 60s
+      icon: mdi:check-network-outline
+
+sensor:
+
+  - platform: wifi_signal
+    id: mySignal
+    device_class: signal_strength
+    update_interval: 60s
+    entity_category: "diagnostic"
+    
+  - platform: copy
+    source_id: mySignal
+    name: "Signal"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: " "
+    entity_category: "diagnostic"
+    
+status_led:
+  pin: ${gpio_StatusLed}

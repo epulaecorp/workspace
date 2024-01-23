@@ -1,0 +1,4 @@
+pin:
+  number: ${gpio_Led}
+  inverted: true
+  

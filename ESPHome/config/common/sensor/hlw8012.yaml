@@ -1,0 +1,91 @@
+globals:
+  - id: _updates
+    type: int
+    restore_value: false
+    initial_value: '0'
+    
+  - id: _lastValue
+    type: float
+    restore_value: false
+    initial_value: '0.0'
+
+  - id: _topic
+    type: std::string
+    restore_value: no  
+
+sensor:
+  - platform: hlw8012
+    cf_pin: ${gpio_CF}
+    sel_pin: GPIO12 # not used because it is not available on the 1PM but it is needed to compile
+    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
+    update_interval: 20s
+    
+    power:
+      name: "Load"
+      id: load
+      device_class: power
+      state_class: measurement
+      accuracy_decimals: 1
+      unit_of_measurement: W
+      filters:  
+        - filter_out: nan
+        - calibrate_linear:
+          - 0.0 -> 0.0
+          - 216.29340 -> 30.0
+        
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+            send_first_at: 1
+                            
+      on_value:
+          then:
+
+            - lambda: ! lambda |-
+                float diff = abs(x - id(_lastValue));
+                
+                if (diff >= 3){
+                  
+                  id(mqtt_client).publish(id(_topic), to_string(id(_lastValue)));
+                  delay(500);
+                  id(mqtt_client).publish(id(_topic), to_string(x));
+                    
+                }
+                
+                id(_lastValue) = x;
+                
+                // ----------------------------> Auto TurnOFF
+                
+                if ( x < 5){
+                  if (id(_updates) >= 3){
+                    if (id(relay).state){
+                      id(relay).turn_off();
+                    }
+                    
+                    id(_updates) = 0 ;
+                    
+                  } else{
+                    id(_updates) += 1;
+                  }
+                  
+                }else {
+                  id(_updates)= 0;
+                }
+
+    energy:
+      name: "Consumption"
+      filters:
+        - filter_out: nan
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+            send_first_at: 1
+            
+  - platform: total_daily_energy
+    name: "Daily Energy"
+    power_id: "load"
+    device_class: energy
+    state_class: measurement
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh

@@ -1,0 +1,4 @@
+platform: gpio
+pin: ${gpio_Motion}
+name: "${device_name} Motion"
+device_class: motionx

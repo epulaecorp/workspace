@@ -1,0 +1,5 @@
+/.vscode
+ESPHome/config/.esphome
+HomeAssistant/.storage
+HomeAssistant/*.log
+HomeAssistant/*.log.*

@@ -1,0 +1,14 @@
+platform: gpio
+pin:
+  number: ${gpio_PushButton}
+  mode: 
+    input: true
+    pullup: true
+  inverted: true
+filters:
+  - delayed_on_off: 100ms # small delay to prevent debouncing
+name: "${device_name}"
+on_press:
+  then:
+    - switch.toggle: relay
+internal: true

@@ -1,0 +1,26 @@
+substitutions: 
+  gpio_SDA: GPIO21
+  gpio_SCL: GPIO22
+
+  gpio_TX:  GPIO16
+  gpio_RX:  GPIO17
+
+  gpio_Relay_1: GPIO32
+  gpio_Relay_2: GPIO33
+  gpio_Relay_3: GPIO27
+  gpio_Relay_4: GPIO14
+  gpio_Relay_5: GPIO12
+  gpio_Relay_6: GPIO13
+
+  gpio_OpticalIn_1: GPIO15
+  gpio_OpticalIn_2: GPIO2
+  gpio_OpticalIn_3: GPIO4
+  gpio_OpticalIn_4: GPIO5
+  gpio_OpticalIn_5: GPIO18
+  gpio_OpticalIn_6: GPIO19
+
+  gpio_StatusLed: GPIO2
+
+esphome:
+  platform: esp32
+  board: esp32doit-devkit-v1
