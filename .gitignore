@@ -3,3 +3,6 @@ ESPHome/config/.esphome
 HomeAssistant/.storage
 HomeAssistant/*.log
 HomeAssistant/*.log.*
+HomeAssistant/*.db
+HomeAssistant/*.db*
+HomeAssistant/.HA_VERSION
