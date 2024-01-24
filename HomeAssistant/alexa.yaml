@@ -1,3 +1,5 @@
+
+  
   smart_home:
     locale: es-MX
     endpoint: https://api.amazonalexa.com/v3/events

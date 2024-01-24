@@ -40,12 +40,12 @@ lovelace:
       { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
 
       { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
-      { url: /hacsfiles/ha-card-weather-conditions/ha-card-weather-conditions.js,   type: module },
       { url: /hacsfiles/spotify-card/spotify-card.js,                               type: module },
-      { url: /hacsfiles/weather-card/weather-card.js,                               type: module },
       { url: /hacsfiles/scheduler-card/scheduler-card.js,                           type: module },
       { url: /hacsfiles/thermal_comfort_icons/thermal_comfort_icons.js,             type: module },
       { url: /hacsfiles/Bubble-Card/bubble-card.js,                                 type: module },
+      { url: /hacsfiles/android-tv-card/android-tv-card.min.js,                     type: module },
+      { url: /hacsfiles/battery-state-card/battery-state-card.js,                   type: module },
 
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
@@ -73,17 +73,6 @@ input_text:
     initial: '{"text": "This is a test of the alexa actions custom skill. Did it work?", "event": "actionable.skill.test"}'
     
 alexa: !include alexa.yaml
-
-wake_on_lan:
-
-monitor_docker:
-  - name: Docker
-    monitored_conditions:
-      - version
-      - containers_running
-      - containers_paused
-      - containers_stopped
-      - containers_total
 
 sensor:
 
@@ -119,7 +108,6 @@ sensor:
         unit_of_measurement: '%'
         value_template: "{{ state_attr('weather.home', 'humidity') }}"
         device_class: humidity
-
 
 recorder:
   db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
