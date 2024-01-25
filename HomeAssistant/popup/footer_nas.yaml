@@ -62,7 +62,6 @@ browser_mod:
       cards:
 
         ### HOME ASSISTANT
-
         - type: vertical-stack
           view_layout:
             grid-area: hass
@@ -73,10 +72,7 @@ browser_mod:
               show_header_toggle: false
               card_mod:
                 class: header
-              style: |
-                ha-card {
-                  border: none !important;
-                }  
+
               entities:
                 - entity: sensor.docker_hub
                   name: Version
@@ -128,10 +124,7 @@ browser_mod:
               show_header_toggle: false
               card_mod:
                 class: header
-              style: |
-                ha-card {
-                  border: none !important;
-                } 
+
               entities:
 
                 - entity: sensor.docker_containers_total
@@ -147,7 +140,6 @@ browser_mod:
                   name: Detenidos
 
         ### DOCKER
-
         - type: entities
           view_layout:
             grid-area: docker
@@ -156,10 +148,6 @@ browser_mod:
           show_header_toggle: false
           card_mod:
             class: header
-          style: |
-            ha-card {
-              border: none !important;
-            } 
           entities:
 
             - entity: switch.docker_watchtower
@@ -190,7 +178,6 @@ browser_mod:
               name: CodeServer
               icon: mdi:microsoft-visual-studio-code
         
-
         ### NAS
 
         - type: entities
@@ -200,11 +187,7 @@ browser_mod:
           show_header_toggle: false
           card_mod:
             class: header
-            # no border on last card
-            style: |
-              ha-card {
-                border: none !important;
-              }
+
           entities:
             - entity: sensor.synologynas_drive_1_status
               name: Estado
@@ -223,10 +206,6 @@ browser_mod:
               width: 55%
               height: 2em
               decimal: 0
-              style: |
-                ha-card {
-                  border: none !important;
-                } 
               unit_of_measurement: '%'
               positions: &bar_card_positions
                 icon: outside

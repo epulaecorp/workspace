@@ -51,12 +51,34 @@ views:
       - type: vertical-stack
         view_layout:
           grid-area: sidebar
+
         cards: 
                 
           # Sidebar sensor
           - type: custom:button-card
             entity: sensor.template_sidebar
             template: sidebar
+
+          - type: custom:battery-state-card
+            title: "Batery state"
+            filter:
+              include:
+                - name: attributes.device_class
+                  value: battery
+                - name: entity_id # entities which id ends with "_battery"
+                  value: "*_battery"
+            sort:
+              by: state
+            bulk_rename:
+              - from: ' forecast Battery'
+                to: ".sensor"
+              - from: ' level'
+            colors:
+              steps:
+                - '#ff0000'
+                - '#ffff00'
+                - '#00ff00'
+              gradient: true
 
           - type: vertical-stack
             cards:
@@ -74,13 +96,6 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace/2
-                card_mod:
-                  style: &person |
-                    ha-card {
-                      margin: 0 1em 1em 1em;
-                      border: none !important;
-                      max-width: 200px
-                    }
               - type: custom:mushroom-person-card
                 entity: person.fvicente
                 fill_container: false
@@ -89,10 +104,8 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace/2
-                card_mod:
-                  style: *person 
 
-          
+
           - type: custom:bubble-card
             card_type: horizontal-buttons-stack
                 

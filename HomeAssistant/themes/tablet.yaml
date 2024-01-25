@@ -232,6 +232,7 @@ tablet:
         border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
         min-height: 100vh;
       }
+      
       /* phone */
       @media screen and (max-width: 800px) {
         #root {
@@ -385,6 +386,16 @@ tablet:
       *         CUSTOM BAR CARD         *
       *                                 *
       * * * * * * * * * * * * * * * * * */
+
+    ha-card.type-entities,
+    ha-card.type-custom-bar-card,
+    ha-card.type-custom-battery-state-card,
+    ha-card.type-custom-mushroom-person-card,
+    ha-card.type-glance {
+      background: none;
+      border: none !important;
+      box-shadow:  none;
+    }
 
     .type-custom-bar-card bar-card-name {
       padding-left: 0.25em;
