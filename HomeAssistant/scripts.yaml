@@ -1,186 +1,38 @@
-activate_alexa_actionable_notification:
-  description: 'Activates an actionable notification on a specific echo device'
+alexa_actionable_notification:
+  description: Activates an actionable notification on a specific echo device
   fields:
     text:
-      description: 'The text you would like alexa to speak.'
-      example: 'What would you like the thermostat set to?'
+      description: The text you would like alexa to speak.
+      example: What would you like the thermostat set to?
     event_id:
-      description: 'Correlation ID for event responses'
-      example: 'ask_for_temperature'
-    alexa_device: 
-      description: 'Alexa device you want to trigger'
-      example: 'media_player.bedroom_echo'
+      description: Correlation ID for event responses
+      example: ask_for_temperature
+    alexa_device:
+      description: Alexa device you want to trigger
+      example: media_player.bedroom_echo
   sequence:
-    - service: input_text.set_value
-      data:
-        entity_id: input_text.alexa_actionable_notification
-        value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
-    - service: media_player.play_media
-      data:
-        entity_id: "{{ alexa_device }}"
-        media_content_type: skill
-        media_content_id: amzn1.ask.skill.36ac22cd-0aba-404e-8b74-ffc2b2b2d2ae
-
-################# COMPUER #########################
-
-fvicente_laptop_shutdown:
-  alias: fvicente_laptop Shutdown
-  sequence:
-  - service: mqtt.publish
+  - service: input_text.set_value
     data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/shutdown
+      entity_id: input_text.alexa_actionable_notification
+      value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
+  - service: media_player.play_media
+    data:
+      entity_id: '{{ alexa_device }}'
+      media_content_type: skill
+      media_content_id: amzn1.ask.skill.0f8dcdab-1459-48c8-a396-328cc0f33e60
   mode: single
-
-fvicente_laptop_wakeup:
-  alias: fvicente_laptop WakeUp
+homeassistant_start:
   sequence:
-  - service: wake_on_lan.send_magic_packet
+  - service: media_player.volume_set
     data:
-      mac: AC:74:B1:E0:A5:7E
-  mode: single
-
-fvicente_laptop_suspend:
-  alias: fvicente_laptop Suspend
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/suspend
-      payload: ''
-
-fvicente_laptop_hibernate:
-  alias: fvicente_laptop Hibernate
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/hibernate
-      payload: ''
-
-fvicente_laptop_reboot:
-  alias: fvicente_laptop Reboot
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/reboot
-      payload: ''
-
-fvicente_laptop_lock:
-  alias: fvicente_laptop Lock
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/lock
-      payload: ''
-
-fvicente_laptop_logoff:
-  alias: fvicente_laptop Logoff
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/logoff
-      payload: ''
-
-fvicente_laptop_vol_mute:
-  alias: fvicente_laptop Vol-Mute
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/volume/mute
-      payload: ''
-
-fvicente_laptop_vol_max:
-  alias: fvicente_laptop Vol-Max
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/volume/set
-      payload: '100'
-fvicente_laptop_displays_on:
-
-  alias: fvicente_laptop Displays ON
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/displays/on
-      payload: ''
-
-fvicente_laptop_displays_off:
-  alias: fvicente_laptop Displays OFF
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/displays/off
-      payload: ''
-
-fvicente_laptop_refresh:
-  alias: fvicente_laptop Refresh
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/refresh
-      payload: ''
-
-fvicente_laptop_notify:
-  alias: fvicente_laptop Notify
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/notify
-      payload: '{
-  "title": "My Notification Title",
-  "message": "This is an example
-        of notification using IOT Link", "launchParams": "toast: //open/https://iotlink.gitlab.io"
-}'
-
-fvicente_laptop_tecnoyfoto_web:
-  alias: Tecnoyfoto web
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/run
-      payload: '{
-  "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-  "args": "https://tecnoyfoto.com/",
-  "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application",
-  "user": "",
-  "visible": true,
-  "fallback": true
-}'
-
-pc_albert_toogle:
-  alias: PC Albert toggle
-  sequence:
-  - service: switch.toggle
+      volume_level: 0.3
     target:
-      entity_id: switch.fvicente_laptop
-  mode: single
-  
-fvicente_laptop_word:
-  alias: Word
-  sequence:
-  - service: mqtt.publish
+      entity_id: media_player.echo_recamara
+  - delay: 00:00:02
+  - service: notify.alexa_media_echo_recamara
+    metadata: {}
     data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/run
-      payload: '{
-  "command": "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
-  "args": "",
-  "path": "",
-  "user": "",
-  "visible": true,
-  "fallback": true
-}'
-
-fvicente_laptop_excel:
-  alias: Excel
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: iotlink/icsicorp/nb-fvicente/commands/run
-      payload: '{
-  "command": "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
-  "args": "",
-  "path": "",
-  "user": "",
-  "visible": true,
-  "fallback": true
-}'
-
+      message: >
+        {{  [ "Home Assistant está disponible",
+              "Home Assistant está operativo"
+            ] | random }}

@@ -32,3 +32,8 @@ automation:
         payload_template: >
           {{ now() }}
         retain: true
+
+device_tracker:
+  - platform: ping
+    hosts:
+      fvicente_phone: 192.168.0.7

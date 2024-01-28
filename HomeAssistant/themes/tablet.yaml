@@ -105,7 +105,7 @@ tablet:
   #button_card_templates
   button-card-font-size: 1.35vw
   z-axis-adjustment: 0.05vw #tilt compensation
-  button-card-font-weight: 400
+  button-card-font-weight: 300
   button-card-letter-spacing: -0.02vw
   button-card-border-radius: 10%
 
@@ -125,8 +125,8 @@ tablet:
   card-content-padding: 1.8em 2.2em 1.8em 2em
 
   #browser_mod.popup
-  dialog-backdrop-filter: blur(2em) brightness(0.75)
-  popup-background-color: rgba(34,38,39,0.4)
+  dialog-backdrop-filter: blur(2em) brightness(0.7)
+  popup-background-color: rgba(34,38,39,0.2)
   popup-border-width: 1px
   popup-border-radius: 1em
   popup-padding-x: 0px
@@ -176,7 +176,7 @@ tablet:
           h1 {
             font-size: 2.5vw !important;
             line-height: 0 !important;
-            font-weight: 500 !important;
+            font-weight: 350 !important;
             color: rgba(255, 255, 255, 0.8) !important;
             padding: 0.2vw 0 2vw 0 !important;
             letter-spacing: normal !important;
@@ -372,7 +372,7 @@ tablet:
       letter-spacing: 0.005em;
       font-size: 1.6em;
       font-weight: 500;
-      padding: 1em 0 0 1.38em;
+      padding: 1em 1.5em 0 1.38em;
       line-height: initial;
       cursor: default;
     }
@@ -380,12 +380,6 @@ tablet:
     .content .card-content {
       padding: var(--tablet-popup-content-padding);
     }
-
-    /* * * * * * * * * * * * * * * * * *
-      *                                 *
-      *         CUSTOM BAR CARD         *
-      *                                 *
-      * * * * * * * * * * * * * * * * * */
 
     ha-card.type-entities,
     ha-card.type-custom-bar-card,
@@ -396,6 +390,13 @@ tablet:
       border: none !important;
       box-shadow:  none;
     }
+    
+    /* * * * * * * * * * * * * * * * * *
+      *                                 *
+      *         CUSTOM BAR CARD         *
+      *                                 *
+      * * * * * * * * * * * * * * * * * */
+
 
     .type-custom-bar-card bar-card-name {
       padding-left: 0.25em;
@@ -441,7 +442,7 @@ tablet:
       height: auto;
     }
     .type-button:hover {
-      opacity: 0.5;
+      opacity: 0.75;
       transition: none;
     }
 

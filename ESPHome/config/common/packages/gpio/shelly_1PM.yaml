@@ -7,7 +7,7 @@ substitutions:
   gpio_StatusLed: GPIO13
   gpio_Relay: GPIO15
   gpio_Toggle_Button: GPIO0
-  gpio_Switch: GPIO4
+  gpio_eSwitch: GPIO4
   
   max_temp: "70.0"
 

@@ -72,8 +72,8 @@ browser_mod:
               show_header_toggle: false
               card_mod:
                 class: header
-
               entities:
+
                 - entity: sensor.docker_hub
                   name: Version
                   icon: mdi:home-assistant
@@ -124,7 +124,6 @@ browser_mod:
               show_header_toggle: false
               card_mod:
                 class: header
-
               entities:
 
                 - entity: sensor.docker_containers_total
@@ -144,7 +143,6 @@ browser_mod:
           view_layout:
             grid-area: docker
           title: Docker
-          state_color: true
           show_header_toggle: false
           card_mod:
             class: header
@@ -187,7 +185,6 @@ browser_mod:
           show_header_toggle: false
           card_mod:
             class: header
-
           entities:
             - entity: sensor.synologynas_drive_1_status
               name: Estado
