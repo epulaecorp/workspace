@@ -1,0 +1,35 @@
+  - sensor:
+    - name: "fvicente_days_until_birthday"
+      unique_id: "fvicente_days_until_birthday"
+      unit_of_measurement: Days
+      icon: mdi:cake-variant
+      state: >
+        {{ ((as_timestamp(now().replace(month=4, day=13)) - as_timestamp(now()) | int) / 86400) | round(0) }}
+    
+    - name: "mariquita_days_until_birthday"
+      unique_id: "mariuita_days_until_birthday"
+      unit_of_measurement: Days
+      icon: mdi:cake-variant
+      state: >
+        {{ ((as_timestamp(now().replace(month=8, day=19)) - as_timestamp(now()) | int) / 86400) | round(0) }}
+    
+    - name: "zahid_days_until_birthday"
+      unique_id: "zahid_days_until_birthday"
+      unit_of_measurement: Days
+      icon: mdi:cake-variant
+      state: >
+        {{ ((as_timestamp(now().replace(month=6, day=15)) - as_timestamp(now()) | int) / 86400) | round(0) }}
+
+    - name: "ethan_days_until_birthday"
+      unique_id: "ethan_days_until_birthday"
+      unit_of_measurement: Days
+      icon: mdi:cake-variant
+      state: >
+        {{ ((as_timestamp(now().replace(month=8, day=20)) - as_timestamp(now()) | int) / 86400) | round(0) }}
+
+    - name: "dayreth_days_until_birthday"
+      unique_id: "dayreth_days_until_birthday"
+      unit_of_measurement: Days
+      icon: mdi:cake-variant
+      state: >
+        {{ ((as_timestamp(now().replace(month=12, day=23)) - as_timestamp(now()) | int) / 86400) | round(0) }}

@@ -1,0 +1,16 @@
+  # External Wheather
+
+  - sensor: 
+    - unique_id: "forecast_temperature"
+      name: "forecast_temperature"
+      unit_of_measurement: '°C'
+      state: "{{ state_attr('weather.openweathermap', 'temperature') }}"
+      device_class: temperature
+
+
+    - unique_id: "forecast_humidity"
+      name: "forecast_humidity"
+      unit_of_measurement: '%'
+      state: "{{ state_attr('weather.openweathermap', 'humidity') }}"
+      device_class: humidity
+
