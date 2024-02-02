@@ -58,15 +58,6 @@ browser_mod:
         grid-template-rows: 1fr
         grid-template-areas: |
           "information  status map"
-        mediaquery:
-          #portrait
-          "(max-width: 1200px)":
-            grid-template-columns: 1fr
-            grid-template-rows: repeat(3, 1fr)
-            grid-template-areas: |
-              "information"
-              "map"
-              "status"
       cards:
 
         ### INFORMATION

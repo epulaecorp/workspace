@@ -11,7 +11,8 @@
         - switch.fvicente_monitor_switch
         - fan.fvicente_fan
         - light.fvicente
-        
+
+        - switch.chromecast
         - input_boolean.sleep_interruption
 #      include_entity_globs:
 #        - binary_sensor.*_motion
@@ -37,6 +38,9 @@
       light.fvicente:
         name: "Mi Luz"
         description: "fvicente Light"
+
+      switch.chromecast:
+        name: "Mi televisión"
 
       input_boolean.sleep_interruption:
         name: "sleep interruption"

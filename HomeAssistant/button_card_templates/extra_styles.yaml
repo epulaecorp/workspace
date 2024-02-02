@@ -149,11 +149,17 @@ extra_styles:
           text-transform: uppercase;
         }
 
-        #name, #state {
-          font-size: var(--button-card-font-size);
-          font-weight: var(--button-card-font-weight);
+        #name {
+          font-size: var(--button-card-name-size);
+          font-weight: var(--button-card-name-weight);
           letter-spacing: var(--button-card-letter-spacing);
         }
+        #state {
+          font-size: var(--button-card-state-size);
+          font-weight: var(--button-card-sate-weight);
+          letter-spacing: var(--button-card-letter-spacing);
+        }
+
 
         /* portrait */
         @media screen and (max-width: 1200px) {

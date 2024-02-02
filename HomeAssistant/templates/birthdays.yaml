@@ -33,3 +33,7 @@
       icon: mdi:cake-variant
       state: >
         {{ ((as_timestamp(now().replace(month=12, day=23)) - as_timestamp(now()) | int) / 86400) | round(0) }}
+
+    - name: "fvicente_birthday"
+      unique_id: 'fvicente_birthday'
+      state: '1977-04-13'

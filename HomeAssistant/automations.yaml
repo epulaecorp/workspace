@@ -211,31 +211,6 @@
           alias: NO CHARGING
       alias: BATERY < 10
   mode: single
-- id: '1700683055787'
-  alias: Turn OFF on sunrise if AWAY
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - light.fvicente_backlight_backlight
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 3
-  condition:
-  - condition: not
-    conditions:
-    - condition: zone
-      entity_id: person.fvicente
-      zone: zone.home
-  action:
-  - service: switch.turn_off
-    data: {}
-    target:
-      device_id: 8976e33a25d26202fe2025cd680e00f8
-  mode: single
 - id: '1704934376320'
   alias: fvicente - leave
   description: ''
@@ -291,44 +266,41 @@
     target:
       entity_id: light.fvicente
   mode: single
-- id: '1705062235153'
-  alias: fvicente - wake up
+- id: '1706469197804'
+  alias: Mañanitas
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.spotify_fvicente
+      source: media_player.echo_recamara
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.echo_recamara
+      media_content_type: music
+      media_content_id: spotify:track:Las mañanitas
+  mode: single
+- id: '1706486611517'
+  alias: fvicente_ramdom_Light
+  description: ''
+  use_blueprint:
+    path: homeassistant/night_random_lights.yaml
+    input:
+      target_light: light.fvicente
+      override_switch_entity: input_boolean.automations_off
+      away_lighting_switch_entity: input_boolean.automations_away
+      lights_out_time: 07:00:00
+- id: '1706750034690'
+  alias: homeassistant_start
   description: ''
   trigger:
-  - platform: state
-    entity_id:
-    - light.fvicente
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: time
-    weekday:
-    - sun
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-    after: '20:00:00'
-    before: 07:00:00
+  - platform: homeassistant
+    event: start
+  condition: []
   action:
-  - service: light.turn_on
-    metadata: {}
-    data:
-      color_name: cyan
-      brightness_step_pct: 75
-      transition: 60
-    target:
-      entity_id: light.fvicente
-  - delay:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_on
+  - service: script.homeassistant_start
     metadata: {}
     data: {}
-    target:
-      entity_id: switch.fvicente_backlight_switch
   mode: single

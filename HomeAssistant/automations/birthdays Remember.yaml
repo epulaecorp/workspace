@@ -1,0 +1,12 @@
+  - alias: 'BirthDay remembers'
+    trigger:
+      - platform: time
+        at: '05:00:00'  # Puedes ajustar la hora en la que deseas recibir la notificación
+    condition:
+      condition: time
+      after: '00:00:00'
+      before: '23:59:59'
+    action:
+      - service: notify.alexa_media_echo_recamara  # Reemplaza "tu_servicio_de_notificacion" con el servicio que estás utilizando
+        data_template:
+          message: "Hoy es el cumpleaños de {{ states('sensor.birthday') }}"

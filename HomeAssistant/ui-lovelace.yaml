@@ -8,15 +8,14 @@ views:
     icon: mdi:home
     layout:
       #default
-      margin: 0
       grid-gap: var(--custom-layout-card-padding)
       grid-template-columns: repeat(4, 1fr) 0
-      grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+      grid-template-rows: 0 repeat(2, fit-content(100%)) 0fr
       grid-template-areas: |
-        "  sidebar  .         .         .           ."
-        "  sidebar  sala      comedor   cocina      ."
-        "  sidebar  media     baño      exterior    ."
-        "  sidebar  footer    footer    footer      ."
+        "sidebar  .         .         .         ."
+        "sidebar  sala      comedor   cocina    ."
+        "sidebar  media     baño      exterior  ."
+        "sidebar  footer    footer    footer    ."
 
     cards:
 
@@ -58,7 +57,7 @@ views:
           - type: custom:button-card
             entity: sensor.template_sidebar
             template: sidebar
-
+          # Sidebar battery
           - type: custom:battery-state-card
             title: "Batery state"
             filter:
@@ -79,15 +78,15 @@ views:
                 - '#ffff00'
                 - '#00ff00'
               gradient: true
-
+          # Sidebar People popup
           - type: vertical-stack
             cards:
-
+                # popup 
               - type: custom:bubble-card
                 card_type: pop-up
                 hash: '#people'
                 is_sidebar_hiidden: true
-
+                # person.fvicente
               - type: custom:mushroom-person-card
                 entity: person.fvicente
                 fill_container: false
@@ -96,6 +95,7 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace/2
+                # person.mariquita
               - type: custom:mushroom-person-card
                 entity: person.fvicente
                 fill_container: false
@@ -105,7 +105,7 @@ views:
                   action: navigate
                   navigation_path: /lovelace/2
 
-
+            # popup button
           - type: custom:bubble-card
             card_type: horizontal-buttons-stack
                 

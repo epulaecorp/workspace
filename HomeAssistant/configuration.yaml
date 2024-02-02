@@ -13,7 +13,7 @@ automation ui: !include automations.yaml
 
 script: !include scripts.yaml
 scene: !include scenes.yaml
-#switch: !include switch.yaml
+switch: !include helpers.yaml
 
 #mqtt:
 #  sensor: !include sensors.yaml
@@ -23,6 +23,7 @@ scene: !include scenes.yaml
 default_config:
 #template: !include sidebar.yaml
 template: !include_dir_merge_list templates
+
 lovelace:
   mode: yaml
   resources:
@@ -40,7 +41,11 @@ lovelace:
       { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
       { url: /hacsfiles/lovelace-mushroom/mushroom.js,                              type: module },
       { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
+      { url: /hacsfiles/lovelace-auto-entities/auto-entities.js,                    type: module },
+      { url: /hacsfiles/lovelace-state-switch/state-switch.js,                      type: module },
 
+      { url: /hacsfiles/stack-in-card/stack-in-card.js,                             type: module },
+      { url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                  type: module },
       { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
       { url: /hacsfiles/spotify-card/spotify-card.js,                               type: module },
       { url: /hacsfiles/scheduler-card/scheduler-card.js,                           type: module },
@@ -52,8 +57,24 @@ lovelace:
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
       { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },
+      { url: /local/mini-graph-card-bundle.js?v=0.12.0,                             type: module },
       { url: '/local/fonts.css?v=2.1',                                              type: css }
     ]
+  dashboards:
+    lovelace-main:
+      mode: yaml
+      filename: ui-lovelace.yaml
+      title: Main
+      icon: mdi:overscan
+      show_in_sidebar: true
+      require_admin: true
+    lovelace-fvicente:
+      mode: yaml
+      filename: ui-fvicente
+      title: fvicente
+      icon: mdi:cellphone-cog
+      show_in_sidebar: true
+      require_admin: false
 
 # Load frontend themes from the themes folder
 frontend:

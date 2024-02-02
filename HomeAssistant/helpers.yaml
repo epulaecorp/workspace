@@ -1,0 +1,14 @@
+# Example configuration.yaml entry
+  - platform: template
+    switches:
+      chromecast:
+        value_template: "{{ is_state('remote.fvicente_tv', 'on') }}"
+        icon_template: mdi:google-chrome
+        turn_on:
+          service: remote.turn_on
+          target:
+            entity_id: remote.fvicente_tv
+        turn_off:
+          service: remote.turn_off
+          target:
+            entity_id: remote.fvicente_tv

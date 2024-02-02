@@ -103,15 +103,17 @@ tablet:
   bar-card-color: "#303435"
 
   #button_card_templates
-  button-card-font-size: 1.35vw
+  button-card-name-size: 1.5vw
+  button-card-state-size: 1.0vw
   z-axis-adjustment: 0.05vw #tilt compensation
-  button-card-font-weight: 300
+  button-card-name-weight: 300
+  button-card-state-weight: 500
   button-card-letter-spacing: -0.02vw
   button-card-border-radius: 10%
 
   footer-card-font-size: 1.22vw
   footer-card-icon-size: 1.5vw
-  footer-card-padding-v: 0.7vw
+  footer-card-padding-v: 0.75vw
   footer-card-padding-h: 1.1vw
   footer-card-border-radius: 0.65vw
 
@@ -227,7 +229,7 @@ tablet:
 
     grid-layout$hui-vertical-stack-card$: |
       #root {
-        background-color: rgba(0, 0, 0, 0.06);
+        background-color: rgba(10, 10, 10, 0.06);
         border-radius: 0;
         border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
         min-height: 100vh;
