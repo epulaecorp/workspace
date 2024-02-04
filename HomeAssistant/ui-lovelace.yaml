@@ -57,60 +57,72 @@ views:
           - type: custom:button-card
             entity: sensor.template_sidebar
             template: sidebar
-          # Sidebar battery
-          - type: custom:battery-state-card
-            title: "Batery state"
-            filter:
-              include:
-                - name: attributes.device_class
-                  value: battery
-                - name: entity_id # entities which id ends with "_battery"
-                  value: "*_battery"
-            sort:
-              by: state
-            bulk_rename:
-              - from: ' forecast Battery'
-                to: ".sensor"
-              - from: ' level'
-            colors:
-              steps:
-                - '#ff0000'
-                - '#ffff00'
-                - '#00ff00'
-              gradient: true
-          # Sidebar People popup
-          - type: vertical-stack
-            cards:
-                # popup 
-              - type: custom:bubble-card
-                card_type: pop-up
-                hash: '#people'
-                is_sidebar_hiidden: true
-                # person.fvicente
-              - type: custom:mushroom-person-card
-                entity: person.fvicente
-                fill_container: false
-                icon_type: entity-picture
-                layout: horizontal
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace/2
-                # person.mariquita
-              - type: custom:mushroom-person-card
-                entity: person.fvicente
-                fill_container: false
-                icon_type: entity-picture
-                layout: horizontal
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace/2
 
-            # popup button
-          - type: custom:bubble-card
-            card_type: horizontal-buttons-stack
-                
-            1_link: '#people'
-            1_name: Habitaciones
+
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: calendar.garbage
+                state: "on"
+            card:
+              type: custom:atomic-calendar-revive
+              name: Agenda
+              sortBy: start
+              maxDaysToShow: 1
+              refreshInterval: 60
+              showCurrentEventLine: true
+              entities:
+                - entity: calendar.garbage
+
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: calendar.birthdays
+                state: "on"
+            card:
+              type: custom:atomic-calendar-revive
+              name: Cumpleaños
+              sortBy: start
+              maxDaysToShow: 1
+              entities:
+                - entity: calendar.birthdays
+
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: calendar.trading
+                state: "on"
+            card:
+              type: custom:atomic-calendar-revive
+              name: Trading 
+              maxDaysToShow: 1
+              entities:
+                - entity: calendar.trading
+
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: calendar.festivos_en_mexico
+                state: "on"
+            card:
+              type: custom:atomic-calendar-revive
+              name: Festivo
+              maxDaysToShow: 1
+              entities:
+                - entity: calendar.festivos_en_mexico
+          
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: calendar.payments
+                state: "on"
+            card:
+              type: custom:atomic-calendar-revive
+              name: Pagos
+              maxDaysToShow: 1
+              entities:
+                - entity: calendar.payments
+
 
       #################################################
       #                                               #
@@ -246,10 +258,18 @@ views:
         view_layout:
           grid-area: footer
         cards:
+
+          - type: custom:button-card
+            name: >
+              <ha-icon icon="mdi:bed-outline"></ha-icon> Rooms
+            tap_action:
+              action: navigate
+              navigation_path: '#people'
+            template: footer
           # WIFI
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:qrcode-scan"></ha-icon> WIFI
+              <ha-icon icon="mdi:qrcode-scan"></ha-icon> Wi-Fi
             tap_action: !include popup/footer_qr_wifi.yaml
             template: footer
 
@@ -280,7 +300,7 @@ views:
           - type: custom:button-card
             entity: sensor.template_updates
             name: >
-              <ha-icon icon="mdi:washing-machine"></ha-icon> Lavanderia
+              <ha-icon icon="mdi:battery-alert-variant-outline"></ha-icon> Baterias
             tap_action: !include popup/footer_updates.yaml
             variables:
               notify: >
