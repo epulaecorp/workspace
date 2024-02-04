@@ -54,6 +54,7 @@ lovelace:
       { url: /hacsfiles/android-tv-card/android-tv-card.min.js,                     type: module },
       { url: /hacsfiles/battery-state-card/battery-state-card.js,                   type: module },
       { url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,           type: module },
+      { url: /hacsfiles/clock-weather-card/clock-weather-card.js,                   type: module },
 
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },

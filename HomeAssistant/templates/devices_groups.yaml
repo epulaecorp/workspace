@@ -1,0 +1,7 @@
+
+  - sensor:
+    - unique_id: 'lights_grop'
+      name: 'lights_group'
+      state: >-
+        {% set luces = states.light | selectattr('attributes.device_class', 'equalto', 'light') | map(attribute='name') | list %}
+        {{ luces | join(', ') }}

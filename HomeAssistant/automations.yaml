@@ -292,14 +292,15 @@
   alias: Reminders - garbage_collection
   description: Recordatorio de recolección de basura
   trigger:
-  - platform: calendar
-    event: start
-    offset: 0:0:0
-    entity_id: calendar.garbage
+  - platform: time
+    at: '20:00:00'
   condition:
   - condition: zone
     entity_id: person.fvicente
     zone: zone.home
+  - condition: state
+    entity_id: calendar.garbage
+    state: 'on'
   action:
   - service: media_player.volume_set
     metadata: {}
@@ -311,4 +312,20 @@
     metadata: {}
     data:
       message: Recuerda sacar la basura
+  mode: single
+- id: '1707077020260'
+  alias: Reminders - Happy Birthday
+  description: ''
+  trigger:
+  - platform: calendar
+    event: start
+    offset: 0:0:0
+    entity_id: calendar.birthdays
+  condition: []
+  action:
+  - service: notify.alexa_media_echo_recamara
+    metadata: {}
+    data:
+      title: Feliz Cumpleaños!
+      message: Felicidades
   mode: single

@@ -126,7 +126,7 @@ tablet:
   card-content-padding: 1.8em 2.2em 1.8em 2em
 
   #browser_mod.popup
-  dialog-backdrop-filter: blur(0.1em) brightness(0.7)
+  dialog-backdrop-filter: blur(0.25em) brightness(0.7)
   popup-background-color: rgba(34,38,39,0.2)
   popup-border-width: 1px
   popup-border-radius: 1em
@@ -390,9 +390,11 @@ tablet:
       * * * * * * * * * * * * * * * * * */
     ha-card.type-entities,
     ha-card.type-custom-bar-card,
+    ha-card.type-picture-elements,
     ha-card.type-custom-battery-state-card,
     ha-card.type-custom-atomic-calendar-revive,
     ha-card.type-custom-mushroom-person-card,
+    ha-card.type-custom-clock-weather-card,
     ha-card.type-glance {
       background: none;
       border: none !important;

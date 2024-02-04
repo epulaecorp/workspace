@@ -58,6 +58,12 @@ views:
             entity: sensor.template_sidebar
             template: sidebar
 
+          - type: custom:clock-weather-card
+            entity: weather.openweathermap
+            hide_clock: true
+            hide_date: true
+            forecast_rows: 1
+            locale: es
 
           - type: conditional
             conditions:
@@ -122,7 +128,6 @@ views:
               maxDaysToShow: 1
               entities:
                 - entity: calendar.payments
-
 
       #################################################
       #                                               #
@@ -264,13 +269,15 @@ views:
               <ha-icon icon="mdi:bed-outline"></ha-icon> Rooms
             tap_action:
               action: navigate
-              navigation_path: '#people'
+              navigation_path: '#rooms'
             template: footer
           # WIFI
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:qrcode-scan"></ha-icon> Wi-Fi
-            tap_action: !include popup/footer_qr_wifi.yaml
+            tap_action: 
+              action: navigate
+              navigation_path: '#wifi'
             template: footer
 
           # NAS
@@ -278,22 +285,6 @@ views:
             name: >
               <ha-icon icon="mdi:nas"></ha-icon> NAS
             tap_action: !include popup/footer_nas.yaml
-            triggers_update:
-              - update.nas_dsm_update
-              - sensor.nas_volume_1_status
-              - binary_sensor.nas_security_status
-              - sensor.disk_use_percent
-            variables:
-              notify: >
-                [[[
-                  let id = this._config.triggers_update;
-                  if (id.every(e => states[e]))
-                      return states[id[0]].state === 'on'
-                          ? 1
-                          : states[id[1]].state === 'background_scrubbing' ||
-                            states[id[2]].state === 'on' ||
-                            parseFloat(states[id[3]].state) >= 85;
-                ]]]
             template: footer
 
           # Updates
@@ -323,6 +314,38 @@ views:
                   if (id) return (Date.now() - Date.parse(id.state)) > 6048e5;
                 ]]]
             template: footer
+      
+      #################################################
+      #                    WIFI                       #
+      #################################################
+      - type: vertical-stack
+        view_layout:
+          grid-area:  sidebar
+        cards:
+          - type: custom:bubble-pop-up
+            hash: '#wifi'
+            icon: mdi:qrcode-scan
+            name: QR Scan
+            auto_close: 15000
+            width_desktop: 0.3 fr
+            margin: 15px
+
+          - type: custom:bubble-card
+            card_type: separator
+            name: SmartHome
+
+          - type: picture-elements
+            elements:
+              - type: image
+                image: /local/img/wifi-qrcode.png
+                style:
+                  width: 30%
+                  top: 30%
+                  left: 50%
+            image: >-
+              data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0
+              50 25' /%3E
+
 
   # Mariquita 
   - type: custom:grid-layout

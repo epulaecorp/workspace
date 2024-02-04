@@ -28,17 +28,3 @@
           {% else %} Buenas noches {{'\U0001F44B\U0001F3FB'}}
           {% endif %}
           </b>
-
-        battery: >
-
-          {% set entities = states.sensor 
-            | selectattr('entity_id', 'search', 'bateria')
-            | rejectattr('entity_id', 'search', 'iphone')
-            | map(attribute = 'entity_id') | list %}
-
-          {% for sensor in entities if states(sensor) != 'unknown' and states(sensor) !=
-          'unavailable' and states(sensor) != 'None' and states(sensor) | int(default=0) <= 10 %}
-
-            {% if loop.first %} {{'\u26A0\uFE0F'}}  {% else %}, {% endif %}
-            {{ state_attr(sensor, 'friendly_name') }} {{ states(sensor) }}%
-          {% endfor %}
