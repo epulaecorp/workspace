@@ -53,6 +53,7 @@ lovelace:
       { url: /hacsfiles/Bubble-Card/bubble-card.js,                                 type: module },
       { url: /hacsfiles/android-tv-card/android-tv-card.min.js,                     type: module },
       { url: /hacsfiles/battery-state-card/battery-state-card.js,                   type: module },
+      { url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,           type: module },
 
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
@@ -120,3 +121,17 @@ sensor:
 recorder:
   db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
   purge_keep_days: 30
+
+# Example configuration.yaml entry
+birthdays:
+  - name: 'fvicente'
+    date_of_birth: 1977-04-13
+  - name: 'mariquita'
+    date_of_birth: 1967-08-19
+  - name: 'zahid'
+    date_of_birth: 2002-06-15
+  - name: 'ethan'
+    date_of_birth: 2006-08-20
+  - name: 'dayreth'
+    date_of_birth: 2010-12-23
+    

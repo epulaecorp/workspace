@@ -266,22 +266,6 @@
     target:
       entity_id: light.fvicente
   mode: single
-- id: '1706469197804'
-  alias: Mañanitas
-  description: ''
-  trigger: []
-  condition: []
-  action:
-  - service: media_player.select_source
-    data:
-      entity_id: media_player.spotify_fvicente
-      source: media_player.echo_recamara
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.echo_recamara
-      media_content_type: music
-      media_content_id: spotify:track:Las mañanitas
-  mode: single
 - id: '1706486611517'
   alias: fvicente_ramdom_Light
   description: ''
@@ -303,4 +287,28 @@
   - service: script.homeassistant_start
     metadata: {}
     data: {}
+  mode: single
+- id: '1707009855841'
+  alias: Reminders - garbage_collection
+  description: Recordatorio de recolección de basura
+  trigger:
+  - platform: calendar
+    event: start
+    offset: 0:0:0
+    entity_id: calendar.garbage
+  condition:
+  - condition: zone
+    entity_id: person.fvicente
+    zone: zone.home
+  action:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.4
+    target:
+      device_id: fb289c0c16ea235873fa897462835efa
+  - service: notify.alexa_media_echo_recamara
+    metadata: {}
+    data:
+      message: Recuerda sacar la basura
   mode: single
