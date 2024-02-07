@@ -2,7 +2,6 @@
 ESPHome/config/.esphome
 HomeAssistant/.storage
 HomeAssistant/custom_components
-HomeAssistant/www/community
 HomeAssistant/*.log
 HomeAssistant/*.log.*
 HomeAssistant/*.db
