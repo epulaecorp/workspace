@@ -72,26 +72,12 @@ views:
                 state: "on"
             card:
               type: custom:atomic-calendar-revive
-              name: Agenda
-              sortBy: start
               maxDaysToShow: 1
-              refreshInterval: 60
-              showCurrentEventLine: true
+              showProgressBar: false
+              showEventDate: false
               entities:
                 - entity: calendar.garbage
-
-          - type: conditional
-            conditions:
-              - condition: state
-                entity: calendar.birthdays
-                state: "on"
-            card:
-              type: custom:atomic-calendar-revive
-              name: Cumpleaños
-              sortBy: start
-              maxDaysToShow: 1
-              entities:
-                - entity: calendar.birthdays
+                  color: 'orange'
 
           - type: conditional
             conditions:
@@ -102,21 +88,10 @@ views:
               type: custom:atomic-calendar-revive
               name: Trading 
               maxDaysToShow: 1
+              showCurrentEventLine: true
               entities:
                 - entity: calendar.trading
 
-          - type: conditional
-            conditions:
-              - condition: state
-                entity: calendar.festivos_en_mexico
-                state: "on"
-            card:
-              type: custom:atomic-calendar-revive
-              name: Festivo
-              maxDaysToShow: 1
-              entities:
-                - entity: calendar.festivos_en_mexico
-          
           - type: conditional
             conditions:
               - condition: state

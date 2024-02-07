@@ -18,7 +18,18 @@
             {{ days[now().weekday()] }} {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
           {% endif %}
           </b></font>
-
+        holidays: >
+          <font color='orange'><b>
+            {% if states('calendar.festivos_en_mexico') == 'on' %}
+              {{ state_attr('calendar.festivos_en_mexico', 'message')}}
+            {% endif %}
+          </b></font>
+        birthday: >
+          <font color='orange'><b>
+            {% if states('calendar.birthdays') == 'on' %}
+              Felicidades {{ state_attr('calendar.birthdays', 'message')}} !
+            {% endif %}
+          </b></font>
         greet: >
           <b>
           {% set time = now().hour %}        

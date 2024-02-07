@@ -90,15 +90,18 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:button-card
-                entity: sensor.fvicente_temperature
+                entity: fan.fvicente_fan
                 name: Temperature
                 custom_fields:
                   button:
                     card: 
                       type: custom:button-card
                       entity: sensor.fvicente_temperature 
-#                      hold_action: !include popup/temperature_chambre_william.yaml
-#                      tap_action: !include popup/temperature_chambre_william.yaml
+                      tap_action: 
+                        action: call-service
+                        service: fan.toggle
+                        data:
+                          entity_id: fan.fvicente_fan
                   graph:
                     card:
                       type: custom:mini-graph-card
@@ -110,13 +113,13 @@ views:
                   - icon_ventilador
 
               - type: custom:button-card
-                entity: fan.fvicente_fan
+                entity: sensor.fvicente_humidity
                 name: Humidity
                 custom_fields:
                   button:
                     card: 
                       type: custom:button-card
-                      entity: fan.fvicente_fan
+                      entity: sensor.fvicente_humidity
 #                      hold_action: !include popup/temperature_chambre_william.yaml
 #                      tap_action: !include popup/temperature_chambre_william.yaml
                   graph:

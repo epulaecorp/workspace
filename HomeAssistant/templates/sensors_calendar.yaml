@@ -1,0 +1,19 @@
+  - sensor:
+      - unique_id: 'holidays'
+        name: 'holidays'
+        state: >
+          {{ states('calendar.festivos_en_mexico') }}
+        attributes:
+          summary: >
+            {{ state_attr('calendar.festivos_en_mexico','message')}}
+          date: >
+            {{ state_attr('calendar.festivos_en_mexico','start_time') }}
+
+#message: Día de la Constitución
+#all_day: true
+#start_time: 2024-02-05 00:00:00
+#end_time: 2024-02-06 00:00:00
+#location: 
+#description: Día festivo
+#offset_reached: false
+#friendly_name: Festivos en méxico

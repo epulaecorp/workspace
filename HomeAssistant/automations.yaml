@@ -29,6 +29,12 @@
         data: {}
         target:
           entity_id: switch.fvicente_monitor_switch
+      - service: media_player.volume_set
+        metadata: {}
+        data:
+          volume_level: 0.75
+        target:
+          device_id: fb289c0c16ea235873fa897462835efa
       alias: 'ON'
     - conditions:
       - condition: trigger
@@ -39,6 +45,12 @@
         data: {}
         target:
           entity_id: switch.fvicente_monitor_switch
+      - service: media_player.volume_set
+        metadata: {}
+        data:
+          volume_level: 0.25
+        target:
+          device_id: fb289c0c16ea235873fa897462835efa
       alias: 'OFF'
   mode: single
 - id: '1699591191220'

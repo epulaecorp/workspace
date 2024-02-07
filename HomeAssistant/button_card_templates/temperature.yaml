@@ -13,10 +13,10 @@ thermometre:
     graph:
       card:
         type: "custom:mini-graph-card"
-        height: 800
+        height: 500
         upper_bound: 38
         lower_bound: 18
-        line_width: 12
+        line_width: 5
         align_state: left
         group: false
         points_per_hour: 2
@@ -32,7 +32,7 @@ thermometre:
           points: false
   styles:
     custom_fields:
-      graph: [bottom: -25%, left: -25%, width: 150%, position: absolute]
+      graph: [bottom: -15%, left: -25%, width: 150%, position: absolute]
       button: [bottom: 0%, left: -25%, width: 150%, position: absolute, opacity: 0]
       icon:
         - width: 100%
@@ -69,8 +69,8 @@ thermometre_weather:
           labels: false
   styles:
     custom_fields:
-      graph: [bottom: -15%, left: -15%, width: 150%, position: absolute]
-      button: [bottom: 0%, left: -25%, width: 150%, position: absolute, opacity: 0]
+      graph: [bottom: -15%, left: -15%, width: 100%, position: absolute]
+      button: [bottom: 0%, left: -25%, width: 100%, position: absolute, opacity: 0]
       icon:
         - width: 100%
         - fill: "#9da0a2"
