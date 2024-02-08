@@ -157,6 +157,7 @@ extra_styles:
         #state {
           font-size: var(--button-card-state-size);
           font-weight: var(--button-card-sate-weight);
+          color: var(--button-card-state-color);
           letter-spacing: var(--button-card-letter-spacing);
         }
 

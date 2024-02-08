@@ -65,44 +65,22 @@ views:
             forecast_rows: 1
             locale: es
 
+          # Pendientes
           - type: conditional
             conditions:
               - condition: state
-                entity: calendar.garbage
+                entity: binary_sensor.calendar_pendientes
                 state: "on"
             card:
               type: custom:atomic-calendar-revive
+              name: "Pendientes:"
               maxDaysToShow: 1
               showProgressBar: false
               showEventDate: false
+              showAllDayHours: false
               entities:
-                - entity: calendar.garbage
-                  color: 'orange'
-
-          - type: conditional
-            conditions:
-              - condition: state
-                entity: calendar.trading
-                state: "on"
-            card:
-              type: custom:atomic-calendar-revive
-              name: Trading 
-              maxDaysToShow: 1
-              showCurrentEventLine: true
-              entities:
-                - entity: calendar.trading
-
-          - type: conditional
-            conditions:
-              - condition: state
-                entity: calendar.payments
-                state: "on"
-            card:
-              type: custom:atomic-calendar-revive
-              name: Pagos
-              maxDaysToShow: 1
-              entities:
-                - entity: calendar.payments
+                - entity: calendar.pendientes
+                  color: orange
 
       #################################################
       #                                               #

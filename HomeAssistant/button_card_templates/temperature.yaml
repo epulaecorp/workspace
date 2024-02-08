@@ -39,6 +39,8 @@ thermometre:
         - fill: "#9da0a2"
 
 
+
+
 thermometre_weather:
   template:
     - base

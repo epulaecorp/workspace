@@ -301,7 +301,7 @@
     data: {}
   mode: single
 - id: '1707009855841'
-  alias: Reminders - garbage_collection
+  alias: Calendar - garbage_collection
   description: Recordatorio de recolección de basura
   trigger:
   - platform: time
@@ -340,4 +340,29 @@
     data:
       title: Feliz Cumpleaños!
       message: Felicidades
+  mode: single
+- id: '1707273663688'
+  alias: fvicente - wakeup
+  description: ''
+  use_blueprint:
+    path: homeassistant/lights-wakeup.yaml
+    input:
+      manual_time: 05:15:00
+      light_entity: light.fvicente
+      check_entity: person.fvicente
+      sunrise_duration: 15
+- id: '1707327509882'
+  alias: Calendar - Task
+  description: ''
+  trigger:
+  - platform: calendar
+    event: start
+    offset: -0:5:0
+    entity_id: calendar.tareas
+  condition: []
+  action:
+  - service: notify.persistent_notification
+    metadata: {}
+    data:
+      message: Event {{ trigger.calendar_event.summary }}
   mode: single

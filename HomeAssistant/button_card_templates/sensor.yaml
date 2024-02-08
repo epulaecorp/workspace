@@ -1,5 +1,8 @@
 sensor:
+  template: 
+    - base
   aspect_ratio: 1/1
+  show_state: true
   custom_fields:
     graph:
       card:

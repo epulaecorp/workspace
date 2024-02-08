@@ -100,13 +100,14 @@ tablet:
   sidebar-time-line-height: 4.5vw
   sidebar-font-size: 1.42vw
   sidebar-line-height: 2vw
-  bar-card-color: "#303435"
 
+  bar-card-color: "#3cbefa"
   #button_card_templates
   button-card-name-size: 1.5vw
   button-card-state-size: 1.0vw
   z-axis-adjustment: 0.05vw #tilt compensation
   button-card-name-weight: 300
+  button-card-state-color: "#b07017"
   button-card-state-weight: 500
   button-card-letter-spacing: -0.02vw
   button-card-border-radius: 10%
