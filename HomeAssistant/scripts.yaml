@@ -1,37 +1,39 @@
-  alexa_actionable_notification:
-    description: Activates an actionable notification on a specific echo device
-    fields:
-      text:
-        description: The text you would like alexa to speak.
-        example: What would you like the thermostat set to?
-      event_id:
-        description: Correlation ID for event responses
-        example: ask_for_temperature
-      alexa_device:
-        description: Alexa device you want to trigger
-        example: media_player.bedroom_echo
-    sequence:
-    - service: input_text.set_value
-      data:
-        entity_id: input_text.alexa_actionable_notification
-        value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
-    - service: media_player.play_media
-      data:
-        entity_id: '{{ alexa_device }}'
-        media_content_type: skill
-        media_content_id: amzn1.ask.skill.0f8dcdab-1459-48c8-a396-328cc0f33e60
-    mode: single
-  # Home Assitant
-  homeassistant_start:
-    sequence:
-    - service: media_player.volume_set
-      data:
-        volume_level: 0.3
-      target:
-        entity_id: media_player.echo_recamara
-    - delay: 00:00:02
-    - service: notify.alexa_media_echo_recamara
-      metadata: {}
-      data:
-        message: "{{  [ \"Home Assistant está disponible\",\n      \"Home Assistant
-          está operativo\"\n    ] | random }}\n"
+alexa_actionable_notification:
+  description: Activates an actionable notification on a specific echo device
+  fields:
+    text:
+      description: The text you would like alexa to speak.
+      example: What would you like the thermostat set to?
+    event_id:
+      description: Correlation ID for event responses
+      example: ask_for_temperature
+    alexa_device:
+      description: Alexa device you want to trigger
+      example: media_player.bedroom_echo
+  sequence:
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.alexa_actionable_notification
+      value: '{"text": "{{ text }}", "event": "{{ event_id }}"}'
+  - service: media_player.play_media
+    data:
+      entity_id: '{{ alexa_device }}'
+      media_content_type: skill
+      media_content_id: amzn1.ask.skill.0f8dcdab-1459-48c8-a396-328cc0f33e60
+  mode: single
+homeassistant_start:
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.3
+    target:
+      entity_id: media_player.echo_recamara
+  - delay: 00:00:02
+  - service: notify.alexa_media_echo_recamara
+    metadata: {}
+    data:
+      message: "{{  [ \"Home Assistant está disponible\",\n      \"Home Assistant
+        está operativo\"\n    ] | random }}\n"
+  alias: HomeAssistant - start
+  icon: mdi:restart
+  mode: single

@@ -59,7 +59,7 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.fvicente_iphone_battery_level
+    - sensor.fvicente_phone_battery_level
     alias: Battery Changes
   condition: []
   action:
@@ -67,14 +67,14 @@
     choose:
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.fvicente_iphone_battery_level
+        entity_id: sensor.fvicente_phone_battery_level
         above: 90
       sequence:
       - alias: 'CHARGING '
         choose:
         - conditions:
           - condition: state
-            entity_id: sensor.fvicente_iphone_battery_state
+            entity_id: sensor.fvicente_phone_battery_state
             state: Charging
           sequence:
           - alias: DAY / NIGHT
@@ -88,13 +88,13 @@
                 choose:
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: home
                   sequence:
                   - service: notify.alexa_media_echo_recamara
                     data:
                       message: Tu teléfono ya está cargado, sería buena idea desconectarlo
-                  - service: notify.mobile_app_fvicente_iphone
+                  - service: notify.mobile_app_fvicente_phone
                     data:
                       data:
                         push:
@@ -107,10 +107,10 @@
                   alias: HOME
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: not_home
                   sequence:
-                  - service: notify.mobile_app_fvicente_iphone
+                  - service: notify.mobile_app_fvicente_phone
                     data:
                       message: Tu teléfono ya está cargado, sería buena idea desconectarlo
                   alias: AWAY
@@ -124,13 +124,13 @@
                 choose:
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: home
                   sequence:
                   - service: notify.alexa_media_echo_recamara
                     data:
                       message: Tu teleéfono está cargado, sería buena idea desconectarlo
-                  - service: notify.mobile_app_fvicente_iphone
+                  - service: notify.mobile_app_fvicente_phone
                     data:
                       message: Carga completa
                       title: BATERÍA
@@ -143,7 +143,7 @@
                   alias: HOME
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: not_home
                   sequence: []
                   alias: AWAY
@@ -152,14 +152,14 @@
       alias: BATERY > 90
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.fvicente_iphone_battery_level
+        entity_id: sensor.fvicente_phone_battery_level
         below: 10
       sequence:
       - alias: CHARGING / NO CHARGING
         choose:
         - conditions:
           - condition: state
-            entity_id: sensor.fvicente_iphone_battery_state
+            entity_id: sensor.fvicente_phone_battery_state
             state: Not Charging
           sequence:
           - alias: DAY / NIGHT
@@ -173,24 +173,24 @@
                 choose:
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: home
                   sequence:
                   - service: notify.alexa_media_echo_recamara
                     data:
                       message: Tu teléfono se está quedando sin batería , seria bueno
                         ponerlo a cargar
-                  - service: notify.mobile_app_fvicente_iphone
+                  - service: notify.mobile_app_fvicente_phone
                     data:
                       message: Tu teléfono se está quedando sin batería , seria bueno
                         ponerlo a cargar
                   alias: HOME
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: not_home
                   sequence:
-                  - service: notify.mobile_app_fvicente_iphone
+                  - service: notify.mobile_app_fvicente_phone
                     data:
                       message: Tu teléfono se está quedando sin batería , seria bueno
                         ponerlo a cargar
@@ -205,7 +205,7 @@
                 choose:
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: home
                   sequence:
                   - service: notify.alexa_media_echo_recamara
@@ -215,7 +215,7 @@
                   alias: HOME
                 - conditions:
                   - condition: state
-                    entity_id: device_tracker.fvicente_iphone
+                    entity_id: device_tracker.fvicente_phone
                     state: not_home
                   sequence: []
                   alias: AWAY
@@ -365,4 +365,48 @@
     metadata: {}
     data:
       message: Event {{ trigger.calendar_event.summary }}
+  mode: single
+- id: '1707531514511'
+  alias: test notification
+  description: ''
+  use_blueprint:
+    path: homeassistant/calendar_notifications.yaml
+    input:
+      calendar: calendar.pendientes
+      include_calendar_trigger: disable_key_word
+      include_start_notify: enable_start_notify_options
+      start_notify_device:
+      - 3bfd4bb2ffe977888371f72bfe976eec
+      include_start_action_buttons:
+      - enable_start_action_button_1
+      - enable_start_action_button_2
+      start_action_button_1: Si
+      start_action_button_2: 'NO'
+      start_action_button_stop: CANCELAR
+      include_end_notify: enable_end_notify_options
+      end_notify_device:
+      - 3bfd4bb2ffe977888371f72bfe976eec
+      end_action_button_1: SI
+      end_action_button_2: 'NO'
+- id: '1707531707036'
+  alias: fvicente - fan_nights_autostart
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.fvicente_temperature
+    above: 24
+  condition:
+  - condition: zone
+    entity_id: person.fvicente
+    zone: zone.home
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - service: fan.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: fan.fvicente_fan
   mode: single

@@ -157,7 +157,7 @@ extra_styles:
         #state {
           font-size: var(--button-card-state-size);
           font-weight: var(--button-card-sate-weight);
-          color: var(--button-card-state-color);
+
           letter-spacing: var(--button-card-letter-spacing);
         }
 
@@ -303,15 +303,18 @@ extra_styles:
 
           #name {
             font-size: var(--footer-card-font-size);
+            font-weight: var(--footer-card-name-weight);
             padding: var(--footer-card-padding-v) var(--footer-card-padding-h);
             letter-spacing: 0.05vw;
+            opacity: 0.75;
           }
 
           ha-icon {
             width: var(--footer-card-icon-size);
             vertical-align: 7%;
             padding-right: 0.1vw;
-            opacity: 0.4;
+            opacity: 0.5;
+            color: var(--active-color);
           }
 
           #card {

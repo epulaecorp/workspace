@@ -52,7 +52,7 @@
       default_zoom: 16
       dark_mode: true
       entities:
-        - device_tracker.fvicente_iphone
+        - device_tracker.fvicente_phone
       card_mod:
         style:
           .: |

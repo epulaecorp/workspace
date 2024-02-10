@@ -37,7 +37,7 @@
             template: icon_name
             tap_action:
               action: call-service
-              service: notify.mobile_app_fvicente_iphone
+              service: notify.mobile_app_fvicente_phone
               service_data:
                 title: "Hey"
                 message: "Aquí estoy!"
@@ -53,7 +53,7 @@
       default_zoom: 16
       dark_mode: true
       entities:
-        - device_tracker.fvicente_iphone
+        - device_tracker.fvicente_phone
       card_mod:
         style:
           .: |

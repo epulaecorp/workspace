@@ -1,5 +1,4 @@
-  # External Wheather
-
+  #.. External Wheather ..#
   - sensor: 
     - unique_id: "forecast_temperature"
       name: "forecast_temperature"
@@ -13,9 +12,7 @@
       state: "{{ state_attr('weather.openweathermap', 'humidity') }}"
       device_class: humidity
 
-      #................#
-      #..  fvicente  ..#
-      #................#
+    #..  fvicente  ..#
     - unique_id: "fvicente_temperature"
       name: "fvicente_temperature"
       unit_of_measurement: '°C'

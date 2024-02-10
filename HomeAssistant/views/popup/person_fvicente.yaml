@@ -92,7 +92,7 @@ browser_mod:
               entities:
   
 
-                - entity: device_tracker.fvicente_iphone
+                - entity: device_tracker.fvicente_phone
                   name: Wifi
                   icon: mdi:wifi
                   card_mod:
@@ -101,13 +101,13 @@ browser_mod:
                         color: {{ is_state(config.entity, 'home') | iif('#3182b7', '#3c3f3f') }};
                       }
 
-                - entity: device_tracker.fvicente_iphone
+                - entity: device_tracker.fvicente_phone
                   name: Bluetooth
                   icon: mdi:bluetooth
                   card_mod:
                     style: *state
 
-                - entity: device_tracker.fvicente_iphone
+                - entity: device_tracker.fvicente_phone
                   name: Position
                   icon: cil:iphone-modern
                   card_mod:
@@ -130,7 +130,7 @@ browser_mod:
                     template: icon_name
                     tap_action:
                       action: call-service
-                      service: notify.mobile_app_fvicente_iphone
+                      service: notify.mobile_app_fvicente_phone
                       service_data:
                         title: "Hey"
                         message: "Aquí Estoy!"
@@ -149,7 +149,7 @@ browser_mod:
           default_zoom: 16
           dark_mode: true
           entities:
-            - device_tracker.fvicente_iphone
+            - device_tracker.fvicente_phone
           card_mod:
             style:
               .: |
@@ -194,11 +194,11 @@ browser_mod:
           view_layout:
             grid-area: status
           entities:
-            - entity: sensor.fvicente_iphone_battery_level
+            - entity: sensor.fvicente_phone_battery_level
               name: Battery Level
-            - entity: sensor.fvicente_iphone_battery_state
+            - entity: sensor.fvicente_phone_battery_state
               name: Battery State
-            - entity: sensor.fvicente_iphone_last_update_trigger
+            - entity: sensor.fvicente_phone_last_update_trigger
               name: Last Update Trigger
-            - entity: sensor.fvicente_iphone_storage
+            - entity: sensor.fvicente_phone_storage
               name: Storage

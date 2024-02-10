@@ -110,45 +110,81 @@ views:
 
           - type: horizontal-stack
             cards:
-              - type: custom:button-card
-                entity: fan.fvicente_fan
-                name: Temperature
-                custom_fields:
-                  button:
-                    card: 
-                      type: custom:button-card
-                      entity: fan.fvicente_fan 
-                      tap_action: 
-                        action: call-service
-                        service: fan.toggle
-                        data:
-                          entity_id: fan.fvicente_fan
-                  graph:
-                    card:
-                      type: custom:mini-graph-card
-                      entities:
-                        - entity: sensor.fvicente_temperature
-                          color: '#0066ff' 
-                template:
-                  - thermometre
-                  - icon_ventilador
+              - type: custom:apexcharts-card
+                graph_span: 24h
+                show:
+                  last_updated: true
+                header:
+                  show: true
+                  show_states: true
+                  title: Temperature
+                series:
+                  - entity: sensor.fvicente_temperature
+                    type: line
+                    color: steelblue
+                    group_by:
+                      func: last
+                      duration: 15m
+                    stroke_width: 2.
+                    show:
+                      extremas: true
 
-              - type: custom:button-card
-                entity: sensor.fvicente_humidity
-                name: Humidity
-                custom_fields:
-                  button:
-                    card: 
-                      type: custom:button-card
-                      entity: sensor.fvicente_humidity
-#                      hold_action: !include popup/temperature_chambre_william.yaml
-#                      tap_action: !include popup/temperature_chambre_william.yaml
-                  graph:
-                    card:
-                      type: custom:mini-graph-card
-                      entities:
-                        - entity: sensor.fvicente_humidity
-                          color: '#0066ff' 
-                template:
-                  - thermometre
-                  - icon_thermometre
+              - type: custom:apexcharts-card
+                graph_span: 24h
+                show:
+                  last_updated: true
+                header:
+                  show: true
+                  show_states: true
+                  title: Humidity
+                series:
+                  - entity: sensor.fvicente_humidity
+                    type: line
+                    color: orangered
+                    group_by:
+                      func: last
+                      duration: 15m
+                    stroke_width: 2
+                    show:
+                      extremas: true
+#              - type: custom:button-card
+#                entity: fan.fvicente_fan
+#                name: Temperature
+#                custom_fields:
+#                  button:
+#                    card: 
+#                      type: custom:button-card
+#                      entity: fan.fvicente_fan 
+#                      tap_action: 
+#                        action: call-service
+#                        service: fan.toggle
+#                        data:
+#                          entity_id: fan.fvicente_fan
+#                  graph:
+#                    card:
+#                      type: custom:mini-graph-card
+#                      entities:
+#                        - entity: sensor.fvicente_temperature
+#                          color: '#0066ff' 
+#                template:
+#                  - thermometre
+#                  - icon_ventilador
+
+#              - type: custom:button-card
+#                entity: sensor.fvicente_humidity
+#                name: Humidity
+#                custom_fields:
+#                  button:
+#                    card: 
+#                      type: custom:button-card
+#                      entity: sensor.fvicente_humidity
+
+#                  graph:
+#                    card:
+#                      type: custom:mini-graph-card
+#                      entities:
+#                        - entity: sensor.fvicente_humidity
+#                          color: '#0066ff' 
+#                template:
+#                  - thermometre
+#                  - icon_thermometre

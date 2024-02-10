@@ -7,4 +7,10 @@
           {% set tomorrow = (as_timestamp(now())+ (43200)) | timestamp_custom('%Y-%m-%d', true) %}
           {{ next_calendar_event == today}} 
 
-
+  - sensor:
+      - unique_id: weekday
+        name: weekday
+        state: >
+          {% set today = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] %}
+          {{ today[now().weekday()] }}
+  

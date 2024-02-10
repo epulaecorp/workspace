@@ -3,6 +3,7 @@ browser_mod:
   service: browser_mod.popup
   data:
     title: NAS
+    timeout: 10000
     style: >
       --popup-max-width: calc(385px + 385px + 385px + 50px);
       --ha-card-border-radius: 0;
@@ -10,16 +11,16 @@ browser_mod:
       style:
         layout-card:
           $grid-layout$:
-            # card divider border
-            .: |
-              #root {
-                  margin: -21px 2 !important;
-              }
+#            # card divider border
+#            .: |
+#              #root {
+#                  margin: -21px 2 !important;
+#              }
             hui-entities-card:
               $: |
                 .card-content {
                   padding: var(--tablet-popup-content-padding);
-                  padding-bottom: 0.3em;
+                  padding-bottom: 0.8em;
                 }
                 ha-card {
                   border-right: 1.5px solid rgba(0, 0, 0, 0.2);
@@ -70,8 +71,7 @@ browser_mod:
             - type: entities
               title: Home Assistant
               show_header_toggle: false
-              card_mod:
-                class: header
+              state_color: true
               entities:
 
                 - entity: sensor.docker_hub
@@ -82,48 +82,51 @@ browser_mod:
                   name: Estado
                   icon: mdi:arrow-up-bold-hexagon-outline
 
-                - type: custom:hui-horizontal-stack-card
-                  cards:
-                    - type: custom:button-card
-                      name: HomeAssistant
-                      icon: mdi:reload
-                      tap_action:
-                        action: call-service
-                        service: browser_mod.sequence
-                        service_data:
-                          sequence:
-                            - service: browser_mod.notification
-                              data:
-                                message: Reiniciando homeassitant...
-                            - service: browser_mod.delay
-                              data:
-                                time: 3000
-                            - service: homeassistant.restart
-                      template: icon_name
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  name: HomeAssistant
+                  icon: mdi:reload
+                  color: var(--active-color)
+                  tap_action:
+                    action: call-service
+                    service: browser_mod.sequence
+                    service_data:
+                      sequence:
+                        - service: browser_mod.notification
+                          data:
+                            message: Reiniciando homeassitant...
+                        - service: browser_mod.delay
+                          data:
+                            time: 3000
+                        - service: homeassistant.restart
+                  template: icon_name
 
-                    - type: custom:button-card
-                      name: Cotenedor
-                      icon: mdi:reload
-                      tap_action:
-                        action: call-service
-                        service: browser_mod.sequence
-                        service_data:
-                          sequence:
-                            - service: browser_mod.notification
-                              data:
-                                message: Reiniciando el contenedor...
-                            - service: homeassistant.save_persistent_states
-                            - service: browser_mod.delay
-                              data:
-                                time: 3000
-                            - service: shell_command.restart_container
-                      template: icon_name
+                - type: custom:button-card
+                  name: Cotenedor
+                  icon: mdi:reload
+                  color: var(--active-color)
+                  tap_action:
+                    action: call-service
+                    service: browser_mod.sequence
+                    service_data:
+                      sequence:
+                        - service: browser_mod.notification
+                          data:
+                            message: Reiniciando el contenedor...
+                        - service: homeassistant.save_persistent_states
+                        - service: browser_mod.delay
+                          data:
+                            time: 3000
+                        - service: shell_command.restart_container
+                  template: icon_name
 
             - type: entities
               title: Containers
               show_header_toggle: false
               card_mod:
                 class: header
+              state_color: true
               entities:
 
                 - entity: sensor.docker_containers_total
@@ -146,6 +149,7 @@ browser_mod:
           show_header_toggle: false
           card_mod:
             class: header
+          state_color: true
           entities:
 
             - entity: switch.docker_watchtower
@@ -177,7 +181,6 @@ browser_mod:
               icon: mdi:microsoft-visual-studio-code
         
         ### NAS
-
         - type: entities
           view_layout:
             grid-area: nas
@@ -185,6 +188,7 @@ browser_mod:
           show_header_toggle: false
           card_mod:
             class: header
+          state_color: true
           entities:
             - entity: sensor.synologynas_drive_1_status
               name: Estado
@@ -245,6 +249,7 @@ browser_mod:
                 - type: custom:button-card
                   name: Reiniciar
                   icon: mdi:restart-alert
+                  color: var(--active-color)
                   confirmation:
                     text: ¿Está seguro de que desea reiniciar el NAS??
                   tap_action:
@@ -263,6 +268,7 @@ browser_mod:
                 - type: custom:button-card
                   name: Apagar...
                   icon: mdi:alert
+                  color: var(--active-color)
                   confirmation:
                     text: ¿Está seguro de que desea apagar el NAS??
                   tap_action:
