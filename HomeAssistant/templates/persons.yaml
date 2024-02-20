@@ -1,0 +1,20 @@
+  - binary_sensor:
+      - unique_id: 'fvicente_inhome'
+        name: 'fvicente in home'
+        state: "{{ is_state('device_tracker.fvicente_phone', 'home') }}"
+        icon: mdi:account-check
+        device_class: occupancy
+
+      - unique_id: 'fvicente_movietime'
+        name: 'fvicente movie time'
+        state: 'off'
+        icon: mdi:movie
+
+      - unique_id: 'fvicente_sleeping'
+        name: 'fvicente sleeping'
+        state: > #INVERTED
+          {{ is_state('sun.sun', 'below_horizon')
+          and is_state('switch.fvicente_monitor_switch', 'off') 
+          and is_state('light.fvicente_backlight_switch', 'off') 
+          and is_state('light.fvicente', 'off') }}
+        icon: mdi:sleep

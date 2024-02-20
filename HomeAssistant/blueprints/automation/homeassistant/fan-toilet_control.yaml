@@ -1,0 +1,1622 @@
+blueprint:
+  name: FAN - Toilet extractor
+  description: >
+    # 🚽 Toilet Exhaust Fan
+    
+    **Version: 2.4**
+ 
+    **The Automation Process:**
+      - Activa una luz o un sensor de movimiento y enciende el ventilador. El disparador puede ser cualquier cosa que desee que tenga un estado ENCENDIDO y APAGADO.
+      - Cuando se activa el sensor de luz o movimiento, se activa un retardo de tiempo y apaga el ventilador automáticamente.
+      - El ventilador permanecerá ENCENDIDO si la luz se vuelve a ENCENDER o si el sensor de movimiento detecta movimiento antes de que el tiempo de retardo apague el ventilador. Luego restablecerá el tiempo de retardo cuando el interruptor se apague o después de que se detecte el último movimiento.
+      - Tiene la opción de invertir el gatillo para que cuando apague la luz, el ventilador se encienda.
+      - Tiene la opción de configurar el "Tiempo de espera del activador". Esto puede ayudar a suponer que hay un número 2 en progreso y se requiere el ventilador.
+      - Tiene la opción de utilizar un "interruptor de ventilador manual" que enciende o apaga el ventilador de forma independiente mientras conserva la funcionalidad del disparador de automatización. Además, hay una función de apagado automático que puede servir como temporizador manual.
+      - Tienes la opción de establecer una hora de inicio, una hora de finalización y seleccionar días de la semana. Esto solo permitirá que la automatización se ejecute entre los períodos de tiempo.
+      - Tiene la opción de utilizar las "Opciones de derivación". Esto le permite agregar interruptores para omitir manualmente el sensor de activación para que pueda usar el ventilador normalmente encendiéndolos y apagándolos manualmente.
+      - Opción de protección segura para reinicio de HA.
+
+    
+    Required = *
+    
+  domain: automation
+  input:
+    entity_trigger:
+      name: Trigger Sensor *
+      description: El disparador suele ser un interruptor de luz o un sensor de movimiento. Sin embargo, cualquier entidad capaz de alternar entre un estado ON y OFF puede servir como disparador.
+      selector:
+        entity:
+    fan_switch:
+      name: Fan *
+      description: El ventilador que se enciende mediante el sensor de disparo.
+      selector:
+        entity:
+    trigger_options:
+      name: Trigger Options
+      description: Seleccione el modo que se ajuste a sus necesidades específicas.
+      
+      
+        **Modo normal (predeterminado)** - esta función inicia el funcionamiento del ventilador cuando el gatillo cambia del estado APAGADO a ENCENDIDO. Ejemplo, cuando se enciende la luz al entrar al baño.
+        
+        
+        **Modo invertido** - esta función inicia el funcionamiento del ventilador cuando el gatillo cambia del estado ON al OFF. Ejemplo, cuando se apaga la luz al salir del baño.
+        
+        
+        **Nota** - El uso de un sensor de movimiento como disparador puede presentar dificultades operativas.
+      default: normal_mode_trigger
+      selector:
+        select:
+          options:
+            - label: Normal Mode (Default)
+              value: "normal_mode_trigger"
+            - label: Invert Mode
+              value: "inverted_trigger"
+    time_delay:
+      name: Time Delay
+      description: El tiempo de demora para dejar el ventilador encendido después de que se apaga la luz o se detecta el último movimiento.
+      default: 2.5
+      selector:
+        number:
+          min: 0
+          max: 10
+          step: 0.5
+          unit_of_measurement: minutes
+    trigger_wait_option:
+      name: Trigger Wait Option (Optional)
+      description: El gatillo (luz) debe permanecer encendido durante un período designado antes de activar el ventilador.
+        Esta configuración es ideal para casos en los que el ventilador no es necesario durante un uso breve (por ejemplo, para una visita breve).
+        Sin embargo, para un uso prolongado (por ejemplo, para una visita prolongada), generalmente asociado con la necesidad del ventilador, la luz que se enciende durante X cantidad de tiempo solicitará que el ventilador se encienda.
+        Esta opción es exclusiva de la selección "Modo normal" anterior. Si selecciona esta configuración, especifique el tiempo de espera del activador a continuación.
+      default: fire_on_trigger
+      selector:
+        select:
+          options:
+            - label: Use the wait time 
+              value: "wait_for_trigger"
+            - label: Dont use the wait time
+              value: "fire_on_trigger"
+    trigger_wait_time:
+      name: Trigger Wait Time
+      description: El tiempo que el gatillo (luz) debe permanecer encendido antes de encender el ventilador.
+      default: 3
+      selector:
+        number:
+          min: 0
+          max: 10
+          step: 0.2
+          unit_of_measurement: minutes
+    include_manual_fan_switch:
+      name: Use The Manual Fan Switch Option (Optional)
+      description: Esta característica permite el control manual del ventilador, lo que le permite encenderlo o apagarlo de forma independiente, al mismo tiempo que conserva la capacidad de activación de automatización. Si se activa la automatización, el interruptor manual del ventilador se apagará.
+        La opción 2 puede ayudarle a no olvidar nunca apagar el ventilador o también puede servir como temporizador manual.
+        
+        
+        **NOTA** - Tenga en cuenta que la entidad del interruptor del ventilador manual no se puede conectar ni al interruptor del ventilador real ni al gatillo.
+        Debe funcionar como un interruptor completamente independiente; de lo contrario, la automatización no funcionará.
+      default: disable_manual_fan_switch
+      selector:
+        select:
+          options:
+            - label: 1 - Enable manual fan switch option
+              value: "enable_manual_fan_switch"
+            - label: 2 - Enable manual fan switch + auto off option
+              value: "enable_manual_fan_switch_auto_off"
+            - label: Disable manual fan switch
+              value: "disable_manual_fan_switch"
+    manual_fan_switch:
+      name: Manual Fan Switch
+      description: Ingrese un interruptor que encenderá/apagará el ventilador.
+      default: []
+      selector:
+        entity:
+          filter:
+            domain:
+              - switch
+              - binary_sensor
+              - input_boolean
+    manual_fan_switch_time_delay:
+      name: Manual Fan Switch Auto OFF - Time Delay
+      description: Si ha habilitado la opción 2 anterior, configure el retardo de tiempo de apagado automático.
+      default: 10
+      selector:
+        number:
+          min: 0
+          max: 40
+          step: 0.5
+          unit_of_measurement: minutes
+    include_time:
+      name: Use The Time Options (Optional)
+      description: Utilice los valores de "Hora de inicio", "Hora de finalización" y "Días de la semana" para ejecutar la automatización solo entre los períodos de tiempo.
+        Esta es una buena opción si desea desactivar el ventilador por la noche, cuando todos duermen, para que el ruido del ventilador no despierte a nadie.
+      default: time_disabled
+      selector:
+        select:
+          options:
+            - label: Enable the time options
+              value: "time_enabled"
+            - label: Disable the time options
+              value: "time_disabled"
+    after_time:
+      name: Start Time
+      description: Set the start time.
+      default: 00:00:00
+      selector:
+        time:
+    before_time:
+      name: End Time
+      description: Set the end time.
+      default: 00:00:00
+      selector:
+        time:
+    weekday_options:
+      name: Weekdays
+      description: Seleccione los días de la semana en los que desea que se ejecute la automatización.
+        Debe seleccionar "Habilitar las opciones de tiempo" arriba para que funcionen las selecciones de días laborables.
+      default:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+            - label: Monday
+              value: "mon"
+            - label: Tuesday
+              value: "tue"
+            - label: Wednesday
+              value: "wed"
+            - label: Thursday
+              value: "thu"
+            - label: Friday
+              value: "fri"
+            - label: Saturday
+              value: "sat"
+            - label: Sunday
+              value: "sun"
+    include_bypass:
+      name: Use The By-pass Options (Optional)
+      description: Seleccione habilitar o deshabilitar. Las tres opciones de habilitación permitirán el control manual de su ventilador.
+        Las tres opciones de habilitación son solo para seleccionar lo que debe suceder cuando enciende el bypass.
+        Al habilitar una opción, ingrese el interruptor de derivación en la entrada correspondiente a continuación.
+      default: []
+      selector:
+        select:
+          options:
+            - label: 1 - Enable the By-pass - Turn fan ON
+              value: "bypass_enabled_turn_on"
+            - label: 2 - Enable the By-pass - Turn fan OFF
+              value: "bypass_enabled_turn_off"
+            - label: 3 - Enable the By-pass - Keep the fan current state
+              value: "bypass_enabled_stop"
+          multiple: true
+    bypass_fan_on:
+      name: By-pass Switch - Turn Fan ON
+      description: Seleccione los interruptores que encenderán su ventilador, omitirá el sensor de activación y hará que su ventilador funcione normalmente.
+        La entidad no se puede incluir en las selecciones de "Fan".
+      default: []
+      selector:
+        entity:
+          multiple: true
+    bypass_fan_off:
+      name: By-pass Switch - Turn Fan OFF
+      description: Seleccione los interruptores que apagarán su ventilador, omitirán el sensor de activación y harán que su ventilador funcione normalmente.
+        La entidad no se puede incluir en las selecciones de "Fan".
+      default: []
+      selector:
+        entity:
+          multiple: true
+    bypass_fan_stop:
+      name: By-pass Switch - Keep The Fan Current State
+      description: Seleccione los interruptores que pausarán su ventilador, omitirá el sensor de activación y hará que su ventilador funcione normalmente.
+        La entidad no se puede incluir en las selecciones de "Fan".
+      default: []
+      selector:
+        entity:
+          multiple: true
+    include_bypass_auto_off:
+      name: Use The By-pass Auto OFF Option (Optional)
+      description: Esto se utiliza cuando enciende el bypass y desea que se apague automáticamente en un retraso de tiempo establecido.
+        También se puede utilizar como temporizador para encender y apagar el ventilador si ha elegido utilizar "Habilitar el bypass - Encender el ventilador" arriba.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable the by-pass auto off - Turn fan ON option
+              value: "bypass_auto_off_enabled_on"
+            - label: Enable the by-pass auto off  - Turn fan OFF option
+              value: "bypass_auto_off_enabled_off"
+            - label: Enable the by-pass auto off  - Keep the fan current state
+              value: "bypass_auto_off_enabled_stop"
+          multiple: true
+    bypass_auto_off_delay:
+      name: By-pass Auto OFF - Time Delay
+      description: Configure el retardo de tiempo de apagado automático del bypass. El tiempo de retardo comienza desde el último bypass que se activó.
+      default: 60
+      selector:
+        number:
+          min: 1
+          max: 240
+          step: 1
+          unit_of_measurement: minutes
+    global_conditions:
+      name: Global Conditions
+      description: Ingrese las condiciones globales que le gustaría aplicar a la automatización.
+      default: []
+      selector:
+        condition:
+    include_ha_restart:
+      name: Use The HA Restart Option (Optional)
+      description: Seleccione esta opción para activar la opción de reinicio de Home Assistant.
+      
+      
+        **Nota -** Si estás usando mi modelo "Ventilador extractor de humedad para baño" con el mismo ventilador, no actives esta opción.
+        El modelo "Ventilador extractor de humedad para baño" ya tiene su propia protección de reinicio. Esto evita conflictos; por eso es una opción para habilitar o deshabilitar.
+      default: disable_ha_restart
+      selector:
+        select:
+          options:
+            - label: Enable the HA Restart option
+              value: "enable_ha_restart"
+            - label: Disable the HA Restart option
+              value: "disable_ha_restart"
+
+# If light or motion sensor turns ON again within the time delay, it will restart the script.
+mode: restart
+max_exceeded: silent
+
+variables:
+  entity_trigger: !input entity_trigger
+  fan_switch: !input fan_switch
+  trigger_options: !input trigger_options
+  time_delay: !input time_delay
+  trigger_wait_option: !input trigger_wait_option
+  trigger_wait_time: !input trigger_wait_time
+  include_manual_fan_switch: !input include_manual_fan_switch
+  manual_fan_switch: !input manual_fan_switch
+  manual_fan_switch_time_delay: !input manual_fan_switch_time_delay
+  include_time: !input include_time
+  after_time: !input after_time
+  before_time: !input before_time
+  weekday_options: !input weekday_options
+  include_bypass: !input include_bypass
+  bypass_fan_on: !input bypass_fan_on
+  bypass_fan_off: !input bypass_fan_off
+  bypass_fan_stop: !input bypass_fan_stop
+  include_bypass_auto_off: !input include_bypass_auto_off
+  bypass_auto_off_delay: !input bypass_auto_off_delay
+  global_conditions: !input global_conditions
+  include_ha_restart: !input include_ha_restart
+
+trigger:
+  - platform: state
+    id: "t1"
+    entity_id: !input entity_trigger
+    from: "off"
+    to: "on"
+  - platform: state
+    id: "t2"
+    entity_id: !input entity_trigger
+    from: "on"
+    to: "off"
+  - platform: state
+    id: "t3_on"
+    entity_id: !input bypass_fan_on
+    from: "off"
+    to: "on"
+  - platform: state
+    id: "t3_off"
+    entity_id: !input bypass_fan_off
+    from: "off"
+    to: "on"
+  - platform: state
+    id: "t3_stop"
+    entity_id: !input bypass_fan_stop
+    from: "off"
+    to: "on"
+  - platform: state
+    id: "t4_on"
+    entity_id: !input bypass_fan_on
+    from: "on"
+    to: "off"
+  - platform: state
+    id: "t4_off"
+    entity_id: !input bypass_fan_off
+    from: "on"
+    to: "off"
+  - platform: state
+    id: "t4_stop"
+    entity_id: !input bypass_fan_stop
+    from: "on"
+    to: "off"
+  - platform: state
+    id: "t5"
+    entity_id: !input manual_fan_switch
+    from: "off"
+    to: "on"
+  - platform: homeassistant
+    id: "t6"
+    event: start
+
+# All Conditions
+condition:
+#Trigger conditions
+  - condition: or
+    conditions:
+      - condition: and # trigger normal mode
+        conditions:
+          - "{{ trigger_options == 'normal_mode_trigger' }}"
+          - "{{ (trigger_wait_option == 'fire_on_trigger') or (trigger_wait_option == 'wait_for_trigger') }}"
+          - condition: trigger
+            id: 't1'
+      - condition: and # trigger inverted mode
+        conditions:
+          - "{{ trigger_options == 'inverted_trigger' }}"
+          - "{{ (trigger_wait_option == 'fire_on_trigger') or (trigger_wait_option == 'wait_for_trigger') }}"
+          - condition: trigger
+            id: 't2'
+      - condition: and # trigger by by-pass turning on
+        conditions:
+          - condition: trigger
+            id: 't3_on'
+          - "{{ 'bypass_enabled_turn_on' in include_bypass }}"
+      - condition: and # trigger by by-pass turning off
+        conditions:
+          - condition: trigger
+            id: 't3_off'
+          - "{{ 'bypass_enabled_turn_off' in include_bypass }}"
+      - condition: and # trigger by by-pass stop
+        conditions:
+          - condition: trigger
+            id: 't3_stop'
+          - "{{ 'bypass_enabled_stop' in include_bypass }}"
+      - condition: and # trigger by by-pass turning on
+        conditions:
+          - condition: trigger
+            id: 't4_on'
+          - "{{ 'bypass_enabled_turn_on' in include_bypass }}"
+      - condition: and # trigger by by-pass turning off
+        conditions:
+          - condition: trigger
+            id: 't4_off'
+          - "{{ 'bypass_enabled_turn_off' in  include_bypass }}"
+      - condition: and # trigger by by-pass stop
+        conditions:
+          - condition: trigger
+            id: 't4_stop'
+          - "{{ 'bypass_enabled_stop' in include_bypass }}"
+      - condition: and # trigger by manual fan switch option
+        conditions:
+          - condition: state
+            entity_id: !input manual_fan_switch
+            match: any
+            state: 'on'
+          - condition: trigger
+            id: 't5'
+          - "{{ ( include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off') }}"
+      - condition: and # trigger by HA Restart & check if trigger sensor or manual fan switch is on
+        conditions:
+          - "{{ (is_state(fan_switch, 'on')) or ((is_state(entity_trigger, 'on')) and (trigger_options == 'normal_mode_trigger')) or (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+          - "{{ include_ha_restart == 'enable_ha_restart' }}"
+          - condition: trigger
+            id: 't6'
+
+# Check The Time Options
+  - condition: or
+    conditions:
+      - "{{ include_time == 'time_disabled' }}"
+      - condition: and
+        conditions:
+        - condition: time
+          after: !input after_time
+          before: !input before_time
+          weekday: !input weekday_options
+        -  "{{ include_time == 'time_enabled' }}"
+      - condition: trigger
+        id:
+          - 't3_on'
+          - 't3_off'
+          - 't3_stop'
+          - 't4_on'
+          - 't4_off'
+          - 't4_stop'
+          - 't6'
+
+# Check Manual By-pass Options
+  - condition: or
+    conditions:
+      - "{{ include_bypass == [] }}"
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_on
+            state: 'off'
+          - condition: state
+            entity_id: !input bypass_fan_off
+            state: 'off'
+          - condition: state
+            entity_id: !input bypass_fan_stop
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_on
+            state: 'off'
+          - condition: state
+            entity_id: !input bypass_fan_off
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_on
+            state: 'off'
+          - condition: state
+            entity_id: !input bypass_fan_stop
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_off
+            state: 'off'
+          - condition: state
+            entity_id: !input bypass_fan_stop
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_on
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_off
+            state: 'off'
+      - condition: and
+        conditions:
+          - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+          - condition: state
+            entity_id: !input bypass_fan_stop
+            state: 'off'
+      - condition: trigger
+        id: 
+          - 't3_on'
+          - 't3_off'
+          - 't3_stop'
+          - 't4_on'
+          - 't4_off'
+          - 't4_stop'
+
+# Global Conditions
+  - condition: and
+    conditions: !input global_conditions
+
+action:
+  - choose:
+    - alias: "Check if the manual fan switch option is enabled, switch is on and the trigger is off"
+      conditions:
+        - condition: trigger
+          id: 't5'
+        - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+        - "{{ is_state(entity_trigger, 'off') }}"
+      sequence:
+        - choose:
+          - alias: "Check if the manual fan switch auto off is enabled"
+            conditions:
+              - "{{ include_manual_fan_switch == 'enable_manual_fan_switch_auto_off' }}"
+            sequence:
+              - alias: "Turn on the fan"
+                service: homeassistant.turn_on
+                entity_id: !input fan_switch
+              - alias: "Wait until the manual fan switch is turned off or the time delay passes"
+                wait_for_trigger:
+                  platform: state
+                  entity_id: !input manual_fan_switch
+                  from: "on"
+                  to: "off"
+                timeout:
+                  minutes: !input manual_fan_switch_time_delay
+              - alias: "Turn off the manual fan switch"
+                service: homeassistant.turn_off
+                entity_id: !input manual_fan_switch
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+          - alias: "Check if the manual fan switch is enabled"
+            conditions:
+              - "{{ include_manual_fan_switch == 'enable_manual_fan_switch' }}"
+            sequence:
+              - alias: "Turn on the fan"
+                service: homeassistant.turn_on
+                entity_id: !input fan_switch
+              - alias: "Wait until the manual fan switch is turned off"
+                wait_for_trigger:
+                  platform: state
+                  entity_id: !input manual_fan_switch
+                  from: "on"
+                  to: "off"
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+        - stop: "Stop the automation"
+    - alias: "Check if the manual fan switch option is enabled, switch is on and the trigger is on"
+      conditions:
+        - condition: trigger
+          id: 't5'
+        - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+        - "{{ is_state(entity_trigger, 'on') }}"
+      sequence:
+        - choose:
+          - alias: "Check if the manual fan switch auto off is enabled"
+            conditions:
+              - "{{ trigger_wait_option == 'wait_for_trigger' }}"
+            sequence:
+              - alias: "Turn on the fan"
+                service: homeassistant.turn_on
+                entity_id: !input fan_switch
+    - alias: "By-pass is turned on & check by-pass option - turn fan off"
+      conditions:
+        - condition: trigger
+          id: 't3_off'
+      sequence:
+        - alias: "Turn off the fan"
+          service: homeassistant.turn_off
+          entity_id: !input fan_switch
+        - alias: "Check by-pass settings and preform the correct action"
+          if:
+            - alias: "Check if the by-pass auto off is enabled"
+              condition: template
+              value_template: "{{ ('bypass_auto_off_enabled_on' in include_bypass_auto_off) or ('bypass_auto_off_enabled_off' in include_bypass_auto_off) or ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+          then:
+            - alias: "Wait the number of minutes set in the by-pass auto off time delay"
+              delay: 
+                minutes: !input bypass_auto_off_delay
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_auto_off_enabled_on' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_on
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_turn_off' in include_bypass) and ('bypass_auto_off_enabled_off' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_off
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_stop' in include_bypass) and ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_stop
+            - stop: "Stop the automation"
+          else:
+            - stop: "Stop the automation"
+    - alias: "By-pass is turned on & check by-pass option - Keep the current fan state"
+      conditions:
+        - condition: trigger
+          id: 't3_stop'
+      sequence:
+        - alias: "Check by-pass settings and preform the correct action"
+          if:
+            - alias: "Check if the by-pass auto off is enabled"
+              condition: template
+              value_template: "{{ ('bypass_auto_off_enabled_on' in include_bypass_auto_off) or ('bypass_auto_off_enabled_off' in include_bypass_auto_off) or ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+          then:
+            - alias: "Wait the number of minutes set in the by-pass auto off time delay"
+              delay: 
+                minutes: !input bypass_auto_off_delay
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_auto_off_enabled_on' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_on
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_turn_off' in include_bypass) and ('bypass_auto_off_enabled_off' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_off
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ('bypass_enabled_stop' in include_bypass) and ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+                  sequence:
+                    - alias: "Turn off the by-pass"
+                      service: homeassistant.turn_off
+                      entity_id: !input bypass_fan_stop
+            - stop: "Stop the automation"
+          else:
+            - stop: "Stop the automation"
+    - alias: "Normal Mode - By-pass is turned off & check if the trigger sensor and manual fan switch is off"
+      conditions:
+        - condition: template
+          value_template: "{{ trigger_options == 'normal_mode_trigger' }}"
+        - condition: trigger
+          id:
+            - 't4_on'
+            - 't4_off'
+            - 't4_stop'
+        - condition: and
+          conditions:
+            - "{{ is_state(entity_trigger, 'off') }}"
+            - condition: or
+              conditions:
+                - "{{ (include_manual_fan_switch == 'enable_manual_fan_switch') and (is_state(manual_fan_switch, 'off')) }}"
+                - "{{ (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off') and (is_state(manual_fan_switch, 'off')) }}"
+                - "{{ include_manual_fan_switch == 'disable_manual_fan_switch' }}"
+      sequence:
+        - choose:
+          - alias: "Check all by-pass are off"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+            sequence:
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+              - stop: "Stop the automation"
+          - alias: "trigger sensor is off and check if any by-passes are on"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        match: any
+                        state: 'on'
+            sequence:
+              - stop: "Stop the automation"
+    - alias: "Normal Mode - By-pass is turned off & check if the trigger sensor or the manual fan switch is on"
+      conditions:
+        - condition: template
+          value_template: "{{ trigger_options == 'normal_mode_trigger' }}"
+        - condition: trigger
+          id:
+            - 't4_on'
+            - 't4_off'
+            - 't4_stop'
+        - condition: or
+          conditions:
+            - "{{ is_state(entity_trigger, 'on') }}"
+            - "{{ (include_manual_fan_switch == 'enable_manual_fan_switch') and (is_state(manual_fan_switch, 'on')) }}"
+            - "{{ (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off') and (is_state(manual_fan_switch, 'on')) }}"
+      sequence:
+        - choose:
+          - alias: "Check all by-pass are off and check conditions if enabled "
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+              - condition: or
+                conditions:
+                - condition: and
+                  conditions:
+                  - condition: time
+                    after: !input before_time
+                    before: !input after_time
+                  -  "{{ include_time == 'time_enabled' }}"
+            sequence:
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+              - stop: "Stop the automation"
+          - alias: "Trigger sensor is on and check if any by-passes are on"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        match: any
+                        state: 'on'
+            sequence:
+              - stop: "Stop the automation"
+          - alias: "Check if the manual fan switch option is enabled, manual fan switch is on and the trigger is off"
+            conditions:
+              - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+              - "{{ not is_state(entity_trigger, 'on') }}"
+            sequence:
+              - choose:
+                - alias: "Check if the manual fan switch auto off is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch_auto_off' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off or the time delay passes"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                      timeout:
+                        minutes: !input manual_fan_switch_time_delay
+                    - alias: "Turn off the manual fan switch"
+                      service: homeassistant.turn_off
+                      entity_id: !input manual_fan_switch
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+                - alias: "Check if the manual fan switch is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+              - stop: "Stop the automation"
+    - alias: "Inverted Mode - By-pass is turned off & check if the trigger sensor and the manual fan switch is off"
+      conditions:
+        - condition: template
+          value_template: "{{ trigger_options == 'inverted_trigger' }}"
+        - condition: trigger
+          id:
+            - 't4_on'
+            - 't4_off'
+            - 't4_stop'
+        - condition: and
+          conditions:
+            - "{{ is_state(entity_trigger, 'off') }}"
+            - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'off'))) }}"
+      sequence:
+        - choose:
+          - alias: "Check all by-pass are off"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+            sequence:
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+              - stop: "Stop the automation"
+          - alias: "Trigger sensor is off and check if any by-passes are on"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        match: any
+                        state: 'on'
+            sequence:
+              - stop: "Stop the automation"
+    - alias: "Inverted Mode - By-pass is turned off & check if the trigger sensor or the manual fan switch is on"
+      conditions:
+        - condition: template
+          value_template: "{{ trigger_options == 'inverted_trigger' }}"
+        - condition: trigger
+          id:
+            - 't4_on'
+            - 't4_off'
+            - 't4_stop'
+        - condition: or
+          conditions:
+            - "{{ is_state(entity_trigger, 'on') }}"
+            - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+      sequence:
+        - choose:
+          - alias: "Check all by-pass are off and check conditions if enabled "
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        state: 'off'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        state: 'off'
+              - condition: or
+                conditions:
+                - condition: and
+                  conditions:
+                  - condition: time
+                    after: !input before_time
+                    before: !input after_time
+                  -  "{{ include_time == 'time_enabled' }}"
+            sequence:
+              - alias: "Turn off the fan"
+                service: homeassistant.turn_off
+                entity_id: !input fan_switch
+              - stop: "Stop the automation"
+          - alias: "Trigger sensor is on and check if any by-passes are on"
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_on
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity_id: !input bypass_fan_off
+                            match: any
+                            state: 'on'
+                          - condition: state
+                            entity_id: !input bypass_fan_stop
+                            match: any
+                            state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_on
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' in include_bypass) and ('bypass_enabled_stop' not in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_off
+                        match: any
+                        state: 'on'
+                  - condition: and
+                    conditions:
+                      - "{{ ('bypass_enabled_turn_on' not in include_bypass) and ('bypass_enabled_turn_off' not in include_bypass) and ('bypass_enabled_stop' in include_bypass) }}"
+                      - condition: state
+                        entity_id: !input bypass_fan_stop
+                        match: any
+                        state: 'on'
+            sequence:
+              - stop: "Stop the automation"
+          - alias: "Check if the manual fan switch option is enabled, manual fan switch is on and the trigger is off"
+            conditions:
+              - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+              - "{{ not is_state(entity_trigger, 'on') }}"
+            sequence:
+              - choose:
+                - alias: "Check if the manual fan switch auto off is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch_auto_off' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off or the time delay passes"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                      timeout:
+                        minutes: !input manual_fan_switch_time_delay
+                    - alias: "Turn off the manual fan switch"
+                      service: homeassistant.turn_off
+                      entity_id: !input manual_fan_switch
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+                - alias: "Check if the manual fan switch is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+              - stop: "Stop the automation"
+          - alias: "Check if the trigger sensor is on"
+            conditions:
+              - "{{ is_state(entity_trigger, 'on') }}"
+            sequence:
+              - choose:
+                - alias: "Set the transition for the lights"
+                  conditions:
+                    - "{{ (is_state(entity_trigger, 'on')) and (is_state(manual_fan_switch, 'off')) }}"
+                  sequence:
+                    - alias: "Wait until trigger is off"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input entity_trigger
+                        from: "on"
+                        to: "off"
+                - alias: "Set the transition for the lights"
+                  conditions:
+                    - "{{ (is_state(entity_trigger, 'on')) and (is_state(manual_fan_switch, 'on')) }}"
+                  sequence:
+    - alias: "Safe Guard when HA restarts"
+      conditions:
+        - condition: trigger
+          id: 't6'
+      sequence:
+        - choose:
+          - alias: "Check if enabled manual fan switch is enabled and trigger is off"
+            conditions:
+              - "{{ (((include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off')) and (is_state(manual_fan_switch, 'on'))) }}"
+              - "{{ is_state(entity_trigger, 'off') }}"
+            sequence:
+              - choose:
+                - alias: "Check if the manual fan switch auto off is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch_auto_off' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off or the time delay passes"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                      timeout:
+                        minutes: !input manual_fan_switch_time_delay
+                    - alias: "Turn off the manual fan switch"
+                      service: homeassistant.turn_off
+                      entity_id: !input manual_fan_switch
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+                - alias: "Check if the manual fan switch is enabled"
+                  conditions:
+                    - "{{ include_manual_fan_switch == 'enable_manual_fan_switch' }}"
+                  sequence:
+                    - alias: "Turn on the fan"
+                      service: homeassistant.turn_on
+                      entity_id: !input fan_switch
+                    - alias: "Wait until the manual fan switch is turned off"
+                      wait_for_trigger:
+                        platform: state
+                        entity_id: !input manual_fan_switch
+                        from: "on"
+                        to: "off"
+                    - alias: "Turn off the fan"
+                      service: homeassistant.turn_off
+                      entity_id: !input fan_switch
+              - stop: "Stop the automation"
+  - choose:
+      - alias: "Default & prefom trigger options"
+        conditions:
+          - condition: trigger
+            id: 
+              - 't1'
+              - 't2'
+              - 't3_on'
+              - 't4_on'
+              - 't4_off'
+              - 't4_stop'
+              - 't5'
+              - 't6'
+        sequence:
+          - choose:
+            - alias: "Check if the trigger wait option is set"
+              conditions:
+                - condition: template
+                  value_template: "{{ trigger_wait_option == 'wait_for_trigger' }}"
+                - condition: not
+                  conditions:
+                    - condition: trigger
+                      id: 't3_on'
+              sequence:
+                - choose:
+                  - alias: "Check if the trigger is set to normal mode"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ trigger_options == 'normal_mode_trigger' }}"
+                    sequence:
+                      - choose:
+                        - alias: "Check if the trigger wait option is set"
+                          conditions:
+                            - "{{ is_state(fan_switch, 'off') }}"
+                          sequence:
+                            - alias: "Wait for the trigger to be on for the trigger wait time"
+                              wait_for_trigger:
+                                platform: state
+                                entity_id: !input entity_trigger
+                                from: "on"
+                                to: "off"
+                              timeout:
+                                minutes: !input trigger_wait_time
+                            - choose:
+                              - alias: "Check the trigger state"
+                                conditions:
+                                  - condition: state
+                                    entity_id: !input entity_trigger
+                                    state: "off"
+                                sequence:
+                                  - stop: "Stop the automation"
+                - choose:
+                  - alias: "Check if the trigger is set to inverted trigger"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ trigger_options == 'inverted_trigger' }}"
+                    sequence:
+                      - choose:
+                        - alias: "Check the trigger state"
+                          conditions:
+                            - condition: state
+                              entity_id: !input entity_trigger
+                              state: "on"
+                          sequence:
+                            - stop: "Stop the automation"
+          - alias: "Turn on the fan"
+            service: homeassistant.turn_on
+            entity_id: !input fan_switch
+          - choose:
+            - alias: "By-pass is enabled & check by-pass option - turn fan on"
+              conditions:
+                - condition: trigger
+                  id: 't3_on'
+              sequence:
+                - alias: "Check by-pass settings and preform the correct action"
+                  if:
+                    - alias: "Check if the by-pass auto off is enabled"
+                      condition: template
+                      value_template: "{{ ('bypass_auto_off_enabled_on' in include_bypass_auto_off) or ('bypass_auto_off_enabled_off' in include_bypass_auto_off) or ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+                  then:
+                    - alias: "Wait the number of minutes set in the by-pass auto off time delay"
+                      delay: 
+                        minutes: !input bypass_auto_off_delay
+                    - choose:
+                        - conditions:
+                            - condition: template
+                              value_template: "{{ ('bypass_enabled_turn_on' in include_bypass) and ('bypass_auto_off_enabled_on' in include_bypass_auto_off) }}"
+                          sequence:
+                            - alias: "Turn off the by-pass"
+                              service: homeassistant.turn_off
+                              entity_id: !input bypass_fan_on
+                    - choose:
+                        - conditions:
+                            - condition: template
+                              value_template: "{{ ('bypass_enabled_turn_off' in include_bypass) and ('bypass_auto_off_enabled_off' in include_bypass_auto_off) }}"
+                          sequence:
+                            - alias: "Turn off the by-pass"
+                              service: homeassistant.turn_off
+                              entity_id: !input bypass_fan_off
+                    - choose:
+                        - conditions:
+                            - condition: template
+                              value_template: "{{ ('bypass_enabled_stop' in include_bypass) and ('bypass_auto_off_enabled_stop' in include_bypass_auto_off) }}"
+                          sequence:
+                            - alias: "Turn off the by-pass"
+                              service: homeassistant.turn_off
+                              entity_id: !input bypass_fan_stop
+                    - stop: "Stop the automation"
+                  else:
+                    - stop: "Stop the automation"
+          - choose:
+            - alias: "Check if the trigger is set to normal mode"
+              conditions:
+                - condition: template
+                  value_template: "{{ trigger_options == 'normal_mode_trigger' }}"
+              sequence:
+                - alias: "Wait until trigger is off"
+                  wait_for_trigger:
+                    platform: state
+                    entity_id: !input entity_trigger
+                    from: "on"
+                    to: "off"
+          - alias: "Wait for the delay time"
+            delay:
+              minutes: !input time_delay
+          - choose:
+            - alias: "Check if the manual fan switch option is enabled and switch is on"
+              conditions:
+                - "{{ (include_manual_fan_switch == 'enable_manual_fan_switch') or (include_manual_fan_switch == 'enable_manual_fan_switch_auto_off') }}"
+                - "{{ is_state(manual_fan_switch, 'on') }}"
+              sequence:
+                - alias: "Turn OFF manual fan switch"
+                  service: homeassistant.turn_off
+                  entity_id: !input manual_fan_switch
+          - alias: "Turn off the fan"
+            service: homeassistant.turn_off
+            entity_id: !input fan_switch

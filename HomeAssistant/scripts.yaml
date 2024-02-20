@@ -33,7 +33,8 @@ homeassistant_start:
     metadata: {}
     data:
       message: "{{  [ \"Home Assistant está disponible\",\n      \"Home Assistant
-        está operativo\"\n    ] | random }}\n"
+        está operativo\" ,\n      \"Home Assistant está en linea\"\n    ] | random
+        }}\n"
   alias: HomeAssistant - start
   icon: mdi:restart
   mode: single

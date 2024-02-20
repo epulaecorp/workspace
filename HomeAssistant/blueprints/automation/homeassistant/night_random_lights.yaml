@@ -1,20 +1,20 @@
 blueprint:
-  name: Randomised Light at Night
+  name: LIGHT - Randomised Light at Night
   
   description: Randomly toggles a light at night within set parameters
   domain: automation
   input:
     target_light:
       name: Light to control
-      description: Which light are we automating?
+      description: Luz a controlar
       selector:
         entity:
           domain:
             - light
             - switch
     override_switch_entity:
-      name: Manual Override Switch
-      description: The Manual Override switch disables ALL automations when on. This automation will only run if Manual Override is off.
+      name: Enable Automation Switch
+      description: Switch de habilitación.
       selector:
         entity:
           domain:
@@ -22,7 +22,7 @@ blueprint:
             - switch
     away_lighting_switch_entity:
       name: Away Lighting Switch
-      description: This automation will only run if the Away Lighting Switch is on. You could control the status of the Away Lighting switch by another automation based on presence...
+      description: Switch de ausencia. 
       selector:
         entity:
           domain:

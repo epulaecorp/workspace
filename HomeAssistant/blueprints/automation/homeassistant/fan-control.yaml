@@ -1,38 +1,27 @@
 blueprint:
-  name: Temperature Control Exhaust Fan
+  name: FAN - Temperature Control
   description: >
     # 🌡 Temperature Control Exhaust Fan
     
     **Version: 1.8**
-    
-    
-    Let us know what you think of this blueprint and for community support including updates: [Click Here](https://community.home-assistant.io/t/temperature-control-exhaust-fan/515861/1)
-    
-    
-    **The Automation Process:**
-      - When the sensor rises above the set value it turns the fan ON.
-      - When the sensor falls below the set value it turns the fan OFF.
-      - You have the option to use the the maximum run time.
-      - You have the option to use the "Fan Speed - Switch Off Option". This is useful for turning OFF fans with different speeds.
-      - You have the option to use the "Trigger Sensor By-pass". This allows you to add a switch to manually By-pass the trigger sensor so you can use the fan as normal by turning it ON and OFF manually.
-      - You have the option to set a start time, an end time and select weekdays. This will only allow the automation to run between the time periods.
-      - You have the option to enter in any global conditions you like.
-      - Safe guard built in for HA restart.
-    
-    Note: If you turn the fan on manually and the automation runs it will turn the fan OFF automatically. It is recommended to use the "Trigger Sensor By-pass" option if you would like to keep the fan ON or OFF for extended time periods.
-    
-     Required = *
-    
-    
-     **Need help?** See our FAQ: [Click Here](https://community.home-assistant.io/t/temperature-control-exhaust-fan/515861/2)
-    
 
-    **If you like my blueprints, and would like to show your support or just say thank you?** [Click Here](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8) 🙂
+    **El proceso de automatización:**
+      - Cuando el sensor supera el valor establecido, enciende el ventilador.
+      - Cuando el sensor cae por debajo del valor establecido, apaga el ventilador.
+      - Tienes la opción de utilizar el tiempo de ejecución máximo.
+      - Tiene la opción de utilizar la "Velocidad del ventilador - Opción de apagado". Esto es útil para apagar ventiladores con diferentes velocidades.
+      - Tiene la opción de utilizar el "Bypass del sensor de disparo". Esto le permite agregar un interruptor para omitir manualmente el sensor de activación para que pueda usar el ventilador normalmente encendiéndolo y apagándolo manualmente.
+      - Tienes la opción de establecer una hora de inicio, una hora de finalización y seleccionar días de la semana. Esto solo permitirá que la automatización se ejecute entre los períodos de tiempo.
+      - Tienes la opción de ingresar en las condiciones globales que desees.
+      - Protección segura integrada para el reinicio de HA.
+    
+    Nota: Si enciende el ventilador manualmente y la automatización se ejecuta, el ventilador se apagará automáticamente. Se recomienda utilizar la opción "Desvío del sensor de activación" si desea mantener el ventilador encendido o apagado durante períodos de tiempo prolongados.
+    
   domain: automation
   input:
     trigger_sensor:
       name: Trigger Sensor *
-      description: The trigger can be any sensor you like that has a numeric value.
+      description: El disparador puede ser cualquier sensor que desee que tenga un valor numérico.
       selector:
         entity:
           filter:
@@ -40,7 +29,7 @@ blueprint:
               - sensor
     entity_turn_on:
       name: Fan Switch *
-      description: Enter the fan you would like to turn ON. Can be any switch you like.
+      description: Ingrese el ventilador que desea encender. Puede ser cualquier interruptor que quieras.
       selector:
         target:
           entity:
@@ -49,8 +38,8 @@ blueprint:
               - fan
     include_entity_turn_off:
       name: Use The Fan Speed - Switch Off Option (Optional)
-      description: Sometimes you need to select a different entity to turn ON for the fan to turn OFF. 
-        This is normally used when you have a fan that has different speeds.
+      description: A veces es necesario seleccionar una entidad diferente para encenderla y que el ventilador se apague.
+        Esto normalmente se usa cuando tienes un ventilador que tiene diferentes velocidades.
       default: fan_speed_off_disabled
       selector:
         select:
@@ -61,8 +50,8 @@ blueprint:
               value: "fan_speed_off_disabled"
     entity_turn_off:
       name: Fan Speed - Switch Off Option (Optional)
-      description: Select the entity that will turn the fan off.
-        Please DO NOT select the same entities that are selected above in "Fan Switch" here, as the automation will not work.
+      description: Seleccione la entidad que apagará el ventilador.
+        NO seleccione las mismas entidades que se seleccionaron arriba en "Fan Switch" aquí, ya que la automatización no funcionará.
       default: []
       selector:
         entity:
@@ -73,7 +62,7 @@ blueprint:
               - fan
     rising_value:
       name: Rising Value
-      description: The rising value to turn the fan ON.
+      description: El valor creciente para encender el ventilador.
       default: 20
       selector:
         number:
@@ -83,7 +72,7 @@ blueprint:
           unit_of_measurement: value
     falling_value:
       name: Falling Value
-      description: The falling value to turn the fan OFF.
+      description: El valor descendente para apagar el ventilador.
       default: 20
       selector:
         number:
@@ -93,7 +82,7 @@ blueprint:
           unit_of_measurement: value
     include_maximum_run_time:
       name: Use The Maximum Run Time Option (Optional)
-      description:  This is the maximum run time the fan can be ON for once the fan is triggered ON and the fall value is not achieved. 
+      description:  Este es el tiempo máximo de funcionamiento que el ventilador puede estar encendido una vez que se enciende y no se alcanza el valor de caída. 
       default: disabled_maximum_run_time
       selector:
         select:
@@ -104,7 +93,7 @@ blueprint:
               value: "disabled_maximum_run_time"
     maximum_run_time:
       name: Maximum Run Time
-      description: Set the maximum run time for your fan. You must enable the option above for it to work.
+      description: Establezca el tiempo máximo de funcionamiento de su ventilador. Debe habilitar la opción anterior para que funcione.
       default:
         hours: 0
         minutes: 0
@@ -113,8 +102,8 @@ blueprint:
         duration:
     include_bypass:
       name: Use The Trigger Sensor By-pass Option (Optional)
-      description: Select enable or disable. All of the three enable options will allow manual control of your fans.
-        The three enable options are only for selecting what should happen when you turn the by-pass ON. 
+      description: Seleccione habilitar o deshabilitar. Las tres opciones de habilitación permitirán el control manual de sus ventiladores.
+        Las tres opciones de habilitación son solo para seleccionar lo que debe suceder cuando enciende el bypass. 
       default: bypass_disabled
       selector:
         select:
@@ -129,15 +118,15 @@ blueprint:
               value: "bypass_disabled"
     trigger_bypass:
       name: Trigger Sensor By-pass
-      description: Select a switch that will By-pass the trigger sensor and make your fan function as normal.
-        The entity cannot be included in the "Fan Switch" selection.
+      description: Seleccione un interruptor que omitirá el sensor de activación y hará que su ventilador funcione normalmente.
+        La entidad no se puede incluir en la selección "Fan Switch".
       default: []
       selector:
         entity:
     include_bypass_auto_off:
       name: Use The By-pass Auto OFF Option (Optional)
-      description: This is used when you turn the by-pass ON and you would like the by-pass to automatically turn OFF in a set time delay. 
-        It can also be used as a timer to turn the fan ON and then OFF if you have chosen to use "Enable the By-pass - Turn fan ON" above.
+      description: Esto se utiliza cuando enciende el bypass y desea que se apague automáticamente en un retraso de tiempo establecido.
+        También se puede utilizar como temporizador para encender y apagar el ventilador si ha elegido utilizar "Habilitar el bypass - Encender el ventilador" arriba.
       default: bypass_auto_off_disabled
       selector:
         select:
@@ -148,7 +137,7 @@ blueprint:
               value: "bypass_auto_off_disabled"
     bypass_auto_off_delay:
       name: By-pass Auto OFF - Time Delay
-      description: Set the by-pass auto OFF time delay. 
+      description: Configure el retardo de tiempo de apagado automático del bypass. 
       default: 60
       selector:
         number:
@@ -158,7 +147,7 @@ blueprint:
           unit_of_measurement: minutes
     include_time:
       name: Use The Time Options (Optional)
-      description: Use the "Start Time", "End Time" and the "Weekdays" values to only run the automation between the time periods. 
+      description: Utilice los valores de "Hora de inicio", "Hora de finalización" y "Días de la semana" para ejecutar la automatización solo entre los períodos de tiempo. 
       default: time_disabled
       selector:
         select:
@@ -169,19 +158,19 @@ blueprint:
               value: "time_disabled"
     after_time:
       name: Start Time
-      description: Set the start time.
+      description: Establezca la hora de inicio.
       default: 00:00:00
       selector:
         time:
     before_time:
       name: End Time
-      description: Set the end time.
+      description: Establezca la hora de finalización.
       default: 00:00:00
       selector:
         time:
     weekday_options:
       name: Weekdays
-      description: Select the days of the week you would like the automation to run. You must select "Enable the time options" above for the weekdays selections to work.
+      description: Seleccione los días de la semana en los que desea que se ejecute la automatización. Debe seleccionar "Habilitar las opciones de tiempo" arriba para que funcionen las selecciones de días laborables.
       default:
         - mon
         - tue
@@ -211,7 +200,7 @@ blueprint:
               value: "sun"
     global_conditions:
       name: Global Conditions
-      description: Enter any global conditions you would like to apply to the automation.
+      description: Ingrese las condiciones globales que le gustaría aplicar a la automatización.
       default: []
       selector:
         condition:

@@ -7,12 +7,16 @@
     client_secret: Pa$$w0rd
     filter:
       include_entities:
-        - switch.fvicente_backlight_switch
-        - switch.fvicente_monitor_switch
-        - fan.fvicente_fan
+        #--- Luces ...#
         - light.fvicente
-
+        - switch.fvicente_backlight_switch
+        #... Ventiladores ...#
+        - fan.fvicente_fan
+        - switch.fvicente_wfan
+        #... Televisión ...#
         - switch.chromecast
+        - switch.fvicente_monitor_switch
+        #... Especiales ...#
         - input_boolean.sleep_interruption
 #      include_entity_globs:
 #        - binary_sensor.*_motion
@@ -25,20 +29,18 @@
       
       switch.fvicente_backlight_switch:
         name: "Mi Respaldo"
-        description: "fvicente Backlight"
+      light.fvicente:
+        name: "Mi Luz"
       
-      switch.fvicente_monitor_switch:
-        name: "Mi Monitor"
-        description: "fvicente Monitor"
 
       fan.fvicente_fan:
         name: "Mi Ventilador"
-        description: "fvicente Ventilador"
+      swittch.fvicente_wfan:
+        name: "Mi Ventilador Exterior"
 
-      light.fvicente:
-        name: "Mi Luz"
-        description: "fvicente Light"
 
+      switch.fvicente_monitor_switch:
+        name: "Mi Monitor"
       switch.chromecast:
         name: "Mi televisión"
 

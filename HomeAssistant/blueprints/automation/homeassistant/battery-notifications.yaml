@@ -1,40 +1,33 @@
 blueprint:
-  name: Low Battery Notifications & Actions
+  name: BATTERY - Notifications & Actions
   description: >
     # 🪫 Low Battery Notifications & Actions
 
     **Version: 1.8**
     
     
-    Stay Charged, Stay Smart! Customize it your way and let's automate your battery maintenance! 🔋⚡
+    ¡Manténgase cargado, manténgase inteligente! ¡Personalízalo a tu manera y automaticemos el mantenimiento de tu batería! 🔋⚡
     
+    **El proceso de automatización:**
+      - Tienes dos opciones de activación. Ambas opciones te permitirán enviar una notificación a uno o varios dispositivos, y/o realizar acciones.
+        1. Asistente de botones: tiene la opción de utilizar un asistente de botones. Cuando se presiona, verificará los niveles de la batería.
+        2. Hora y día: tiene la opción de verificar periódicamente los niveles de la batería en un día y una hora determinados.
+      - Tiene la opción de agregar botones de acción a su mensaje, lo que le permite agregar sus baterías bajas a una lista de tareas pendientes.
+      - Tiene la opción de utilizar "Sensores de batería - Grupo personalizado". Puede crear un grupo personalizado de sensores de batería con su propio nivel de advertencia de batería baja independiente para usarlo en su notificación.
+      - Tienes la opción de utilizar "Sensores de batería excluidos". Puede seleccionar excluir los sensores de batería en su notificación.
+      - Tienes la opción de utilizar "Notificación Fácil". Esto le permite configurar fácilmente su mensaje de notificación de batería baja. Si todas sus baterías están bien, también puede seleccionar si desea recibir un "Mensaje de confirmación de aceptación".
+      - Tienes la opción de utilizar acciones personalizadas. Esto se puede usar si desea personalizar su notificación o reproducir un anuncio en The Voice (HA), Google, Alexa, TTS, etc. Tiene 10 sensores que pueden usarse en sus acciones personalizadas.
+      - Tienes la opción de ingresar en las condiciones globales que desees.
+      - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android.
     
-    Let us know what you think of this blueprint and for community support including updates: [Click Here](https://community.home-assistant.io/t/653754)
+    ¿Necesitas ayuda? Consulte nuestras preguntas frecuentes: [Haga clic aquí](https://community.home-assistant.io/t/653754/2?u=blacky)
     
-    
-    **The Automation Process:**
-      - You have two trigger options. Both options will allow you to send a notification to one or multiple devices, and / or perform actions.
-        1. Button Helper - You have the option to use a button helper. When pressed, it will check the battery levels.
-        2. Time & Day - You have the option to periodically check the battery levels on a given time and day.
-      - You have the option to add action buttons to your message, enabling you to add your low batteries to a To-Do list.
-      - You have the option to use "Battery Sensors - Custom Group". You can create a custom group of battery sensors with its own independent battery low warning level to use for your notification.
-      - You have the option to use "Excluded Battery Sensors". You can select to exclude battery sensors in your notification. 
-      - You have the option to use "Easy Notify". This allows you to easily set up your low battery notification message. If all your batteries are okay, you can also select if you would like to receive an "Okay Confirmation Message".
-      - You have the option to use custom actions. This can be used if you would like to customise your notification or to play an announcement on The Voice (HA), Google, Alexa, TTS, etc. You have 10 sensors that can be used in your custom actions.
-      - You have the option to enter in any global conditions you like.
-      - Notifications can work with Apple IOS and Android devices. One for all, and all for one.
-    
-    
-    Need help? See our FAQ: [Click Here](https://community.home-assistant.io/t/653754/2?u=blacky)
-    
-    
-    **If you like my blueprints, and would like to show your support or just say thank you?** [Click Here](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8) 🙂
   domain: automation
   input:
     include_button:
       name: Use The Button Helper Trigger (Optional)
-      description: Select if you would like a button helper to trigger the automation.
-        This is useful if you would like to check the battery levels by pressing a button in the UI.
+      description: Seleccione si desea que un botón auxiliar active la automatización.
+        Esto es útil si desea verificar los niveles de la batería presionando un botón en la interfaz de usuario.
       default: disable_button_trigger
       selector:
         select:
@@ -45,7 +38,7 @@ blueprint:
               value: "disable_button_trigger"
     button_entity:
       name: Button Helper
-      description: Input your button helper.
+      description: Ingrese su botón auxiliar.
       default: []
       selector:
         entity:
@@ -53,8 +46,8 @@ blueprint:
             domain: input_button
     include_time:
       name: Use The Time Trigger (Optional)
-      description: Select if you would like to use the time trigger.
-        This is useful if you would like to periodically check the battery levels on a given time and day.
+      description: Seleccione si desea utilizar el activador de tiempo.
+        Esto es útil si desea verificar periódicamente los niveles de la batería en un día y hora determinados.
       default: time_disabled
       selector:
         select:
@@ -65,13 +58,13 @@ blueprint:
               value: "time_disabled"
     time:
       name: Time
-      description: Set the time you would like to run the automation.
+      description: Establezca la hora a la que le gustaría ejecutar la automatización.
       default: '00:00:00'
       selector:
         time:
     weekday_options:
       name: Weekdays
-      description: Select the days of the week you would like the automation to run.
+      description: Seleccione los días de la semana en los que desea que se ejecute la automatización.
       default:
         - mon
         - tue
@@ -101,7 +94,7 @@ blueprint:
               value: "sun"
     battery_level:
       name: Battery Low Warning Level
-      description: Set the battery low warning level.
+      description: Establezca el nivel de advertencia de batería baja.
       default: 20
       selector:
         number:
@@ -111,13 +104,13 @@ blueprint:
           unit_of_measurement: '%'
     exclude_sensors:
       name: Excluded Battery Sensors (Optional)
-      description: Select the battery sensors to be excluded when the automation runs.
-        The automation will try and find all your battery sensors used in Home Assistant. This will also
-        include the batteries of your phones, tablets, etc and sometimes it is not always desirable or required to check
-        those batteries. Entering in those batteries here will exclude them from your notifications.
+      description: Seleccione los sensores de batería que se excluirán cuando se ejecute la automatización.
+        La automatización intentará encontrar todos los sensores de batería utilizados en Home Assistant. Esto también
+        Incluya las baterías de sus teléfonos, tabletas, etc. y, a veces, no siempre es conveniente o necesario verificarlas.
+        Ingresar esas baterías aquí las excluirá de sus notificaciones.
         
       
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        
       default: { entity_id: [] }
       selector:
         target:
@@ -125,15 +118,15 @@ blueprint:
             device_class: battery
     custom_group:
       name: Battery Sensors - Custom Group (Optional)
-      description: You can select a custom group of battery sensors to use in your notification.
-        The custom group has its own independent "Battery Low Warning Level" setting below.
-        When using all batteries + the custom group in one automation it is recommended to also exclude your custom group of batteries above in "Excluded Battery Sensors".
+      description: Puede seleccionar un grupo personalizado de sensores de batería para usar en su notificación.
+        El grupo personalizado tiene su propia configuración independiente de "Nivel de advertencia de batería baja" a continuación.
+        Cuando utilice todas las baterías + el grupo personalizado en una automatización, se recomienda excluir también el grupo personalizado de baterías anterior en "Sensores de batería excluidos".
         
         
-        Excluded battery sensors are not linked to this custom group.
+       Los sensores de batería excluidos no están vinculados a este grupo personalizado.
         
         
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       default: { entity_id: [] }
       selector:
         target:
@@ -141,7 +134,7 @@ blueprint:
             device_class: battery
     custom_group_battery_level:
       name: Custom Group - Battery Low Warning Level
-      description: Set the battery low warning level.
+      description: Establezca el nivel de advertencia de batería baja.
       default: 20
       selector:
         number:
@@ -151,9 +144,9 @@ blueprint:
           unit_of_measurement: '%'
     include_easy_notify:
       name: Use The Easy Notify Options (Optional)
-      description: Easy notify allows you to select 1 of the 3 preset messages.
-        You can also select if you would like to receive an okay confirmation message if all batteries are okay.
-        If you would like to customise your notifications or use The Voice (HA), Google, Alexa, TTS, etc then please use the below custom action options.
+      description: La notificación fácil le permite seleccionar 1 de los 3 mensajes preestablecidos.
+        También puede seleccionar si desea recibir un mensaje de confirmación de que todas las baterías están bien.
+        Si desea personalizar sus notificaciones o utilizar The Voice (HA), Google, Alexa, TTS, etc., utilice las siguientes opciones de acción personalizadas.
       default: disabled_easy_notify
       selector:
         select:
@@ -166,7 +159,7 @@ blueprint:
               value: "disabled_easy_notify"
     sensor_selection:
       name: Easy Notify - Sensor Selection
-      description: Easy notify allows you to easily select what sensors you would like to use in your notification.
+      description: La notificación fácil le permite seleccionar fácilmente qué sensores le gustaría usar en su notificación.
       default: enable_all_sensors
       selector:
         select:
@@ -179,7 +172,7 @@ blueprint:
               value: "enable_all_and_custom_group_sensors"
     notify_device:
       name: Easy Notify - Devices Notified
-      description: Select the devices to be notified.
+      description: Seleccione los dispositivos a notificar.
       default: []
       selector:
         device:
@@ -188,20 +181,20 @@ blueprint:
           multiple: true
     notify_title:
       name: Easy Notify - Title
-      description: Enter in the notification title of your message.
+      description: Ingrese el título de notificación de su mensaje.
       default: Low Battery Notification
       selector:
         text:
     notify_message:
       name: Easy Notify - Message
-      description: You can select 1 of the 3 preset messages from the dropdown menu.
+      description: Puede seleccionar 1 de los 3 mensajes preestablecidos en el menú desplegable.
         
         
-        1 - Low battery sensors + Battery level % + Unavailable sensors.
+        1 - Sensores de batería baja + % de nivel de batería + Sensores no disponibles.
         
-        2 - Low battery sensors + Battery level %.
+        2 - Sensores de batería baja + Nivel de batería %.
         
-        3 - Unavailable sensors.
+        3 - Sensores no disponibles.
       default: all_sensors
       selector:
         select:
@@ -215,15 +208,15 @@ blueprint:
               value: "unavailable_sensors"
     notify_okay_message:
       name: Easy Notify - Okay Confirmation Message
-      description: Enter in the notification message you would like to receive when all your batteries are okay.
+      description: Ingrese el mensaje de notificación que le gustaría recibir cuando todas sus baterías estén bien.
       default: YES! All batteries are okay :)
       selector:
         text:
     notify_action_buttons:
       name: Easy Notify - Action Buttons (Optional)
-      description: Enhance your notifications with an actionable To-Do list button feature.
-        With just a hold, release and tap, effortlessly add selected items from your low battery notification to any of your chosen To-Do lists. 
-        Plus, for added assurance, you can opt to receive a confirmation message confirming the action.
+      description: Mejore sus notificaciones con una función de botón de lista de tareas pendientes procesable.
+        Con solo mantener presionado, soltar y tocar, agregue sin esfuerzo elementos seleccionados de su notificación de batería baja a cualquiera de sus listas de tareas pendientes elegidas.
+        Además, para mayor seguridad, puede optar por recibir un mensaje de confirmación de la acción.
       default: disabled_notify_action_buttons
       selector:
         select:
@@ -236,57 +229,57 @@ blueprint:
               value: "disabled_notify_action_buttons"
     to_do_list:
       name: Easy Notify Action Buttons - To-Do List Selection
-      description: Choose the To-Do list where you'd like to add your task.
+      description: Elija la lista de tareas pendientes donde desea agregar su tarea.
         
         
-        **Note** - The default shopping list isn't compatible due to its lack of description capability. 
-        However, all other To-Do lists are fully supported.
+        **Nota** - la lista de compras predeterminada no es compatible debido a su falta de capacidad de descripción.
+        Sin embargo, todas las demás listas de tareas pendientes son totalmente compatibles.
       default: []
       selector:
         entity:
           domain: todo
     to_do_task_title:
       name: Easy Notify Action Buttons - Task Title
-      description: When the action button is pressed, it will add a task to your chosen To-Do list.
-        Please enter the title you would like for your To-Do task
+      description: Cuando se presiona el botón de acción, se agregará una tarea a la lista de tareas pendientes elegida.
+        Ingrese el título que desea para su tarea pendiente
       default: Batteries To Be Replaced
       selector:
         text:
     action_button_to_do:
       name: Easy Notify Action Buttons - Action Button
-      description: Please specify the name for the action button to be displayed in the notification.
-        When pressed this button effortlessly adds a task to your chosen To-Do list.
+      description: Especifique el nombre del botón de acción que se mostrará en la notificación.
+        Cuando se presiona, este botón agrega sin esfuerzo una tarea a la lista de tareas pendientes elegida.
       default: Add To To-Do List!
       selector:
         text:
     action_button_cancel:
       name: Easy Notify Action Buttons - Cancel Button
-      description: Please specify the name for the cancel button to be displayed in the notification.
-        This button allows you to cancel the task addition process.
+      description: Especifique el nombre del botón cancelar que se mostrará en la notificación.
+        Este botón le permite cancelar el proceso de adición de tareas.
       default: Cancel
       selector:
         text:
     action_button_confirmation_title:
       name: Easy Notify Action Buttons - Action & Cancel Button Confirmation Title
-      description: Please enter in a title for the confirmation notification message when an action button or a cancel button is pressed.
+      description: Ingrese un título para el mensaje de notificación de confirmación cuando se presione un botón de acción o un botón de cancelar.
       default: Low Battery Confirmation
       selector:
         text:
     action_button_confirmation_message:
       name: Easy Notify Action Buttons - Action Button Confirmation Message
-      description: Please enter in the message for the confirmation notification message when the action button is pressed.
+      description: Ingrese el mensaje para recibir el mensaje de notificación de confirmación cuando se presione el botón de acción.
       default: Your low batteries have been added to your To-Do list
       selector:
         text:
     cancel_action_button_confirmation_message:
       name: Easy Notify Action Buttons - Cancel Button Confirmation Message
-      description: Please enter in the message for the confirmation notification message when the cancel button is pressed.
+      description: Ingrese el mensaje para recibir el mensaje de notificación de confirmación cuando se presione el botón cancelar.
       default: Canceled - Nothing was added to your To-Do list
       selector:
         text:
     include_custom_actions:
       name: Use The Custom Action Options (Optional)
-      description: You can add any action you would like to perform when the automation is triggered.
+      description: Puede agregar cualquier acción que desee realizar cuando se active la automatización.
       default: disabled_custom_actions
       selector:
         select:
@@ -297,12 +290,12 @@ blueprint:
               value: "disabled_custom_actions"
     custom_actions:
       name: Custom Actions
-      description: Enter the actions you would like to run when the automation is triggered.
-        This is normally used if you would like to customise your notification or to play an announcement on The Voice (HA), Google, Alexa, TTS, etc. 
-        You have 10 sensors that you can include in a message depending on what you would like to use.
+      description: Ingrese las acciones que desea ejecutar cuando se active la automatización.
+        Esto normalmente se usa si desea personalizar su notificación o reproducir un anuncio en The Voice (HA), Google, Alexa, TTS, etc.
+        Tienes 10 sensores que puedes incluir en un mensaje dependiendo de lo que te gustaría usar.
         
         
-        **All Battery Sensors Minus Excluded**
+        **Todos los sensores de batería menos excluidos**
 
         1 - Use "{{all_sensors}}" for - Low battery sensors + Battery level % + Unavailable sensors.
 
@@ -331,7 +324,7 @@ blueprint:
         action:
     global_conditions:
       name: Global Conditions
-      description: Enter any global conditions you would like to apply to the automation.
+      description: Ingrese las condiciones globales que le gustaría aplicar a la automatización.
       default: []
       selector:
         condition:

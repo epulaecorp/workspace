@@ -11,9 +11,12 @@ automation manual: !include_dir_merge_list automations/
 # UI Automations
 automation ui: !include automations.yaml
 
+#... Helpers ...#
 script: !include scripts.yaml
 scene: !include scenes.yaml
-switch: !include helpers.yaml
+input_datetime: !include inputs_datetime.yaml
+switch: !include switches.yaml
+fan: !include fans.yaml
 
 #mqtt:
 #  sensor: !include sensors.yaml
@@ -65,13 +68,13 @@ lovelace:
       { url: '/local/fonts.css?v=2.1',                                              type: css }
     ]
   dashboards:
-    lovelace-main:
-      mode: yaml
-      filename: ui-lovelace.yaml
-      title: Main
-      icon: mdi:overscan
-      show_in_sidebar: true
-      require_admin: true
+#    lovelace-main:
+#      mode: yaml
+#      filename: ui-lovelace.yaml
+#      title: Main
+#      icon: mdi:overscan
+#      show_in_sidebar: true
+#      require_admin: true
     lovelace-fvicente:
       mode: yaml
       filename: ui-fvicente
@@ -108,6 +111,9 @@ sensor:
     display_options:
       - time
       - date
+      - date_time_iso
+      - time_date
+      - date_time
 
   # SQL
   - platform: sql
@@ -118,23 +124,9 @@ sensor:
         query: 'SELECT table_schema "hass_db", Round(Sum(data_length + index_length) / POWER(1024,2), 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
         column: 'value'
         unit_of_measurement: MB
-  
-
 
 recorder:
   db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
   purge_keep_days: 30
 
-# Example configuration.yaml entry
-birthdays:
-  - name: 'fvicente'
-    date_of_birth: 1977-04-13
-  - name: 'mariquita'
-    date_of_birth: 1967-08-19
-  - name: 'zahid'
-    date_of_birth: 2002-06-15
-  - name: 'ethan'
-    date_of_birth: 2006-08-20
-  - name: 'dayreth'
-    date_of_birth: 2010-12-23
     

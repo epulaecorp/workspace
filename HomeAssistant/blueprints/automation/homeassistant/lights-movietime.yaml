@@ -1,55 +1,67 @@
 blueprint:
-  name: Sensor Light Add On
+  name: LIGHT - Movie Time
   description: >
     # ♾️ Sensor Light Add On - Media & Movie - House Alarm - Smoke Alarm + More
     
-    **Version: 1.6**
+    **Version: 1.8**
+
+    A continuación se muestran algunos ejemplos de cómo se puede utilizar la automatización:
+
+      - Medios (Sala de cine): enciende diferentes luces cuando miras una película.
+      - Alarma de la casa: enciende las luces cuando se haya activado la alarma de tu casa.
+      - Detector de humo: Encienda las luces y los extractores de aire cuando se haya activado el detector de humo.
     
     
-    Below are some use cases.
-    
-      - Media - Cinema Room - Turn ON different lights when watching a movie.
-      - House Alarm - Turn ON lights when your house alarm has been activated.
-      - Smoke Detector - Turn on lights and exhaust fans when smoke detector has been activated.
-    
-    
-    Let us know what you think of this blueprint and for community support including updates: [Click Here](https://community.home-assistant.io/t/591824?u=blacky)
+    <details>
+    <summary><b>The Automation Process:</b> - Click here to expand</summary>
+
+
+    El siguiente ejemplo es adecuado para noches de cine o para utilizarlo en una sala de cine. Además, se puede utilizar para encender luces cuando se activa la alarma de su casa o activar luces y extractores de aire cuando se activa un detector de humo.
     
     
-    **The Automation Process:**
-      - The example below will be for a movie night or use in a cinema room. It can also be used to turn on lights when your house alarm has been activated or turn on lights and exhaust fans when a smoke detector has been activated. For more examples and information check out "The Settings & Best Practice Guidelines:" [Click Here](https://community.home-assistant.io/t/591824/3?u=blacky)
-      - When a movie is being played (Started), the lights, switches and or scenes are turned ON to a movie mode set by you.
-      - You have the option to turn OFF selected lights and or switches at the start of movie.
-      - You have the option to use "Intermission", so when a movie is paused it can turn ON different slightly brighter lights to keep you in the movie mode.
-      - When a movie is stopped, the lights, switches and or scenes are turned OFF.
-      - You have the option to turn ON selected lights, switches and or scenes at the end of a movie.
-      - You have the option to use the "Automation Link Option". This disables other automations via a By-pass control option when a movie is activated. It is designed to work with my other blueprints.
-      - You have the option to use the "Sun Elevation". This is used for adding a condition to only work when it is dark by setting the suns position to the horizon.
-      - You have the option to set an Ambient Light Sensor and set the LUX value. This is used for adding a condition to only work when it is dark or below the Ambient Light LUX Value.
-      - You have the option to use the "By-pass". This allows you to add a by-pass switch to manually By-pass the automation.
+      - **Inicio de la película (reproduciendo):**
+        - Las luces, interruptores y escenas se activan en un modo de película.
+        - También puede especificar la aplicación utilizada en el reproductor multimedia (por ejemplo, Apple TV, Netflix, etc.) y activar la automatización solo si se utilizan estas aplicaciones.
+        - Puedes seleccionar qué luces e interruptores se apagarán al comienzo de la película.
+        - Puedes optar por crear una instantánea de tus luces e interruptores antes de que comience la película, lo que te permitirá devolverlos a su estado original una vez que termine la película.
+      
+      - **Tiempo de retardo:**
+        - El tiempo de retardo es un período de buffer antes de que la automatización se apague o entre en un modo intermedio. Proporciona un período de gracia para rectificar acciones accidentales.
+
+      - **Intermedio:**
+        - El intervalo permite realizar ajustes de iluminación versátiles, incluido encender diferentes luces, ajustar los niveles de brillo, cambiar la configuración de temperatura del color o seleccionar escenas específicas. Es particularmente útil para configurar luces ligeramente más brillantes durante un descanso intermedio al pausar una película.
+
+      - **Fin de la película:**
+        - Cuando termina la película, todas las luces, interruptores y escenas se apagan. Alternativamente, si está utilizando la opción de enlace de automatización, la automatización de la luz del sensor se activará, devolviendo las luces a la configuración de automatización de la luz del sensor.
+        - Opcionalmente, puede seleccionar luces, interruptores y escenas que se encenderán después de que termine la película.
+        - Si has elegido crear una instantánea de tus luces e interruptores al principio, volverán a su estado original cuando termine la película.
+
+      - **Opción de enlace de automatización:**
+        - La "Opción de enlace de automatización" se integra perfectamente con otros planos, como el "Plano de luz del sensor", lo que le permite desactivar automatizaciones adicionales cuando se activa una película. Esta función toma el control de las luces, los interruptores, las escenas y los guiones, lo que garantiza una experiencia cinematográfica fluida. Una vez que termina la película, las demás automatizaciones se vuelven a habilitar, restableciendo las luces, interruptores, escenas y guiones a su funcionamiento normal.
+
+      - **Accionamiento manual:**
+        - Utilice "Opciones de derivación" para anular manualmente los sensores de activación, lo que proporciona control manual y personalización adicional.
+
+      - **Opciones de elevación del sol:**
+        - Implementar "Elevación del Sol" para restringir la automatización a condiciones más oscuras alineadas con la posición del sol.
+
+      - **Opciones de detección de luz ambiental:**
+        - Configure un sensor de luz ambiental para activarlo en condiciones de poca luz, personalizable con valores de LUX específicos.
+        
+    </details>
     
-    **Automation Link Option:** The automation link option works best when used with my other blueprints like 💡 [Sensor Light](https://community.home-assistant.io/t/481048), 🚿 [Bathroom Humidity Exhaust Fan](https://community.home-assistant.io/t/509992) + other blueprints of mine so, be sure to check them out.
-    
-    
-    Required = *
-    
-    
-    Need help? See our FAQ: [Click Here](https://community.home-assistant.io/t/591824/2?u=blacky)
-    
-    
-    **If you like my blueprints, and would like to show your support or just say thank you?** [Click Here](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8) 🙂
   domain: automation
   input:
     trigger_entities:
-      name: Trigger *
-      description: This is your Trigger. Example - Media player, Alarm, Smoke detector, etc.
+      name: Media Player - House Alarm - Smoke Alarm - Etc*
+      description: Controla los cambios de estado de luces, interruptores y escenas.
       selector:
         entity:
           multiple: true
     trigger_on_state:
       name: Trigger - ON State *
-      description: The state/s your trigger will be in to activate the automation.
-        Please select a state from the drop down list. If your state is not shown in the list, just simply type the state you would like to use and hit enter.
+      description: Estados de activación.
+        Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Intro.
       selector:
         select:
           multiple: true
@@ -59,10 +71,32 @@ blueprint:
               value: "on"
             - label: Playing
               value: "playing"
+    app_attribute:
+      name: Use The APP Option (Optional)
+      description: Puede seleccionar las aplicaciones utilizadas en el reproductor multimedia (por ejemplo, Apple TV, Netflix, etc.)
+        que activarán la automatización.
+      default: []
+      selector:
+        select:
+          multiple: true
+          custom_value: true
+          sort: true
+          options:
+
+            - label: Amazon Prime - Chromecast
+              value: Prime Video
+            - label: Netflix - Chromecast
+              value: Netflix
+            - label: Plex - Chromecast
+              value: Plex
+            - label: YouTube - Chromecast
+              value: YouTube
+            - label: YouTube TV - Chromecast
+              value: YouTube TV
     trigger_off_state:
       name: Trigger - OFF State *
-      description: The state/s your trigger will be in to deactivate the automation.
-        Please select a state from the drop down list. If your state is not shown in the list, just simply type the state you would like to use and hit enter.
+      description: Estados de desactivación.
+        Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Enter.
       selector:
         select:
           multiple: true
@@ -78,9 +112,7 @@ blueprint:
               value: "standby"
     time_delay:
       name: Time Delay
-      description: This is the time delay before the automation turns OFF or goes to an intermission mode.
-        It is used as a buffer. If you press the wrong button on the remote accidently turning the automation OFF or
-        going to an intermission mode, you will have time to correct your actions before your lights change.
+      description: Retraso de tiempo que actúa como amortiguador antes de que la automatización se apague o entre en modo INTERMEDIO.
       default: 1.5
       selector:
         number:
@@ -90,10 +122,9 @@ blueprint:
           unit_of_measurement: seconds
     light_switch:
       name: Lights - Switches - Scenes *
-      description: The lights that get turned on by the trigger sensor/s. You can also add switches and scenes.
-        If adding a scene please read "Scenes To Turn OFF" below.
+      description: Luces, interruptores y escenas que se activan al inicio de la automatización.
 
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       selector:
         target:
           entity:
@@ -101,10 +132,13 @@ blueprint:
               - light
               - switch
               - scene
+              - binary_sensor
     end_scenes:
       name: Scenes To Turn OFF
-      description: If you have selected a scene to be turned ON above in "Lights - Switches - Scenes" or below in "Intermission - Lights - Switches - Scenes" 
-        then you will need to create another scene. The scene must have all the lights you have used in scenes for this automation, with all the lights OFF and select it here.
+      description: Si ha optado por activar una escena en "Luces - Interruptores - Escenas" o
+        Secciones "Intermedio - Luces - Interruptores - Escenas" y deseo que las entidades se apaguen después,
+        necesitarás crear una escena adicional. Esta escena debe incluir todas las entidades (por ejemplo, luces, interruptores, etc.)
+        utilizados en esas escenas, asegurándose de que estén APAGADOS. Luego ingrese la escena aquí.
       default: []
       selector:
         entity:
@@ -114,8 +148,6 @@ blueprint:
               - scene
     include_light_control:
       name: Use The Light Control Options (Optional)
-      description: Select any option you would like to use. It will only control a "light" entity that supports each option you select.
-        The settings are below for each option.
       default: []
       selector:
         select:
@@ -129,19 +161,17 @@ blueprint:
               value: "use_transition"
     light_brightness:
       name: Brightness
-      description: The brightness setting for the lights when they are turned ON.
-      default: 100
+      default: 15
       selector:
         number:
-          min: 1
+          min: 0
           max: 100
           mode: slider
-          step: 1
+          step: 5
           unit_of_measurement: '%'
     light_colour_temperature:
       name: Colour Temperature
-      description: The colour temperature setting for the lights when they are turned ON.
-      default: 5000
+      default: 2500
       selector:
         number:
           min: 2000
@@ -151,29 +181,27 @@ blueprint:
           unit_of_measurement: 'kelvin'
     light_transition_on:
       name: Transition - ON
-      description: The transition setting for the lights when they are turned ON.
-      default: 1
+      default: 1.5
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     light_transition_off:
       name: Transition - OFF
-      description: The transition setting for the lights when they are turned OFF.
-      default: 1
+      default: 1.5
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     include_start_turn_off:
       name: Use the Start Turn OFF Options (Optional)
-      description: The lights and switches to turn OFF when the automation first starts. 
+      description: Luces y/o Interruptores que se APAGARAN cuando se inicia la automatización por primera vez. 
       default: disable_start_turn_off
       selector:
         select:
@@ -184,9 +212,9 @@ blueprint:
               value: "disable_start_turn_off"
     off_light_switch:
       name: Start Turn OFF - Lights - Switches
-      description: Enter the lights and switches you would like to turn OFF when the automation first starts.
+      description: luces y/o Interruptores que se APAGARAN cuando se inicie la automatización por primera vez.
 
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       default: {}
       selector:
         target:
@@ -196,8 +224,7 @@ blueprint:
               - switch
     off_include_light_control:
       name: Start Turn OFF - Use The Light Control Options (Optional)
-      description: Select any option you would like to use. It will only control a "light" entity that supports each option you select.
-        The settings are below for each option.
+      description: Utilizar la transición de apagado (luces).
       default: []
       selector:
         select:
@@ -207,20 +234,18 @@ blueprint:
               value: "use_transition"
     off_light_transition_off:
       name: Start Turn OFF - Transition - OFF
-      description: The transition setting for the lights when they are turned OFF.
+      description: Tiempo de transición de apagado.
       default: 1
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     include_intermission:
       name: Use The Intermission Option (Optional)
-      description: This is useful for turning on different lights and / or setting a different brightness level,
-        changing the colour setting or selecting a different scene. It can be used for having brighter lights come ON
-        when pausing a movie (Intermission) or having different lights / switches and or scenes come ON or OFF when a smoke detector / alarm system is silenced but still active.
+      description: Utilizar ajustes de iluminación versátiles, en modo PAUSADO?.
       default: intermission_disable
       selector:
         select:
@@ -230,9 +255,11 @@ blueprint:
             - label: Disable intermission option
               value: "intermission_disable"
     intermission_state:
-      name: Intermission - State
-      description: The selection cannot be the same as in the "Trigger - OFF State" selections.
-        Please select a state from the drop down list. If your state is not shown in the list, just simply type the state you would like to use and hit enter.
+      name: Intermission - Trigger State
+      description: Estado que activa el modo INTERMEDIO.
+        Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Intro.
+        
+        **Nota** - la selección no puede coincidir con las opciones elegidas en las secciones 'Estado ENCENDIDO' o 'Estado APAGADO'.
       default: paused
       selector:
         select:
@@ -242,11 +269,10 @@ blueprint:
             - label: Paused
               value: "paused"
     intermission_light_switch:
-      name: Intermission - Lights - Switches - Scenes
-      description: The lights that get turned on by the trigger sensor/s. You can also add switches and scenes.
-        If adding a scene please read "Intermission - Scenes To Turn OFF" below.
+      name: INTERMEDIO - Lights - Switches - Scenes
+      description: Las luces, interruptores y/o escenas que se activarán durante el modo INTERMEDIO.
 
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       default: {}
       selector:
         target:
@@ -256,10 +282,14 @@ blueprint:
               - switch
               - scene
     intermission_end_scenes:
-      name: Intermission - Scenes To Turn OFF
-      description: If you have selected a scene to be turned ON above in "Intermission - Lights - Switches - Scenes" and your lights are different from
-        "Lights - Switches - Scenes" above, then you will need to create another scene. The scene should include the different  lights and the lights must be OFF.
-        You will then enter this scene here. If your lights are the same as "Intermission - Lights - Switches - Scenes" then leave this blank.
+      name: INTERMEDIO - Scenes To Turn OFF
+      description: Si ha elegido activar una escena en 'Intermedio - Luces - Interruptores - Escenas' e incluye
+        entidades diferentes (por ejemplo, luces, interruptores, etc.) de las utilizadas en 'Luces - Interruptores - Escenas' arriba,
+        Tendrás que crear otra escena para incluir las diferentes entidades utilizadas, asegurándote de que estén apagadas.
+        Luego ingrese la escena aquí.
+        
+        
+        Si sus entidades son las mismas que las utilizadas en 'Intermedio - Luces - Interruptores - Escenas', puede dejar esta entrada en blanco
       default: []
       selector:
         entity:
@@ -268,9 +298,8 @@ blueprint:
             domain:
               - scene
     intermission_include_light_control:
-      name: Intermission - Light Control Options (Optional)
-      description: Select any option you would like to use. It will only control a "light" entity that supports each option you select.
-        The settings are below for each option.
+      name: INTERMEDIO - Light Control Options (Optional)
+      description: Utilizar brillo, temperatura de color o transición (luces).
       default: []
       selector:
         select:
@@ -283,19 +312,17 @@ blueprint:
             - label: Use transition
               value: "use_transition"
     intermission_light_brightness:
-      name: Intermission - Brightness
-      description: The brightness setting for the lights when they are turned ON.
+      name: INTERMEDIO - Brightness
       default: 100
       selector:
         number:
-          min: 1
+          min: 0
           max: 100
           mode: slider
-          step: 1
+          step: 10
           unit_of_measurement: '%'
     intermission_light_colour_temperature:
-      name: Intermission - Colour Temperature
-      description: The colour temperature setting for the lights when they are turned ON.
+      name: INTERMEDIO - Colour Temperature
       default: 5000
       selector:
         number:
@@ -305,34 +332,34 @@ blueprint:
           step: 100
           unit_of_measurement: 'kelvin'
     intermission_light_transition_on:
-      name: Intermission - Transition - ON
-      description: The transition setting for the lights when they are turned ON.
+      name: INTEREMDIO - Transition  OFF --> ON
       default: 1
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     intermission_light_transition_off:
-      name: Intermission - Transition - OFF
-      description: The transition setting for the lights when they are turned OFF.
+      name: INTERMEDIO - Transition  ON --> OFF
       default: 1
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     include_end_turn_on:
       name: Use the End Turn ON Options (Optional)
-      description: The lights and switches to turn ON when the automation ends. 
-        You can select to create a snapshot of your lights & switches so they will return to the state they were in before this automation started.
-        Or you can select to turn ON lights - switches - scenes. 
-        
-        **Note** - If you chose to create a snapshot then you must enter a unique snapshot name and create a toggle helper for this option to work. See below.
+      description: Las luces, interruptores y escenas que se activarán cuando finalice la automatización.
+        Puede optar por crear una instantánea de sus luces e interruptores, permitiéndoles volver a su estado anterior
+        antes de que comenzara esta automatización.
+        Alternativamente, puede seleccionar luces, interruptores o escenas específicas para encenderlas.
+
+        **Nota** - si opta por crear una instantánea, asegúrese de ingresar un nombre de instantánea único, cree un asistente de alternancia y especifique las luces e interruptores que desea incluir en la instantánea.
+        Esto garantiza que la función de instantánea funcione correctamente. Las configuraciones para hacer esto se enumeran a continuación.
       default: disable_end_turn_on
       selector:
         select:
@@ -345,17 +372,21 @@ blueprint:
               value: "disable_end_turn_on"
     end_snapshot_name:
       name: End Turn ON - Snapshot Name
-      description: If you have selected to create a snapshot of your lights and switches above, then you must create a unique name for the snapshot.
-        Every automation your create using this blueprint with snapshots must have a unique name that you create here.
+      description: Si ha elegido crear una instantánea de sus luces e interruptores arriba, asegúrese de proporcionar un nombre único para la instantánea.
+        Cada automatización que cree utilizando este modelo con instantáneas debe tener un nombre de instantánea único que cree aquí.
       
-        **Note** - The name must all be in lower case and if you would like a space then it must be "_". Example - "before" or "lights_before_movie"
+        
+        **Nota** - El nombre debe estar todo en minúsculas y, si desea un espacio, debe ser "_". Ejemplo "antes" o "lights_before_movie"
       default: enter_unique_snapshot_name_here
       selector:
         text:
     end_snapshot_helper:
       name: End Turn ON - Snapshot Toggle Helper
-      description: If you have selected to create a snapshot of your lights and switches above, then you must create a helper toggle and enter it here.
-        The toggle helper must be in the OFF state when the automation starts. How to create a Snapshot Toggle Helper [Click Here](https://community.home-assistant.io/t/591824/15?u=blacky)
+      description: Si ha seleccionado crear una instantánea de sus luces e interruptores arriba, debe crear un asistente de alternancia e ingresarlo aquí.
+        El asistente de conmutación debe estar en estado APAGADO cuando se inicia la automatización.
+        
+        
+        Cómo crear un asistente de alternancia de instantáneas [haga clic aquí](https://community.home-assistant.io/t/591824/15?u=blacky)
       default: []
       selector:
         entity:
@@ -364,11 +395,12 @@ blueprint:
               - input_boolean
     end_light_switch:
       name: End Turn ON - Lights - Switches - Scenes
-      description: Enter the lights, switches and or scenes you would like to turn ON at the end of this automation.
-        If you have selected above to create a snapshot then enter the lights and switches you would like to create a snapshot for.
-        You can't create a snapshot of a scene.
+      description: Especifica las luces, interruptores y escenas que deseas activar al final de esta automatización.
+        Si eligió crear una instantánea arriba, ingrese las luces y los interruptores que desea incluir en la instantánea.
+        Tenga en cuenta que no puede crear una instantánea de una escena.
 
-        **NOTE** - You can only use entities. Areas and devices are not supported.
+        
+        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       default: {}
       selector:
         target:
@@ -377,10 +409,12 @@ blueprint:
               - light
               - switch
               - scene
+              - binary_sensor
     end_include_light_control:
-      name: End Turn ON - Use The Light Control Options (Optional)
-      description: Select any option you would like to use. It will only control a "light" entity that supports each option you select.
-        The settings are below for each option.
+      name: End Turn ON - Use  Light Control Options (Optional)
+      description: Seleccione si desea utilizar brillo, temperatura de color o transición.
+        Estas configuraciones solo afectarán a una entidad 'ligera' que admita cada opción seleccionada.
+        Las configuraciones de brillo, temperatura de color y transición se proporcionan a continuación.
       default: []
       selector:
         select:
@@ -394,18 +428,18 @@ blueprint:
               value: "use_transition"
     end_light_brightness:
       name: End Turn ON - Brightness
-      description: The brightness setting for the lights when they are turned ON.
+      description: La configuración de brillo de las luces cuando están encendidas.
       default: 100
       selector:
         number:
-          min: 1
+          min: 0
           max: 100
           mode: slider
-          step: 1
+          step: 10
           unit_of_measurement: '%'
     end_light_colour_temperature:
       name: End Turn ON - Colour Temperature
-      description: The colour temperature setting for the lights when they are turned ON.
+      description: La configuración de temperatura de color de las luces cuando están encendidas.
       default: 5000
       selector:
         number:
@@ -415,21 +449,24 @@ blueprint:
           step: 100
           unit_of_measurement: 'kelvin'
     end_light_transition_on:
-      name: End Turn ON - Transition - ON
-      description: The transition setting for the lights when they are turned ON.
+      name: End Turn ON - Transition  OFF --> ON
+      description: La configuración de transición para las luces cuando están encendidas.
       default: 1
       selector:
         number:
           min: 0
-          max: 180
+          max: 5
           mode: slider
-          step: 5
+          step: 0.5
           unit_of_measurement: seconds
     include_automation_link:
       name: Use The Automation Link Option (Optional)
-      description: This allows you to link your other automations so they will be automatically disabled.
-        This is useful if you are using one of my other blueprints to control the lights, switches and or scenes and you would like to disable it when this automation is ON.
-        For more information on the Automation Link Option [Click Here](https://community.home-assistant.io/t/591824/4?u=blacky)
+      description: Esta función le permite desactivar automáticamente otras automatizaciones, lo que puede resultar especialmente útil
+        si estás utilizando otro plano mío (por ejemplo, '[Sensor Light](https://community.home-assistant.io/t/481048))
+        para gestionar luces, interruptores o escenas y desea desactivarlo cuando esta automatización está activa.
+        
+        
+        Para obtener más información sobre cómo utilizar la opción de enlace de automatización [Haga clic aquí](https://community.home-assistant.io/t/591824/4?u=blacky)
       default: disable_automation_link
       selector:
         select:
@@ -440,8 +477,8 @@ blueprint:
               value: "disable_automation_link"
     automation_link:
       name: Automation Link - By-pass Control
-      description: Enter the other automations you would like to disable when this automation is ON.
-        To do this your other automations must include a by-pass switch that you enter here.
+      description: Ingrese las otras automatizaciones que le gustaría deshabilitar cuando esta automatización esté ACTIVADA.
+        Para hacer esto tus otras automatizaciones deben incluir un interruptor de bypass que ingresas aquí.
       default: []
       selector:
         entity:
@@ -451,8 +488,8 @@ blueprint:
               - input_boolean
     include_sun:
       name: Use The Sun Option (Optional)
-      description: This is used for adding a condition to only work when it is dark or below the "Sun Elevation" setting.
-        This sun option is a global condition and can work alongside with the other options.
+      description: Esta opción se utiliza para agregar una condición que solo permite que la automatización se ejecute cuando está oscuro o por debajo de la configuración de 'Elevación del sol'.
+        Es una condición global que puede funcionar junto con otras opciones. No es necesario habilitar esta opción para que funcione la condición de elevación del sol de las luces nocturnas.
       default: sun_disabled
       selector:
         select:
@@ -462,10 +499,21 @@ blueprint:
             - label: Disable the sun option
               value: "sun_disabled"
     sun_elevation:
-      name: Sun Elevation
-      description: This is the angle between the sun and the horizon.
-        A negative value mean the sun is BELOW the horizon. Guide is -1.5 (dusk) and -4.0 (dawn).
+      name: Sun Elevation Falling
+      description: La caída del sol se refiere al ángulo entre el sol y el horizonte cuando el sol se pone.
+        Un valor negativo indica que el sol está DEBAJO del horizonte. Por ejemplo, una guía de configuración de -1,5 corresponde al anochecer.
       default: -1.5
+      selector:
+        number:
+          min: -10
+          max: 5
+          step: 0.5
+          unit_of_measurement: degrees
+    sun_elevation_rising:
+      name: Sun Elevation Rising
+      description: La elevación del sol ascendente se refiere al ángulo entre el sol y el horizonte durante el amanecer.
+        Un valor negativo indica que el sol está DEBAJO del horizonte. Por ejemplo, una guía de ajuste de -4,0 corresponde al amanecer.
+      default: -4.0
       selector:
         number:
           min: -10
@@ -474,7 +522,8 @@ blueprint:
           unit_of_measurement: degrees
     include_ambient:
       name: Use The Ambient Options (Optional)
-      description: This is used for adding a condition to only work when it is dark or below the "Ambient Light LUX Value".
+      description: Esta opción se usa para agregar una condición que solo permite que la automatización se ejecute cuando está oscuro o debajo de la configuración de "Ambiente".
+        Es una condición global que puede funcionar junto con otras opciones.
       default: ambient_disabled
       selector:
         select:
@@ -485,7 +534,7 @@ blueprint:
               value: "ambient_disabled"
     ambient_light_sensor:
       name: Ambient Light Sensor
-      description: Select the ambient sensor to be used.
+      description: Seleccione el sensor ambiental que se utilizará.
       default: []
       selector:
         entity:
@@ -494,8 +543,11 @@ blueprint:
             device_class: illuminance
     ambient_light_options:
       name: Ambient Light Sensor - Site Conditions
-      description: In some cases when your lights turn ON, your ambient light sensor is affected, increasing its LUX value.
-        This can cause the lights to go OFF prematurely. Please select an option that best suits your installation.
+      description: En algunos casos, cuando las luces se ENCIENDEN, el sensor de luz ambiental se ve afectado, aumentando su valor LUX.
+        Esto puede hacer que las luces se apaguen prematuramente. Seleccione la opción que mejor se adapte a su instalación.
+        
+        
+        **NOTA** - Si utiliza una compensación entre el valor de lux alto y bajo, seleccione NO.
       default: ambient_light_option_disabled
       selector:
         select:
@@ -505,24 +557,49 @@ blueprint:
             - label: NO - My Ambient Light Sensor is not affected by the Lights
               value: "ambient_light_option_disabled"
     ambient_light_value:
-      name: Ambient Light LUX Value
-      description: Set the Ambient Light LUX Value. Guide is 20 lux (dusk) and 80 lux (dawn).
+      name: Ambient Light - Low Lux Value
+      description: Establezca el valor de Lux bajo de luz ambiental. La luz se encenderá cuando el nivel de lux esté por debajo del valor establecido.
+        Este valor debe ser igual o inferior al "Valor alto de lux" que aparece a continuación. La guía es de 20 lux (anochecer).
       default: 20
       selector:
         number:
           min: 0
           max: 500
           step: 10
-          unit_of_measurement: LUX
+          unit_of_measurement: lux
+    ambient_light_high_value:
+      name: Ambient Light - High Lux Value
+      description: Establezca el valor de lux alto de luz ambiental. La luz se apagará cuando el nivel de lux esté por encima del valor establecido.
+        Este valor debe ser igual o superior al "Valor bajo de lux" anterior.
+        Establecer un valor superior al valor bajo permite una compensación. La guía es de 80 lux (amanecer).
+      default: 80
+      selector:
+        number:
+          min: 0
+          max: 1000
+          step: 10
+          unit_of_measurement: lux
+    scene_toggle_helper:
+      name: Ambient Light - Scenes Toggle Helper 
+      description: Para garantizar el buen funcionamiento de la automatización, se recomienda crear un asistente de alternancia separado específicamente para habilitar las opciones ambientales.
+        Este paso solo es necesario si ha ingresado escenas sin ninguna entidad en 'Luces - Interruptores - Escenas' o 'Intermedio - Luces - Interruptores - Escenas' arriba.
+      default: []
+      selector:
+        entity:
+          filter:
+            domain:
+              - input_boolean
     include_bypass:
-      name: Use The Trigger By-pass Options (Optional)
-      description: Select enable or disable.
-        The enable options are only for selecting what should happen when you turn the by-pass ON.
+      name: Use The By-pass Options (Optional)
+      description: Seleccione si desea habilitar una opción.
+        Cada opción deshabilitará esta automatización, pero altera su comportamiento activando la entidad de enlace de automatización,
+        encender la automatización, apagarla o pausarla manteniendo su estado actual
+        cuando el bypass está activado.
       default: bypass_disabled
       selector:
         select:
           options:
-            - label: 1 - Enable the By-pass - Turn linked automation ON
+            - label: 1 - Enable the By-pass - Turn automation link entity ON
               value: "bypass_enabled_linked_automations"
             - label: 2 - Enable the By-pass - Turn automation ON
               value: "bypass_enabled_turn_on_automations"
@@ -533,9 +610,9 @@ blueprint:
             - label: Disable the By-pass option
               value: "bypass_disabled"
     trigger_bypass:
-      name: Trigger By-pass - Switch
-      description: Select a switch that will By-pass the Trigger and make your lights function as normal. 
-        The entity cannot be included in, "Lights - Switches - Scenes" and or "Intermission - Lights - Switches - Scenes" selections.
+      name: By-pass - Switch
+      description: Seleccione un interruptor que anulará (deshabilitará) la automatización.
+        Esta entidad no se puede incluir en las selecciones "Luces - Interruptores - Escenas" y/o "Intermedio - Luces - Interruptores - Escenas".
       default: []
       selector:
         entity:
@@ -546,6 +623,7 @@ max_exceeded: silent
 variables:
   trigger_entities: !input trigger_entities
   trigger_on_state: !input trigger_on_state
+  app_attribute: !input app_attribute
   trigger_off_state: !input trigger_off_state
   light_switch: !input light_switch
   end_scenes: !input end_scenes
@@ -592,10 +670,13 @@ variables:
   automation_link: !input automation_link
   include_sun: !input include_sun
   sun_elevation: !input sun_elevation
+  sun_elevation_rising: !input sun_elevation_rising
   include_ambient: !input include_ambient
   ambient_light_sensor: !input ambient_light_sensor
   ambient_light_options: !input ambient_light_options
   ambient_light_value: !input ambient_light_value
+  ambient_light_high_value: !input ambient_light_high_value
+  scene_toggle_helper: !input scene_toggle_helper
   include_bypass: !input include_bypass
   trigger_bypass: !input trigger_bypass
 
@@ -765,7 +846,7 @@ trigger:
     id: "t5"
     entity_id: sun.sun
     attribute: elevation
-    above: !input sun_elevation
+    above: !input sun_elevation_rising
   - platform: numeric_state
     id: "t6"
     entity_id: !input ambient_light_sensor
@@ -773,7 +854,7 @@ trigger:
   - platform: numeric_state
     id: "t7"
     entity_id: !input ambient_light_sensor
-    above: !input ambient_light_value
+    above: !input ambient_light_high_value
 
 # All Conditions
 condition:
@@ -803,68 +884,113 @@ condition:
           - condition: trigger
             id: 't3'
           - "{{ (include_bypass == 'bypass_enabled_linked_automations') or (include_bypass == 'bypass_enabled_turn_on_automations') or (include_bypass == 'bypass_enabled_turn_off_automations') or (include_bypass == 'bypass_enabled_pause_automation') }}"
-      - condition: and # trigger by sun & check trigger state
-        conditions:
-          - condition: state
-            entity_id: !input trigger_entities
-            match: any
-            state: !input trigger_on_state
-          - "{{ include_sun == 'sun_enabled' }}"
-          - condition: trigger
-            id: 't4'
-      - condition: or # trigger by rise sun & check trigger state
+      - condition: or # trigger by Falling sun & check trigger state
         conditions:
           - condition: and
             conditions:
+            - condition: trigger
+              id: 't4'
+            - "{{ include_sun == 'sun_enabled' }}"
             - condition: state
               entity_id: !input trigger_entities
               match: any
               state: !input trigger_on_state
-            - "{{ include_sun == 'sun_enabled' }}"
-            - condition: trigger
-              id: 't5'
           - condition: and
             conditions:
+            - condition: trigger
+              id: 't4'
+            - "{{ include_sun == 'sun_enabled' }}"
             - "{{ include_intermission == 'intermission_enable' }}"
             - condition: state
               entity_id: !input trigger_entities
               match: any
               state: !input intermission_state
-            - "{{ include_sun == 'sun_enabled' }}"
-            - condition: trigger
-              id: 't5'
-      - condition: and # trigger by ambient & check trigger state
-        conditions:
-          - condition: state
-            entity_id: !input trigger_entities
-            match: any
-            state: !input trigger_on_state
-          - "{{ include_ambient == 'ambient_enabled' }}"
-          - condition: trigger
-            id: 't6'
-      - condition: or # trigger by rise ambient, site condition set to NO & check trigger state
+      - condition: or # trigger by rising sun & check trigger state
         conditions:
           - condition: and
             conditions:
+            - condition: trigger
+              id: 't5'
+            - "{{ include_sun == 'sun_enabled' }}"
             - condition: state
               entity_id: !input trigger_entities
               match: any
               state: !input trigger_on_state
-            - "{{ include_ambient == 'ambient_enabled' }}"
-            - "{{ ambient_light_options == 'ambient_light_option_disabled' }}"
-            - condition: trigger
-              id: 't7'
           - condition: and
             conditions:
+            - condition: trigger
+              id: 't5'
+            - "{{ include_sun == 'sun_enabled' }}"
             - "{{ include_intermission == 'intermission_enable' }}"
             - condition: state
               entity_id: !input trigger_entities
               match: any
               state: !input intermission_state
+      - condition: or # trigger by falling in ambient & check trigger state
+        conditions:
+          - condition: and
+            conditions:
+            - condition: trigger
+              id: 't6'
             - "{{ include_ambient == 'ambient_enabled' }}"
-            - "{{ ambient_light_options == 'ambient_light_option_disabled' }}"
+            - condition: state
+              entity_id: !input trigger_entities
+              match: any
+              state: !input trigger_on_state
+          - condition: and
+            conditions:
+            - condition: trigger
+              id: 't6'
+            - "{{ include_ambient == 'ambient_enabled' }}"
+            - "{{ include_intermission == 'intermission_enable' }}"
+            - condition: state
+              entity_id: !input trigger_entities
+              match: any
+              state: !input intermission_state
+      - condition: or # trigger by rising ambient, site condition set to NO & check trigger state
+        conditions:
+          - condition: and
+            conditions:
             - condition: trigger
               id: 't7'
+            - "{{ include_ambient == 'ambient_enabled' }}"
+            - "{{ ambient_light_options == 'ambient_light_option_disabled' }}"
+            - condition: state
+              entity_id: !input trigger_entities
+              match: any
+              state: !input trigger_on_state
+          - condition: and
+            conditions:
+            - condition: trigger
+              id: 't7'
+            - "{{ include_ambient == 'ambient_enabled' }}"
+            - "{{ ambient_light_options == 'ambient_light_option_disabled' }}"
+            - "{{ include_intermission == 'intermission_enable' }}"
+            - condition: state
+              entity_id: !input trigger_entities
+              match: any
+              state: !input intermission_state
+
+# Media App
+  - condition: or
+    conditions:
+      - "{{ app_attribute == [] }}"
+      - condition: state # For Apple TV, PlayStation, Amazon Fire TV
+        entity_id: !input trigger_entities
+        attribute: app_id
+        state: !input app_attribute
+      - condition: state # For Chromecast TV apps, Apple TV if used
+        entity_id: !input trigger_entities
+        attribute: app_name
+        state: !input app_attribute
+      - condition: state # For PlayStation
+        entity_id: !input trigger_entities
+        attribute: media_content_type
+        state: !input app_attribute
+      - condition: trigger
+        id: 
+          - 't2'
+          - 't3'
 
 # Check Trigger By-pass
   - condition: or
@@ -882,7 +1008,8 @@ condition:
   - condition: or
     conditions:
       - "{{ include_sun == 'sun_disabled' }}"
-      - "{{ (include_sun == 'sun_enabled') and (state_attr('sun.sun','elevation') <= sun_elevation | float(90)) }}"
+      - "{{ (include_sun == 'sun_enabled') and (is_state_attr('sun.sun', 'rising', false)) and (state_attr('sun.sun','elevation') <= sun_elevation | float(90)) }}"
+      - "{{ (include_sun == 'sun_enabled') and (is_state_attr('sun.sun', 'rising', true)) and (state_attr('sun.sun','elevation') <= sun_elevation_rising | float(90)) }}"
       - condition: trigger
         id: 't5'
 
@@ -892,10 +1019,31 @@ condition:
       - "{{ include_ambient == 'ambient_disabled' }}"
       - "{{ ambient_light_sensor == [] }}"
       - "{{ (include_ambient == 'ambient_enabled') and (states[ambient_light_sensor].state | int < ambient_light_value | int) }}"
+      - "{{ (include_ambient == 'ambient_enabled') and (states[ambient_light_sensor].state | int < ambient_light_high_value | int) and (expand(light_switch.entity_id) | selectattr('state', '==', 'on') | list | count > 0) }}"
+      - "{{ (include_ambient == 'ambient_enabled') and (states[ambient_light_sensor].state | int < ambient_light_high_value | int) and ((include_intermission == 'intermission_enable') and (expand(intermission_light_switch.entity_id) | selectattr('state', '==', 'on') | list | count > 0)) }}"
       - "{{ (ambient_light_options == 'ambient_light_option_enabled') and (expand(light_switch.entity_id) | selectattr('state', '==', 'on') | list | count > 0) }}"
       - "{{ (ambient_light_options == 'ambient_light_option_enabled') and ((include_intermission == 'intermission_enabled') and (expand(intermission_light_switch.entity_id) | selectattr('state', '==', 'on') | list | count > 0)) }}"
+      - condition: and
+        conditions:
+          - "{{ (include_ambient == 'ambient_enabled') and (states[ambient_light_sensor].state | int < ambient_light_high_value | int) }}"
+          - condition: template
+            value_template: >-
+              {% if scene_toggle_helper != [] %}
+                {{ is_state(scene_toggle_helper, 'on') }}
+              {% endif %}
+      - condition: and
+        conditions:
+          - "{{ (include_ambient == 'ambient_enabled') and ( ambient_light_options == 'ambient_light_option_enabled' ) }}"
+          - condition: template
+            value_template: >-
+              {% if scene_toggle_helper != [] %}
+                {{ is_state(scene_toggle_helper, 'on') }}
+              {% endif %}
       - condition: trigger
-        id: 't7'
+        id: 
+          - 't2'
+          - 't3'
+          - 't7'
 
 action:
   - choose:
@@ -1230,8 +1378,21 @@ action:
             sequence:
               - service: homeassistant.turn_off
                 entity_id: !input automation_link
+        - choose:
+          - alias: "Check if ambient is enable"
+            conditions:
+              - condition: template
+                value_template: "{{ include_ambient == 'ambient_enabled' }}"
+              - condition: state
+                entity_id: !input scene_toggle_helper
+                state: "on"
+            sequence:
+              - alias: "Turn off the boolean for scenes"
+                service: input_boolean.turn_off
+                data:
+                  entity_id: !input scene_toggle_helper
         - stop: "Stop the automation"
-    - alias: "By-pass is turned on  & check by-pass option - bypass enabled linked automations"
+    - alias: "By-pass is turned on & check by-pass option - bypass enabled linked automations"
       conditions:
         - condition: trigger
           id: 't2'
@@ -1349,6 +1510,19 @@ action:
             sequence:
               - service: homeassistant.turn_off
                 entity_id: !input automation_link
+        - choose:
+          - alias: "Check if ambient is enable"
+            conditions:
+              - condition: template
+                value_template: "{{ include_ambient == 'ambient_enabled' }}"
+              - condition: state
+                entity_id: !input scene_toggle_helper
+                state: "on"
+            sequence:
+              - alias: "Turn off the boolean for scenes"
+                service: input_boolean.turn_off
+                data:
+                  entity_id: !input scene_toggle_helper
         - choose:
           - alias: "Check if end turn ON is enable & option Enable to create a snapshot - Lights - Switches"
             conditions:
@@ -1532,6 +1706,19 @@ action:
             sequence:
               - service: homeassistant.turn_off
                 entity_id: !input automation_link
+        - choose:
+          - alias: "Check if ambient is enable"
+            conditions:
+              - condition: template
+                value_template: "{{ include_ambient == 'ambient_enabled' }}"
+              - condition: state
+                entity_id: !input scene_toggle_helper
+                state: "on"
+            sequence:
+              - alias: "Turn off the boolean for scenes"
+                service: input_boolean.turn_off
+                data:
+                  entity_id: !input scene_toggle_helper
         - stop: "Stop the automation"
   - choose:
     - alias: "Check end light switch, create a snapshot is enabled and create a snapshot of the entities in end light switch"
@@ -1634,6 +1821,19 @@ action:
           entity_id: !input automation_link
         - alias: "We need a delay for the automation link to work if different lights are used and by-pass selection is OFF"
           delay: 0.1
+  - choose:
+    - alias: "Check if ambient is enable"
+      conditions:
+        - condition: template
+          value_template: "{{ include_ambient == 'ambient_enabled' }}"
+        - condition: state
+          entity_id: !input scene_toggle_helper
+          state: "off"
+      sequence:
+        - alias: "Turn off the boolean for scenes"
+          service: input_boolean.turn_on
+          data:
+            entity_id: !input scene_toggle_helper
   - choose:
     - alias: "Set the transition for the normal lights switch"
       conditions:
@@ -1933,3 +2133,16 @@ action:
       sequence:
         - service: homeassistant.turn_off
           entity_id: !input automation_link
+  - choose:
+    - alias: "Check if ambient is enable"
+      conditions:
+        - condition: template
+          value_template: "{{ include_ambient == 'ambient_enabled' }}"
+        - condition: state
+          entity_id: !input scene_toggle_helper
+          state: "on"
+      sequence:
+        - alias: "Turn off the boolean for scenes"
+          service: input_boolean.turn_off
+          data:
+            entity_id: !input scene_toggle_helper

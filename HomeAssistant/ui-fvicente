@@ -4,17 +4,28 @@ button_card_templates:
 views:
   # Home
   - type: custom:grid-layout
+    layout_type: custom:grid-layout
     title: fvicente
     icon: mdi:home
     layout:
       #default
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: 0 repeat(1, auto) 0
-      grid-template-rows: repeat(3, min-content)
+      grid-template-columns: 0 repeat(1, 1fr) 0
+      grid-template-rows: repeat(3, 1fr)
       grid-template-areas: |
         ".  devices   ."
         ".  tasks     ."
         ".  sensors   ."
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+          grid-template-columns: 0 repeat(1, 1fr) 0
+          grid-template-rows: repeat(3, 1fr)
+          grid-template-areas: |
+            ".  devices ."
+            ".  tasks   ."
+            ".  sensors ."
     cards:
       - type: grid
         title: Fvicente Room
@@ -102,13 +113,14 @@ views:
                   color: orange
 
       - type: grid
-        title: sensores
+        title: sensors
         view_layout:
           grid-area: sensors
         columns: 1
         cards:
 
-          - type: horizontal-stack
+          - type: grid
+            columns: 2
             cards:
               - type: custom:apexcharts-card
                 graph_span: 24h
@@ -147,44 +159,3 @@ views:
                     stroke_width: 2
                     show:
                       extremas: true
-#              - type: custom:button-card
-#                entity: fan.fvicente_fan
-#                name: Temperature
-#                custom_fields:
-#                  button:
-#                    card: 
-#                      type: custom:button-card
-#                      entity: fan.fvicente_fan 
-#                      tap_action: 
-#                        action: call-service
-#                        service: fan.toggle
-#                        data:
-#                          entity_id: fan.fvicente_fan
-#                  graph:
-#                    card:
-#                      type: custom:mini-graph-card
-#                      entities:
-#                        - entity: sensor.fvicente_temperature
-#                          color: '#0066ff' 
-#                template:
-#                  - thermometre
-#                  - icon_ventilador
-
-#              - type: custom:button-card
-#                entity: sensor.fvicente_humidity
-#                name: Humidity
-#                custom_fields:
-#                  button:
-#                    card: 
-#                      type: custom:button-card
-#                      entity: sensor.fvicente_humidity
-
-#                  graph:
-#                    card:
-#                      type: custom:mini-graph-card
-#                      entities:
-#                        - entity: sensor.fvicente_humidity
-#                          color: '#0066ff' 
-#                template:
-#                  - thermometre
-#                  - icon_thermometre

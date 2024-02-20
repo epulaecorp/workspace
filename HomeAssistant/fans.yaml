@@ -1,0 +1,13 @@
+  - platform: template
+    fans:
+      fvicente_wfan:
+        friendly_name: "fvicente_wfan"
+        value_template: "{{ states('switch.fvicente_wfan') }}"
+        turn_on:
+          service: switch.turn_on
+          target:
+            entity_id: switch.fvicente_wfan
+        turn_off:
+          service: switch.turn_off
+          target:
+            entity_id: switch.fvicente_wfan

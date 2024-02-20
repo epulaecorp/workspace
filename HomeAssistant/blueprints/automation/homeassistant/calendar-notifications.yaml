@@ -1,0 +1,1084 @@
+blueprint:
+  name: CALENDAR - Notifications & Actions
+  description: >
+    # 📅 Calendar Notifications & Actions
+
+    **Version: 1.3**
+
+
+    Háganos saber lo que piensa de este plan y del apoyo de la comunidad, incluidas las actualizaciones: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326?u=blacky)
+
+
+    **El proceso de automatización:**
+      - Puede activarse con una palabra clave en un evento del calendario o con todos los eventos del calendario.
+      - Tiene la opción de activar al inicio y al final de un evento del calendario con compensaciones de tiempo.
+      - Cuando se activa, tienes la opción de enviar notificaciones a uno o varios dispositivos. La notificación tiene opciones para incluir 3 botones de acción + un botón de cancelar. También tiene la opción de enviar un mensaje de confirmación cuando se presiona un botón de acción. Esto puede resultar útil al enviar notificaciones a varios dispositivos, ya que permitirá que los demás dispositivos sepan cuándo se ha pulsado una acción.
+      - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android. Uno para todos y todos para uno.
+      - Cuando se activa, tienes la opción de configurar 3 grupos de acciones diferentes. Cada grupo de acciones puede tener tantas acciones como desee.
+      
+      
+    Nota: el evento del calendario debe agregarse al menos 15 minutos antes del activador o la automatización no se ejecutará.
+      
+    Requerido = *
+
+
+    Pautas de configuración y mejores prácticas: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326/3?u=blacky)
+
+    ¿Necesitas ayuda? Consulte nuestras preguntas frecuentes: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326/2?u=blacky)
+
+
+    **¿Si te gustan mis planos y te gustaría mostrar tu apoyo o simplemente decir gracias?** [Haz clic aquí](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8) 🙂
+  domain: automation
+  input:
+    # Trigger
+    calendar:
+      name: Calendar *
+      description: Calendario a utilizar.
+      default: {}
+      selector:
+        entity:
+          filter:
+            domain: calendar
+    include_calendar_trigger:
+      name: Use The Calendar Trigger - Key Word (Optional)
+      description: 
+        Elija si desea utilizar una "Palabra clave" para activar la automatización.
+
+
+        **Nota** - si elige no utilizar una "palabra clave", se activarán todos los eventos del calendario.
+      default: enable_key_word
+      selector:
+        select:
+          options:
+            - label: Don't use "Key Word" in calendar
+              value: "disable_key_word"
+            - label: Use "Key Word" in calendar
+              value: "enable_key_word"
+    calendar_trigger:
+      name: Calendar Trigger - Key Word In Calendar Summary & / or Description
+      description:
+        Ingrese una palabra clave que esté en el resumen del evento del calendario o en la descripción del evento del calendario. Esto vincula el evento del calendario a esta automatización como desencadenante.
+        Una palabra clave puede contener letras, números y símbolos similares a una contraseña.
+        Tenga en cuenta la palabra clave que utiliza, ya que se activará en cada evento con la palabra clave en el resumen o descripción del calendario seleccionado.
+        Prefiero usar los símbolos "@" o "#" seguidos de la palabra clave en un evento del calendario, por ejemplo "@bins" o "#bins" para evitar activaciones falsas.
+        For more information on how to use Trigger Key Words [Click Here](https://community.home-assistant.io/t/calendar-notifications-actions/612326/4?u=blacky)
+      default: []
+      selector:
+        text:
+    start_calendar_offset:
+      name: Calendar Start - Offset
+      description:
+        Desfazaminto desde el inicio del evento del calendario.
+        Si desea enviar un activador antes del inicio de un evento del calendario, deberá colocar un signo menos "-" y luego el valor de tiempo.
+      default:
+        days: 0
+        hours: 0
+        minutes: 0
+        seconds: 0
+      selector:
+        duration:
+          enable_day: true
+    end_calendar_offset:
+      name: Calendar End - Offset
+      description:
+        Desfazaminto desde el final del evento del calendario.
+        Si desea enviar un activador antes del final de un evento del calendario, deberá colocar un signo menos "-" y luego el valor de tiempo.
+      default:
+        days: 0
+        hours: 0
+        minutes: 0
+        seconds: 0
+      selector:
+        duration:
+          enable_day: true
+    global_conditions:
+      name: Global Conditions
+      description: Ingrese las condiciones globales que le gustaría aplicar a la automatización.
+      default: []
+      selector:
+        condition:
+    include_start_notify:
+      name: Use The Start Notify Options (Optional)
+      description: Habilite si desea recibir una notificación al inicio del evento del calendario.
+      default: disable_start_notify_options
+      selector:
+        select:
+          options:
+            - label: Enable Start Notify Options
+              value: "enable_start_notify_options"
+            - label: Disable Start Notify Options
+              value: "disable_start_notify_options"
+    start_notify_device:
+      name: Start Notify - Devices To Notify
+      description: Seleccione los dispositivos a los que se les notificará al inicio de un evento del calendario.
+      default: []
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+          multiple: true
+    start_title:
+      name: Start Notify - Title
+      description: Título de la notificación al inicio del evento del calendario.
+      default: "{{ trigger.calendar_event.summary }}"
+      selector:
+        text:
+    start_message:
+      name: Start Notify - Message
+      description: Mensaje de notificación al inicio del evento del calendario.
+      default: "{{ trigger.calendar_event.description }}"
+      selector:
+        text:
+    include_start_action_buttons:
+      name: Start Notify - Action Buttons Options (Optional)
+      description:
+        Habilite los botones de acción que le gustaría usar. Los botones de acción se mostrarán en la notificación, lo que le permitirá realizar la acción cuando haga clic en el botón.
+
+        **NOTA** - no es necesario seleccionar ningún botón de acción de notificación para ejecutar una acción.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable action button 1
+              value: "enable_start_action_button_1"
+            - label: Enable action button 2
+              value: "enable_start_action_button_2"
+            - label: Enable action button 3
+              value: "enable_start_action_button_3"
+          multiple: true
+    start_action_button_1:
+      name: Start Notify - Action Button 1
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Inicio - Acción 1" a continuación.
+      default: []
+      selector:
+        text:
+    start_action_button_2:
+      name: Start Notify - Action Button 2
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Inicio - Acción 2" a continuación.
+      default: []
+      selector:
+        text:
+    start_action_button_3:
+      name: Start Notify - Action Button 3
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Inicio - Acción 3" a continuación.
+      default: []
+      selector:
+        text:
+    start_action_button_stop:
+      name: Start Notify - CANCEL Action Button
+      description:
+        Ingrese el nombre del botón CANCELAR que se mostrará en la notificación.
+        Este botón cancelará todas las acciones y detendrá la automatización.
+        Se incluirá automáticamente en la notificación si ha habilitado un botón de acción arriba.
+      default: []
+      selector:
+        text:
+    start_time_delay:
+      name: Start Notify - Time Delay
+      description: Retrazo de tiempo después del cual la automatización continuará su ejecución si no se ha presionado un botón de acción.
+      default:
+        hours: 0
+        minutes: 30
+        seconds: 0
+      selector:
+        duration:
+    include_start_action_button_confirmation:
+      name: Start Notify - Action Button Confirmation Option (Optional)
+      description:
+        Habilite si desea notificar a todos los dispositivos cuando se presiona un botón de acción.
+        Esto es útil cuando se notifica a varios dispositivos. Permite que los otros dispositivos sepan que se ha presionado una acción.
+      default: enable_start_action_button_confirmation
+      selector:
+        select:
+          options:
+            - label: Enable Action Button Confirmation
+              value: "enable_start_action_button_confirmation"
+            - label: Disable Action Button Confirmation
+              value: "disable_start_action_button_confirmation"
+    start_action_button_confirmation_title:
+      name: Start Notify - Action Button Confirmation Title
+      description: Título de la notificación cuando se presiona un botón de acción o ha pasado el retraso de tiempo.
+      default: []
+      selector:
+        text:
+    start_action_button_confirmation_message:
+      name: Start Notify - Action Button Confirmation Message
+      description: Mensaje de notificación cuando se presiona un botón de acción.
+      default: []
+      selector:
+        text:
+    start_time_delay_confirmation_message:
+      name: Start Notify - Time Delay Confirmation Message
+      description: Mensaje de notificación cuando ha pasado el retraso de tiempo.
+      default: []
+      selector:
+        text:
+    include_start_auto_actions:
+      name: Use The Start Auto Action Options (Optional)
+      description:
+        Habilitar una opción automática permitirá que las "Acciones de inicio" a continuación se ejecuten cuando se active el evento del calendario.
+        Al utilizar botones de acción en una notificación, no es necesario habilitar estas opciones para que funcionen las acciones de inicio.
+        Si se pierde la notificación y no presionó un botón de acción, habilitar una opción de inicio de acción automática garantizará que la acción aún se ejecute.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable start auto action 1
+              value: "enable_start_action_1"
+            - label: Enable start auto action 2
+              value: "enable_start_action_2"
+            - label: Enable start auto action 3
+              value: "enable_start_action_3"
+          multiple: true
+    start_action_1:
+      name: Start Action - Action 1
+      description:
+        Ingrese las acciones que desea ejecutar al inicio de un evento del calendario.
+        Esta acción también está vinculada a "Iniciar notificación - Botón de acción 1" en las notificaciones de inicio.
+      default: []
+      selector:
+        action:
+    start_action_2:
+      name: Start Action - Action 2
+      description:
+        Ingrese las acciones que desea ejecutar al inicio de un evento del calendario.
+        Esta acción también está vinculada a "Iniciar notificación - Botón de acción 2" en las notificaciones de inicio.
+      default: []
+      selector:
+        action:
+    start_action_3:
+      name: Start Action - Action 3
+      description:
+        Ingrese las acciones que desea ejecutar al inicio de un evento del calendario.
+        Esta acción también está vinculada a "Iniciar notificación - Botón de acción 3" en las notificaciones de inicio.
+      default: []
+      selector:
+        action:
+    include_end_notify:
+      name: Use The End Notify Options (Optional)
+      description: Habilite si desea recibir una notificación al final del evento del calendario.
+      default: disable_end_notify_options
+      selector:
+        select:
+          options:
+            - label: Enable End Notify Options
+              value: "enable_end_notify_options"
+            - label: Disable End Notify Options
+              value: "disable_end_notify_options"
+    end_notify_device:
+      name: End Notify - Devices To Notify
+      description: Seleccione los dispositivos a los que se les notificará al final de un evento del calendario.
+      default: []
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+          multiple: true
+    end_title:
+      name: End Notify - Title
+      description: Título de la notificación al final del evento del calendario.
+      default: "{{ trigger.calendar_event.summary }}"
+      selector:
+        text:
+    end_message:
+      name: End Notify - Message
+      description: Mensaje de notificación al final del evento del calendario.
+      default: "{{ trigger.calendar_event.description }}"
+      selector:
+        text:
+    include_end_action_buttons:
+      name: End Notify - Action Buttons Options (Optional)
+      description:
+        Habilite los botones de acción que le gustaría usar. Los botones de acción se mostrarán en la notificación, lo que le permitirá realizar la acción cuando haga clic en el botón.
+
+        **NOTA** - no es necesario seleccionar ningún botón de acción de notificación para ejecutar una acción.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable action button 1
+              value: "enable_end_action_button_1"
+            - label: Enable action button 2
+              value: "enable_end_action_button_2"
+            - label: Enable action button 3
+              value: "enable_end_action_button_3"
+          multiple: true
+    end_action_button_1:
+      name: End Notify - Action Button 1
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Fin - Acción 1" a continuación.
+      default: []
+      selector:
+        text:
+    end_action_button_2:
+      name: End Notify - Action Button 2
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Fin - Acción 2" a continuación.
+      default: []
+      selector:
+        text:
+    end_action_button_3:
+      name: End Notify - Action Button 3
+      description: Ingrese el nombre del botón que se mostrará en la notificación.
+        Este botón ejecuta todas las acciones ingresadas en la entrada "Fin - Acción 3" a continuación.
+      default: []
+      selector:
+        text:
+    end_action_button_stop:
+      name: End Notify - CANCEL Action Button
+      description:
+        Ingrese el nombre del botón CANCELAR que se mostrará en la notificación.
+        Este botón cancelará todas las acciones y detendrá la automatización.
+        Se incluirá automáticamente en la notificación si ha habilitado un botón de acción arriba.
+      default: []
+      selector:
+        text:
+    end_time_delay:
+      name: End Notify - Time Delay
+      description: El retraso de tiempo después del cual la automatización continuará su ejecución si no se ha presionado un botón de acción.
+      default:
+        hours: 0
+        minutes: 30
+        seconds: 0
+      selector:
+        duration:
+    include_end_action_button_confirmation:
+      name: End Notify - Action Button Confirmation Option (Optional)
+      description:
+        Habilite si desea notificar a todos los dispositivos cuando se presiona un botón de acción.
+        Esto es útil cuando se notifica a varios dispositivos. Permite que los otros dispositivos sepan que se ha presionado una acción.
+      default: disable_end_action_button_confirmation
+      selector:
+        select:
+          options:
+            - label: Enable Action Button Confirmation
+              value: "enable_end_action_button_confirmation"
+            - label: Disable Action Button Confirmation
+              value: "disable_end_action_button_confirmation"
+    end_action_button_confirmation_title:
+      name: End Notify - Action Button Confirmation Title
+      description: Título de la notificación cuando se presiona un botón de acción o ha pasado el retraso de tiempo.
+      default: []
+      selector:
+        text:
+    end_action_button_confirmation_message:
+      name: End Notify - Action Button Confirmation Message
+      description: Mensaje de notificación cuando se presiona un botón de acción.
+      default: []
+      selector:
+        text:
+    end_time_delay_confirmation_message:
+      name: End Notify - Time Delay Confirmation Message
+      description: Mensaje de notificación cuando ha pasado el retraso de tiempo.
+      default: []
+      selector:
+        text:
+    include_end_auto_actions:
+      name: Use The End Auto Action Options (Optional)
+      description:
+        Habilitar una opción automática permitirá que las "Acciones finales" a continuación se ejecuten cuando se active el evento del calendario.
+        Al utilizar botones de acción en una notificación, no es necesario habilitar estas opciones para que funcionen las acciones finales.
+        Si se pierde la notificación y no presionó un botón de acción, habilitar una opción de finalización de acción automática garantizará que la acción aún se ejecute.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable auto end action 1 option
+              value: "enable_end_action_1"
+            - label: Enable auto end action 2 option
+              value: "enable_end_action_2"
+            - label: Enable auto end action 3 option
+              value: "enable_end_action_3"
+          multiple: true
+    end_action_1:
+      name: End Action - Action 1
+      description:
+        Ingrese las acciones que desea ejecutar al final de un evento del calendario.
+        Esta acción también está vinculada a "Finalizar notificación - Botón de acción 1" en las notificaciones finales.
+      default: []
+      selector:
+        action:
+    end_action_2:
+      name: End Action - Action 2
+      description:
+        Ingrese las acciones que desea ejecutar al final de un evento del calendario.
+        Esta acción también está vinculada a "Finalizar notificación - Botón de acción 2" en las notificaciones finales.
+      default: []
+      selector:
+        action:
+    end_action_3:
+      name: End Action - Action 3
+      description:
+        Ingrese las acciones que desea ejecutar al final de un evento del calendario.
+        Esta acción también está vinculada a "Finalizar notificación - Botón de acción 3" en las notificaciones finales.
+      default: []
+      selector:
+        action:
+
+mode: restart
+max_exceeded: silent
+
+variables:
+  calendar: !input calendar
+  include_calendar_trigger: !input include_calendar_trigger
+  calendar_trigger: !input calendar_trigger
+  start_calendar_offset: !input start_calendar_offset
+  end_calendar_offset: !input end_calendar_offset
+  global_conditions: !input global_conditions
+  include_start_notify: !input include_start_notify
+  start_notify_device: !input start_notify_device
+  start_title: !input start_title
+  start_message: !input start_message
+  include_start_action_buttons: !input include_start_action_buttons
+  start_action_button_1: !input start_action_button_1
+  start_action_button_2: !input start_action_button_2
+  start_action_button_3: !input start_action_button_3
+  start_action_button_stop: !input start_action_button_stop
+  start_time_delay: !input start_time_delay
+  include_start_action_button_confirmation: !input include_start_action_button_confirmation
+  start_action_button_confirmation_title: !input start_action_button_confirmation_title
+  start_action_button_confirmation_message: !input start_action_button_confirmation_message
+  start_time_delay_confirmation_message: !input start_time_delay_confirmation_message
+  include_start_auto_actions: !input include_start_auto_actions
+  start_action_1: !input start_action_1
+  start_action_2: !input start_action_2
+  start_action_3: !input start_action_3
+  include_end_notify: !input include_end_notify
+  end_notify_device: !input end_notify_device
+  end_title: !input end_title
+  end_message: !input end_message
+  include_end_action_buttons: !input include_end_action_buttons
+  end_action_button_1: !input end_action_button_1
+  end_action_button_2: !input end_action_button_2
+  end_action_button_3: !input end_action_button_3
+  end_action_button_stop: !input end_action_button_stop
+  end_time_delay: !input end_time_delay
+  include_end_action_button_confirmation: !input include_end_action_button_confirmation
+  end_action_button_confirmation_title: !input end_action_button_confirmation_title
+  end_action_button_confirmation_message: !input end_action_button_confirmation_message
+  end_time_delay_confirmation_message: !input end_time_delay_confirmation_message
+  include_end_auto_actions: !input include_end_auto_actions
+  end_action_1: !input end_action_1
+  end_action_2: !input end_action_2
+  end_action_3: !input end_action_3
+
+trigger:
+  - platform: calendar
+    id: "t0"
+    event: start
+    entity_id: !input calendar
+    offset: !input start_calendar_offset
+  - platform: calendar
+    id: "t1"
+    event: end
+    entity_id: !input calendar
+    offset: !input end_calendar_offset
+
+# All Conditions
+condition:
+  #Trigger conditions
+  - condition: or
+    conditions:
+      - condition: and # trigger by start of event
+        conditions:
+          - condition: trigger
+            id: "t0"
+          - condition: template
+            value_template: "{{ ('enable_start_notify_options' in include_start_notify) or ('enable_start_action_1' in include_start_auto_actions) or ('enable_start_action_2' in include_start_auto_actions) or ('enable_start_action_3' in include_start_auto_actions) }}"
+      - condition: and # trigger by end of event
+        conditions:
+          - condition: trigger
+            id: "t1"
+          - condition: template
+            value_template: "{{ ('enable_end_notify_options' in include_end_notify) or ('enable_end_action_1' in include_end_auto_actions) or ('enable_end_action_2' in include_end_auto_actions) or ('enable_end_action_3' in include_end_auto_actions) }}"
+
+  # Event key word in calendar summary
+  - condition: or
+    conditions:
+      - condition: template
+        value_template: "{{ calendar_trigger in trigger.calendar_event.summary }}"
+      - condition: template
+        value_template: "{{ calendar_trigger in trigger.calendar_event.description }}"
+      - condition: template
+        value_template: "{{ include_calendar_trigger == 'disable_key_word' }}"
+
+  # Global Conditions
+  - condition: and
+    conditions: !input global_conditions
+
+action:
+  # Actions Variables
+  - alias: "Set up variables for the actions"
+    variables:
+      action_button_1: "{{ 'BUTTON_1_' ~ context.id }}"
+      action_button_2: "{{ 'BUTTON_2_' ~ context.id }}"
+      action_button_3: "{{ 'BUTTON_3_' ~ context.id }}"
+      action_button_stop: "{{ 'BUTTON_STOP_' ~ context.id }}"
+
+  # Automation
+  - choose:
+      - alias: "Start trigger"
+        conditions:
+          - condition: trigger
+            id: "t0"
+        sequence:
+          - choose:
+              - alias: "Check if the start of notification is enabled"
+                conditions:
+                  - condition: template
+                    value_template: "{{ 'enable_start_notify_options' in include_start_notify }}"
+                sequence:
+                  - choose:
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' in include_start_action_buttons) and ('enable_start_action_button_2' in include_start_action_buttons) and ('enable_start_action_button_3' in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: "Send a notification to each device"
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_1 }}"
+                                          title: !input start_action_button_1
+                                        - action: "{{ action_button_2 }}"
+                                          title: !input start_action_button_2
+                                        - action: "{{ action_button_3 }}"
+                                          title: !input start_action_button_3
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' in include_start_action_buttons) and ('enable_start_action_button_2' in include_start_action_buttons) and ('enable_start_action_button_3' not in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_1 }}"
+                                          title: !input start_action_button_1
+                                        - action: "{{ action_button_2 }}"
+                                          title: !input start_action_button_2
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' in include_start_action_buttons) and ('enable_start_action_button_2' not in include_start_action_buttons) and ('enable_start_action_button_3' in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_1 }}"
+                                          title: !input start_action_button_1
+                                        - action: "{{ action_button_3 }}"
+                                          title: !input start_action_button_3
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' in include_start_action_buttons) and ('enable_start_action_button_2' not in include_start_action_buttons) and ('enable_start_action_button_3' not in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_1 }}"
+                                          title: !input start_action_button_1
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' not in include_start_action_buttons) and ('enable_start_action_button_2' in include_start_action_buttons) and ('enable_start_action_button_3' in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_2 }}"
+                                          title: !input start_action_button_2
+                                        - action: "{{ action_button_3 }}"
+                                          title: !input start_action_button_3
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' not in include_start_action_buttons) and ('enable_start_action_button_2' in include_start_action_buttons) and ('enable_start_action_button_3' not in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_2 }}"
+                                          title: !input start_action_button_2
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' not in include_start_action_buttons) and ('enable_start_action_button_2' not in include_start_action_buttons) and ('enable_start_action_button_3' in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                                      actions:
+                                        - action: "{{ action_button_3 }}"
+                                          title: !input start_action_button_3
+                                        - action: "{{ action_button_stop }}"
+                                          title: !input start_action_button_stop
+                      - alias: "Check the selected notification action buttons"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' not in include_start_action_buttons) and ('enable_start_action_button_2' not in include_start_action_buttons) and ('enable_start_action_button_3' not in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: Send a notification to each device
+                            repeat:
+                              for_each: !input start_notify_device
+                              sequence:
+                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                  data:
+                                    title: !input start_title
+                                    message: !input start_message
+                                    data:
+                                      sticky: "true"
+                  - choose:
+                      - alias: "Check if any start action buttons are enabled"
+                        conditions:
+                          - condition: template
+                            value_template: "{{ ('enable_start_action_button_1' in include_start_action_buttons) or ('enable_start_action_button_2' in include_start_action_buttons) or ('enable_start_action_button_3' in include_start_action_buttons) }}"
+                        sequence:
+                          - alias: "Wait for a response from the action button"
+                            wait_for_trigger:
+                              - platform: event
+                                event_type: mobile_app_notification_action
+                                event_data:
+                                  action: "{{ action_button_1 }}"
+                              - platform: event
+                                event_type: mobile_app_notification_action
+                                event_data:
+                                  action: "{{ action_button_2 }}"
+                              - platform: event
+                                event_type: mobile_app_notification_action
+                                event_data:
+                                  action: "{{ action_button_3 }}"
+                              - platform: event
+                                event_type: mobile_app_notification_action
+                                event_data:
+                                  action: "{{ action_button_stop }}"
+                            timeout: !input start_time_delay
+                          - choose:
+                              - alias: "Check if confirmation message is enabled"
+                                conditions:
+                                  - condition: template
+                                    value_template: "{{ 'enable_start_action_button_confirmation' in include_start_action_button_confirmation }}"
+                                sequence:
+                                  - if:
+                                      - alias: "Confirmation from the actions buttons"
+                                        condition: template
+                                        value_template: "{{ wait.trigger.idx is defined }}"
+                                    then:
+                                      - alias: Send a notification to each device
+                                        repeat:
+                                          for_each: !input start_notify_device
+                                          sequence:
+                                            - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                              data:
+                                                title: !input start_action_button_confirmation_title
+                                                message: !input start_action_button_confirmation_message
+                                      - alias: "Perform the action button selected action"
+                                        choose:
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_1 }}"
+                                            sequence: !input start_action_1
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_2 }}"
+                                            sequence: !input start_action_2
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_3 }}"
+                                            sequence: !input start_action_3
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_stop }}"
+                                            sequence:
+                                              - stop: "Stop the automation"
+                                    else:
+                                      - alias: Send a notification to each device
+                                        repeat:
+                                          for_each: !input start_notify_device
+                                          sequence:
+                                            - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                              data:
+                                                title: !input start_action_button_confirmation_title
+                                                message: !input start_time_delay_confirmation_message
+                              - alias: "Check if confirmation message is disabled"
+                                conditions:
+                                  - condition: template
+                                    value_template: "{{ 'disable_start_action_button_confirmation' in include_start_action_button_confirmation }}"
+                                sequence:
+                                  - if:
+                                      - alias: "Confirmation from the actions buttons"
+                                        condition: template
+                                        value_template: "{{ wait.trigger.idx is defined }}"
+                                    then:
+                                      - alias: "Perform the action button selected action"
+                                        choose:
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_1 }}"
+                                            sequence: !input start_action_1
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_2 }}"
+                                            sequence: !input start_action_2
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_3 }}"
+                                            sequence: !input start_action_3
+                                          - conditions: "{{ wait.trigger.event.data.action == action_button_stop }}"
+                                            sequence:
+                                              - stop: "Stop the automation"
+          - choose:
+              - alias: "Check if auto action 1 is enabled"
+                conditions:
+                  - condition: template
+                    value_template: "{{ 'enable_start_action_1' in include_start_auto_actions }}"
+                sequence: !input start_action_1
+          - choose:
+              - alias: "Check if auto action 2 is enabled"
+                conditions:
+                  - condition: template
+                    value_template: "{{ 'enable_start_action_2' in include_start_auto_actions }}"
+                sequence: !input start_action_2
+          - choose:
+              - alias: "Check if auto action 3 is enabled"
+                conditions:
+                  - condition: template
+                    value_template: "{{ 'enable_start_action_3' in include_start_auto_actions }}"
+                sequence: !input start_action_3
+    default:
+      - choose:
+          - alias: "End Trigger"
+            conditions:
+              - condition: trigger
+                id: "t1"
+            sequence:
+              - choose:
+                  - alias: "Check if end of notification is enabled"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ include_end_notify == 'enable_end_notify_options' }}"
+                    sequence:
+                      - choose:
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' in include_end_action_buttons) and ('enable_end_action_button_2' in include_end_action_buttons) and ('enable_end_action_button_3' in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_1 }}"
+                                              title: !input end_action_button_1
+                                            - action: "{{ action_button_2 }}"
+                                              title: !input end_action_button_2
+                                            - action: "{{ action_button_3 }}"
+                                              title: !input end_action_button_3
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' in include_end_action_buttons) and ('enable_end_action_button_2' in include_end_action_buttons) and ('enable_end_action_button_3' not in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_1 }}"
+                                              title: !input end_action_button_1
+                                            - action: "{{ action_button_2 }}"
+                                              title: !input end_action_button_2
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' in include_end_action_buttons) and ('enable_end_action_button_2' not in include_end_action_buttons) and ('enable_end_action_button_3' in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_1 }}"
+                                              title: !input end_action_button_1
+                                            - action: "{{ action_button_3 }}"
+                                              title: !input end_action_button_3
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' in include_end_action_buttons) and ('enable_end_action_button_2' not in include_end_action_buttons) and ('enable_end_action_button_3' not in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_1 }}"
+                                              title: !input end_action_button_1
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' not in include_end_action_buttons) and ('enable_end_action_button_2' in include_end_action_buttons) and ('enable_end_action_button_3' in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_2 }}"
+                                              title: !input end_action_button_2
+                                            - action: "{{ action_button_3 }}"
+                                              title: !input end_action_button_3
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' not in include_end_action_buttons) and ('enable_end_action_button_2' in include_end_action_buttons) and ('enable_end_action_button_3' not in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_2 }}"
+                                              title: !input end_action_button_2
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' not in include_end_action_buttons) and ('enable_end_action_button_2' not in include_end_action_buttons) and ('enable_end_action_button_3' in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                                          actions:
+                                            - action: "{{ action_button_3 }}"
+                                              title: !input end_action_button_3
+                                            - action: "{{ action_button_stop }}"
+                                              title: !input end_action_button_stop
+                          - alias: "Check the selected notification action buttons"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' not in include_end_action_buttons) and ('enable_end_action_button_2' not in include_end_action_buttons) and ('enable_end_action_button_3' not in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: Send a notification to each device
+                                repeat:
+                                  for_each: !input end_notify_device
+                                  sequence:
+                                    - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                      data:
+                                        title: !input end_title
+                                        message: !input end_message
+                                        data:
+                                          sticky: "true"
+                      - choose:
+                          - alias: "Check if any start action buttons are enabled"
+                            conditions:
+                              - condition: template
+                                value_template: "{{ ('enable_end_action_button_1' in include_end_action_buttons) or ('enable_end_action_button_2' in include_end_action_buttons) or ('enable_end_action_button_3' in include_end_action_buttons) }}"
+                            sequence:
+                              - alias: "Wait for a response from the action button"
+                                wait_for_trigger:
+                                  - platform: event
+                                    event_type: mobile_app_notification_action
+                                    event_data:
+                                      action: "{{ action_button_1 }}"
+                                  - platform: event
+                                    event_type: mobile_app_notification_action
+                                    event_data:
+                                      action: "{{ action_button_2 }}"
+                                  - platform: event
+                                    event_type: mobile_app_notification_action
+                                    event_data:
+                                      action: "{{ action_button_3 }}"
+                                  - platform: event
+                                    event_type: mobile_app_notification_action
+                                    event_data:
+                                      action: "{{ action_button_stop }}"
+                                timeout: !input end_time_delay
+                              - choose:
+                                  - alias: "Check if confirmation message is enabled"
+                                    conditions:
+                                      - condition: template
+                                        value_template: "{{ 'enable_end_action_button_confirmation' in include_end_action_button_confirmation }}"
+                                    sequence:
+                                      - if:
+                                          - alias: "Confirmation from the actions buttons"
+                                            condition: template
+                                            value_template: "{{ wait.trigger.idx is defined }}"
+                                        then:
+                                          - alias: Send a notification to each device
+                                            repeat:
+                                              for_each: !input end_notify_device
+                                              sequence:
+                                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                                  data:
+                                                    title: !input end_action_button_confirmation_title
+                                                    message: !input end_action_button_confirmation_message
+                                          - alias: "Perform the action button selected action"
+                                            choose:
+                                              - conditions: "{{ action_button_1 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_1
+                                              - conditions: "{{ action_button_2 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_2
+                                              - conditions: "{{ action_button_3 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_3
+                                              - conditions: "{{ action_button_stop in wait.trigger.event.data.action }}"
+                                                sequence:
+                                                  - stop: "Stop the automation"
+                                        else:
+                                          - alias: Send a notification to each device
+                                            repeat:
+                                              for_each: !input end_notify_device
+                                              sequence:
+                                                - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                                                  data:
+                                                    title: !input end_action_button_confirmation_title
+                                                    message: !input end_time_delay_confirmation_message
+                                  - alias: "Check if confirmation message is disabled"
+                                    conditions:
+                                      - condition: template
+                                        value_template: "{{ 'disable_end_action_button_confirmation' in include_end_action_button_confirmation }}"
+                                    sequence:
+                                      - if:
+                                          - alias: "Perform the action button selected action"
+                                            condition: template
+                                            value_template: "{{ wait.trigger.idx is defined }}"
+                                        then:
+                                          - alias: "Perform the action"
+                                            choose:
+                                              - conditions: "{{ action_button_1 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_1
+                                              - conditions: "{{ action_button_2 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_2
+                                              - conditions: "{{ action_button_3 in wait.trigger.event.data.action }}"
+                                                sequence: !input end_action_3
+                                              - conditions: "{{ action_button_stop in wait.trigger.event.data.action }}"
+                                                sequence:
+                                                  - stop: "Stop the automation"
+              - choose:
+                  - alias: "Check if auto action 1 is enabled"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ 'enable_end_action_1' in include_end_auto_actions }}"
+                    sequence: !input end_action_1
+              - choose:
+                  - alias: "Check if auto action 2 is enabled"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ 'enable_end_action_2' in include_end_auto_actions }}"
+                    sequence: !input end_action_2
+              - choose:
+                  - alias: "Check if auto action 3 is enabled"
+                    conditions:
+                      - condition: template
+                        value_template: "{{ 'enable_end_action_3' in include_end_auto_actions }}"
+                    sequence: !input end_action_3

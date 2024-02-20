@@ -1,0 +1,21 @@
+  - sensor:
+    - unique_id: 'next alarm echo sala'
+      name: 'Next Alarm Echo Sala'
+      state: >
+        {{ (states('input_datetime.next_alarm_echo_sala')| as_datetime | as_local).isoformat() }}
+      icon: mdi:alarm-bell
+      device_class: timestamp
+
+    - unique_id: 'next alarm echo recamara'
+      name: 'Next Alarm Echo Recamara'
+      state: >
+        {{ (states('input_datetime.next_alarm_echo_recamara') | as_datetime | as_local).isoformat() }}
+      icon: mdi:alarm-bell
+      device_class: timestamp
+
+    - unique_id: 'next alarm echo cocina'
+      name: 'Next Alarm Echo Cocina'
+      state: >
+        {{ (states('input_datetime.next_alarm_echo_cocina')| as_datetime | as_local).isoformat() }}
+      icon: mdi:alarm-bell
+      device_class: timestamp

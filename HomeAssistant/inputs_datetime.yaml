@@ -1,0 +1,19 @@
+
+  next_alarm_echo_sala:
+    name: 'Next Alarm Echo Sala'
+    has_date: true 
+    has_time: true 
+    icon: mdi:alarm-bell
+
+  next_alarm_echo_recamara:
+    name: 'Next Alarm Echo Recamara'
+    has_date: true 
+    has_time: true 
+    icon: mdi:alarm-bell
+
+  next_alarm_echo_cocina:
+    name: 'Next Alarm Echo Cocina'
+    has_date: true 
+    has_time: true 
+    icon: mdi:alarm-bell
+      

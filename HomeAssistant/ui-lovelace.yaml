@@ -16,6 +16,32 @@ views:
         "sidebar  sala      comedor   cocina    ."
         "sidebar  media     baño      exterior  ."
         "sidebar  footer    footer    footer    ."
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+          grid-template-columns: 0 repeat(2, 1fr) 0
+          grid-template-rows: 0 repeat(5, fit-content(100%)) 0fr
+          grid-template-areas: |
+            ".  .           .         ."
+            ".  sidebar     sidebar   ."
+            ".  sala        comedor   ."
+            ".  cocina      baño      ."
+            ".  media       exterior  ."
+            ".  footer      footer    ."
+            ".  .           .         ."
+        #portrait
+        "(max-width: 1200px)":
+          grid-gap: var(--custom-layout-card-padding)
+          grid-template-columns: repeat(3, 1fr) 0
+          grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+          grid-template-areas: |
+            "sidebar  .           .       ."
+            "sidebar  sala        comedor ."
+            "sidebar  cocina      baño    ."
+            "sidebar  media       exterior."
+            "sidebar  footer      footer  ."
+            "sidebar  .           .       ."
 
     cards:
 
@@ -220,17 +246,13 @@ views:
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:bed-outline"></ha-icon> Rooms
-            tap_action:
-              action: navigate
-              navigation_path: '#rooms'
+            tap_action: !include popup/room_fvicente.yaml
             template: footer
           # WIFI
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:qrcode-scan"></ha-icon> Wi-Fi
-            tap_action: 
-              action: navigate
-              navigation_path: '#wifi'
+            tap_action: !include popup/footer_qr_wifi.yaml
             template: footer
 
           # NAS
@@ -268,38 +290,6 @@ views:
                 ]]]
             template: footer
       
-      #################################################
-      #                    WIFI                       #
-      #################################################
-      - type: vertical-stack
-        view_layout:
-          grid-area:  sidebar
-        cards:
-          - type: custom:bubble-pop-up
-            hash: '#wifi'
-            icon: mdi:qrcode-scan
-            name: QR Scan
-            auto_close: 15000
-            width_desktop: 0.3 fr
-            margin: 15px
-
-          - type: custom:bubble-card
-            card_type: separator
-            name: SmartHome
-
-          - type: picture-elements
-            elements:
-              - type: image
-                image: /local/img/wifi-qrcode.png
-                style:
-                  width: 30%
-                  top: 30%
-                  left: 50%
-            image: >-
-              data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0
-              50 25' /%3E
-
-
   # Mariquita 
   - type: custom:grid-layout
     title: mariquita
@@ -310,7 +300,7 @@ views:
   # Fvicente 
   - type: custom:grid-layout
     title: fvicente
-    visible: false
+    visible: true
     layout: !include  views/layout.yaml
     cards: !include views/view_fvicente.yaml
 

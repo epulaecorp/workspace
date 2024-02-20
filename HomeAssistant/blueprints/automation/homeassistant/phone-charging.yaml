@@ -1,0 +1,116 @@
+blueprint:
+  name: PHONE - Charging Switch
+  description: Enciende o apaga un enchufe inteligente según el nivel de la batería
+  domain: automation
+  input:
+    battery:
+      name: Battery
+      description: Dispositivo a monitorear.
+      selector:
+        entity:
+          domain: sensor
+          device_class: battery
+    person:
+      name: Person
+      description: Sólo cuando esta persona se encuentre en el estado especificado.
+      selector:
+        entity:
+          domain: person
+    state:
+      name: Person State
+      description: El estado en el que debe encontrarse la persona.
+      default: home
+    target_switch:
+      name: Smart Plug
+      description: Enchufe inteligente para encender o apagar
+      selector:
+        entity:
+          domain: switch
+    charge_min:
+      name: Lowest Battery Charge
+      description: La carga minima que se debe permitir que caiga la batería
+      default: 20
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 5
+          unit_of_measurement: "%"
+          mode: slider
+
+    charge_max:
+      name: Highest Battery Charge
+      description: La carga máxima que se debe permitir que alcance la batería
+      default: 80
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 5
+          unit_of_measurement: "%"
+          mode: slider
+
+    use_bedtime:
+      name: Charge fully before bed
+      selector:
+        boolean:
+      default: True
+    start_bedtime:
+      name: Start Bedtime
+      description: Incio del horario de dormir
+      selector:
+        time:
+      default: '22:00'
+    end_bedtime:
+      name: End Bedtime
+      description: Fin del horario de dormir
+      selector:
+        time:
+      default: '05:00'
+    charge_full:
+      name: Full Battery Charge
+      description: La batería se considera llena en este porcentaje.
+      default: 85
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 5
+          unit_of_measurement: "%"
+          mode: slider
+variables:
+  battery: !input battery
+  charge_min: !input charge_min
+  charge_max: !input charge_max
+  charge_full: !input charge_full
+  use_bedtime: !input use_bedtime
+  start_bedtime: !input start_bedtime
+  end_bedtime: !input   end_bedtime
+trigger:
+  - platform: state
+    entity_id: !input battery
+  - platform: state
+    entity_id: !input person
+condition:
+  - condition: state
+    entity_id: !input person
+    state: !input state
+action:
+  - variables:
+      charge: '{{ (states(battery) | float) if is_number(states(battery)) else 1 }}'
+      is_bedtime: '{{ use_bedtime == True and ( now() >= today_at(start_bedtime) or now() < today_at (end_bedtime) ) }}'
+      c_max: '{{ charge_full if is_bedtime else charge_max }}'
+      c_min: '{{ charge_full if is_bedtime else charge_min }}'
+  - choose:
+    - conditions: >
+        {{ charge < c_min }}
+      sequence:
+        - service: switch.turn_on
+          target:
+            entity_id: !input target_switch
+    - conditions: >
+        {{ charge >= c_max }}
+      sequence:
+        - service: switch.turn_off
+          target:
+            entity_id: !input target_switch

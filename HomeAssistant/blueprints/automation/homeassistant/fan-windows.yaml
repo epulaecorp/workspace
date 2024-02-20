@@ -1,0 +1,131 @@
+blueprint:
+  name: FAN - Windows Fan Control
+  description: |
+    ## Fan ON/OFF Automation based on temperature, presence and Temperature Target.
+
+    El ventilador de ventana se enciende si todas estas condiciones se cumplen:
+
+      - La Temperatura Interior es Mayor a la Temperatura Objetivo Superior   (Ti >= ToS)
+      - La Temperatura Interior es Mayor que la Temperatura Exterior          (Te < Ti)
+      - Hay alguien en la habitación                                          (P == on)
+
+    El ventolador se apagará en las siguientes condiciones:
+
+      - La Temperatura Interior es Menor a la Temperatura Objetivo Inferior   (Ti <= ToI)
+      - La Temperatura Exterior es Igual o Mayor que la Temperatura Interior  (Te >= Ti)
+      - No hay nadie en la habitación.                                        (P == off)
+
+  domain: automation
+  input:
+    fan:
+      name: Fan
+      description: Ventilador a controlar
+      selector:
+        target:
+          entity:
+            domain: fan
+    temp_inside:
+      name: Temperature Inside
+      description: 'Sensor de Temperatura Interior'
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+
+    temp_outside:
+      name: Temperature Outside
+      description: 'Sensor de Temperatura Exterior'
+      default: 'sensor.forecast_temperature'
+      selector:
+        entity:
+          domain: sensor
+          device_class: temperature
+
+    presence_sensor:
+      name: Presence Sensor
+      description: 'Sensor de precencia'
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
+
+    upper_target:
+      name: Upper Target
+      description: 'Temperatura Objetivo Superior.'
+      default: 25
+      selector:
+        number:
+          min: 20
+          max: 30
+          step: 1
+          unit_of_measurement: °C
+
+    lower_target:
+      name: Lower Target
+      description: 'Temperatura Objetivo Inferior.'
+      default: 23
+      selector:
+        number:
+          min: 20
+          max: 30
+          step: 1
+          unit_of_measurement: °C
+
+variables:
+  fan: !input fan
+  temp_inside_entity: !input temp_inside
+  temp_inside: "{{ states[temp_inside_entity].state }}"
+  temp_outside_entity: !input temp_outside
+  temp_outside: "{{ states[temp_outside_entity].state }}"
+  presence_sensor: !input presence_sensor
+  upper_target: !input upper_target
+  lower_target: !input lower_target
+
+
+max_exceeded: silent
+trigger:
+- platform: state
+  entity_id: !input temp_inside
+- platform: state
+  entity_id: !input temp_outside
+- platform: state
+  entity_id: !input presence_sensor
+condition: []
+action:
+- choose:
+  - conditions:
+    - alias: "temp_inside greater than temp_outside"
+      condition: template
+      value_template: >
+        {{ temp_inside|int > temp_outside|int }}
+    - alias: "temp_inside greater than upper_target"
+      condition: template
+      value_template: >
+        {{ temp_inside|int >= upper_target|int }}
+    - alias: "Is Someone in room"
+      condition: state
+      entity_id: !input presence_sensor
+      state: 'on'
+    sequence:
+    - service: homeassistant.turn_on
+      target: !input fan
+  - conditions:
+    - condition: or
+      conditions:
+      - alias: "there is no one in the bedroom"
+        condition: state
+        entity_id: !input presence_sensor
+        state: 'off'
+      - alias: "temp_outside equal or grater than temp_inside"
+        condition: template
+        value_template: >
+          {{ (temp_ouside)|int >= temp_inside|int }}
+      - alias: "temp_inside equal o minius than lower_target"
+        condition: template 
+        value_template: >
+          {{ (temp_inside)|int <= lower_target|int }}
+    sequence:
+    - service: homeassistant.turn_off
+      target: !input fan
+  default: []
+mode: single

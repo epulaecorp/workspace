@@ -1,5 +1,5 @@
 - id: '1699476318512'
-  alias: GoogleTV - Monitor
+  alias: FVICENTE - TV
   description: Turn ON/OFF monitor with Chromecast
   trigger:
   - alias: Chromecast ON
@@ -224,7 +224,7 @@
       alias: BATERY < 10
   mode: single
 - id: '1704934376320'
-  alias: fvicente - leave
+  alias: FVICENTE - leave
   description: ''
   trigger:
   - platform: zone
@@ -260,7 +260,7 @@
       entity_id: media_player.echo_recamara
   mode: single
 - id: '1704934606210'
-  alias: fvicente - arrive
+  alias: FVICENTE - arrive
   description: ''
   trigger:
   - platform: zone
@@ -278,52 +278,21 @@
     target:
       entity_id: light.fvicente
   mode: single
-- id: '1706486611517'
-  alias: fvicente_ramdom_Light
-  description: ''
-  use_blueprint:
-    path: homeassistant/night_random_lights.yaml
-    input:
-      target_light: light.fvicente
-      override_switch_entity: input_boolean.automations_off
-      away_lighting_switch_entity: input_boolean.automations_away
-      lights_out_time: 07:00:00
 - id: '1706750034690'
-  alias: homeassistant_start
+  alias: HomeAssistant - Start
   description: ''
   trigger:
   - platform: homeassistant
     event: start
-  condition: []
+  condition:
+  - condition: sun
+    before: sunset
+    after: sunrise
+    alias: Solo de dia
   action:
   - service: script.homeassistant_start
     metadata: {}
     data: {}
-  mode: single
-- id: '1707009855841'
-  alias: Calendar - garbage_collection
-  description: Recordatorio de recolección de basura
-  trigger:
-  - platform: time
-    at: '20:00:00'
-  condition:
-  - condition: zone
-    entity_id: person.fvicente
-    zone: zone.home
-  - condition: state
-    entity_id: calendar.garbage
-    state: 'on'
-  action:
-  - service: media_player.volume_set
-    metadata: {}
-    data:
-      volume_level: 0.4
-    target:
-      device_id: fb289c0c16ea235873fa897462835efa
-  - service: notify.alexa_media_echo_recamara
-    metadata: {}
-    data:
-      message: Recuerda sacar la basura
   mode: single
 - id: '1707077020260'
   alias: Reminders - Happy Birthday
@@ -342,71 +311,103 @@
       message: Felicidades
   mode: single
 - id: '1707273663688'
-  alias: fvicente - wakeup
+  alias: FVICENTE - wakeup
   description: ''
   use_blueprint:
     path: homeassistant/lights-wakeup.yaml
     input:
-      manual_time: 05:15:00
+      manual_time: 00:00:00
       light_entity: light.fvicente
       check_entity: person.fvicente
       sunrise_duration: 15
-- id: '1707327509882'
-  alias: Calendar - Task
-  description: ''
-  trigger:
-  - platform: calendar
-    event: start
-    offset: -0:5:0
-    entity_id: calendar.tareas
-  condition: []
-  action:
-  - service: notify.persistent_notification
-    metadata: {}
-    data:
-      message: Event {{ trigger.calendar_event.summary }}
-  mode: single
-- id: '1707531514511'
-  alias: test notification
+      timestamp_sensor: sensor.next_alarm_echo_recamara
+      presence_sensor: binary_sensor.fvicente_inhome
+      effect_duration: 10
+      start_brightness: 5
+      min_mired: 20
+      post_sunrise_actions:
+      - service: media_player.volume_set
+        metadata: {}
+        data:
+          volume_level: 0.3
+        target:
+          entity_id: media_player.echo_recamara
+      - service: media_player.play_media
+        metadata: {}
+        data:
+          media_content_id: album goguear
+          media_content_type: SPOTIFY
+        target:
+          entity_id: media_player.echo_recamara
+      - service: fan.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: fan.fvicente_fan
+- id: '1707698876630'
+  alias: FVICENTE - movie time
   description: ''
   use_blueprint:
-    path: homeassistant/calendar_notifications.yaml
+    path: homeassistant/lights-movietime.yaml
     input:
-      calendar: calendar.pendientes
+      trigger_entities:
+      - media_player.fvicente_tv
+      trigger_on_state:
+      - playing
+      app_attribute:
+      - Prime Video
+      trigger_off_state:
+      - 'off'
+      off_light_switch:
+        entity_id:
+        - light.fvicente_backlight_switch
+        - light.fvicente
+      include_intermission: intermission_enable
+      intermission_light_switch:
+        entity_id: light.fvicente
+      include_sun: sun_enabled
+      light_switch:
+        entity_id: binary_sensor.fvicente_movietime
+      include_start_turn_off: enable_start_turn_off
+      include_light_control: []
+      light_brightness: 10
+      light_colour_temperature: 2500
+      light_transition_on: 1.5
+      light_transition_off: 1.5
+      off_light_transition_off: 1
+      intermission_include_light_control:
+      - use_brightness
+      - use_transition
+      - use_colour_temperature
+      intermission_light_brightness: 10
+      intermission_light_colour_temperature: 2500
+      intermission_light_transition_on: 2
+      intermission_light_transition_off: 2
+      time_delay: 3
+- id: '1707986820338'
+  alias: HomeAsistant - Restart
+  description: ''
+  trigger:
+  - platform: time
+    at: 04:30:00
+  condition: []
+  action:
+  - service: homeassistant.restart
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1708389440992'
+  alias: NOTIFICATIONS - Garbage
+  description: ''
+  use_blueprint:
+    path: homeassistant/calendar-notifications.yaml
+    input:
+      calendar: calendar.garbage
       include_calendar_trigger: disable_key_word
       include_start_notify: enable_start_notify_options
       start_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
-      include_start_action_buttons:
-      - enable_start_action_button_1
-      - enable_start_action_button_2
-      start_action_button_1: Si
-      start_action_button_2: 'NO'
-      start_action_button_stop: CANCELAR
+      include_start_action_button_confirmation: disable_start_action_button_confirmation
       include_end_notify: enable_end_notify_options
       end_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
-      end_action_button_1: SI
-      end_action_button_2: 'NO'
-- id: '1707531707036'
-  alias: fvicente - fan_nights_autostart
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id:
-    - sensor.fvicente_temperature
-    above: 24
-  condition:
-  - condition: zone
-    entity_id: person.fvicente
-    zone: zone.home
-  - condition: sun
-    before: sunrise
-    after: sunset
-  action:
-  - service: fan.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: fan.fvicente_fan
-  mode: single

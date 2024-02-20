@@ -1,0 +1,62 @@
+blueprint:
+  name: MEDIA PLAYER - Pause when calling.
+  description: >
+    Pause un reproductor multimedia cuando suene el teléfono o esté llamando.
+    Sólo cuando la persona está en casa y el reproductor multimedia está reproduciendo.
+    Basado en https://gist.github.com/JackPoint/2375dd5d15f0b4c52161207170c14f60
+  domain: automation
+  input:
+    phone_state:
+      name: Phone State sensor
+      description: Todos los sensores forman la aplicación móvil. Seleccione aquí el sensor de estado del teléfono.
+      selector:
+        entity:
+          integration: mobile_app
+          domain: sensor
+    person:
+      name: Person
+      description: Seleccione la persona que necesita estar en la zona seleccionada.
+      selector:
+        entity:
+          domain: person
+    zone:
+      name: Zone
+      description: Select the Zone the person needs to be in.
+      default: zone.home
+      selector:
+          entity:
+            domain: zone
+    media_player: 
+      name: Media Player
+      description: Seleccione el reproductor multimedia que desea pausar.
+      selector:
+        entity:
+          domain: media_player
+
+trigger:
+  - platform: state
+    entity_id: !input phone_state
+    to: "ringing"
+  - platform: state
+    entity_id: !input phone_state
+    to: "offhook"
+variables: 
+  zone: !input zone
+  zone_name: "{{ zone[5:] }}"
+  entity: !input person
+condition:
+  - "{{is_state(entity, zone_name)}}"
+  - condition: state
+    entity_id: !input media_player
+    state: playing
+action:
+  - service: media_player.media_pause
+    entity_id: !input media_player
+  - wait_for_trigger:
+    - platform: state 
+      entity_id: !input phone_state
+      to: "idle" 
+    timeout:
+      seconds: 300
+  - service: media_player.media_play
+    entity_id: !input media_player

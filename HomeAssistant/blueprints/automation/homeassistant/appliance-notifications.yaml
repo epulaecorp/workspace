@@ -1,0 +1,332 @@
+blueprint:
+  name: APPLIANCE - Notifications & Actions
+  description: >
+    # 📳 Appliance Notifications & Actions
+    
+    **Version: 1.7**
+    
+    **El proceso de automatización:**
+      - Conecte su lavadora, secadora, lavavajillas o cualquier electrodoméstico a un enchufe inteligente que controle el consumo de energía del electrodoméstico.
+      - Cuando el dispositivo se inicia o finaliza, tiene la opción de enviar un mensaje de notificación a uno o varios dispositivos.
+      - Tienes la opción de utilizar acciones personalizadas. Esto se puede utilizar para reproducir un anuncio en The Voice (HA), Google, Alexa, etc. cuando el aparato haya iniciado y/o finalizado.
+      - Tienes la opción de establecer una hora de inicio, una hora de finalización y seleccionar días de la semana. Esto solo permitirá que la automatización se ejecute entre los períodos de tiempo.
+      - Tienes la opción de ingresar en las condiciones globales que desees.
+      - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android. Uno para todos y todos para uno.
+
+  domain: automation
+  input:
+    power_sensor:
+      name: Power Sensor *
+      description: Ingrese una entidad de sensor de energía que mida el consumo de energía del electrodoméstico que desea
+        notificado cuando comienza y / o finaliza, por ejemplo, un enchufe inteligente.
+      selector:
+        entity:
+          domain: sensor
+    start_appliance_power:
+      name: Start - Appliance Power Setpoint
+      description: Configure la corriente por encima de la cual debe permanecer la alimentación para indicar que el aparato ha arrancado.
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 30
+          step: 1
+          unit_of_measurement: watts
+    start_time_delay:
+      name: Start - Power Time Delay
+      description: Establezca el tiempo que debe permanecer la energía para indicar que el electrodoméstico se ha iniciado.
+        Esto evitará un disparo falso.
+      default: 1
+      selector:
+        number:
+          min: 0.25
+          max: 5
+          step: 0.25
+          unit_of_measurement: minutes
+    running_dead_zone:
+      name: Running - Dead Zone
+      description: Una vez que se inicia el aparato, puede implementar una zona muerta para evitar un disparo de final falso.
+        Esto es particularmente útil cuando la energía cae brevemente por debajo del punto de ajuste final del aparato durante el ciclo posterior al arranque.
+        Establecer la zona muerta de funcionamiento más allá de este punto garantiza una conclusión fiable al evitar un disparo final prematuro.
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 120
+          step: 1
+          unit_of_measurement: minutes
+    end_appliance_power:
+      name: End - Appliance Power Setpoint
+      description: Configure la corriente por debajo de la cual debe permanecer la alimentación para indicar que el aparato ha terminado.
+        Se recomienda establecer un valor inferior al setpoint de potencia inicial.
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 30
+          step: 1
+          unit_of_measurement: watts
+    end_time_delay:
+      name: End - Power Time Delay
+      description: Establezca el tiempo que la energía debe permanecer por debajo para indicar que el aparato ha terminado.
+      default: 1
+      selector:
+        number:
+          min: 0.25
+          max: 5
+          step: 0.25
+          unit_of_measurement: minutes
+    include_start_notify:
+      name: Use The Start Notify Options (Optional)
+      description: Seleccione habilitar si desea recibir una notificación cuando se inicie el dispositivo.
+      default: disable_start_notify_options
+      selector:
+        select:
+          options:
+            - label: Enable Start Notify Options
+              value: "enable_start_notify_options"
+            - label: Disable Start Notify Options
+              value: "disable_start_notify_options"
+    start_notify_device:
+      name: Start Notify - Devices Notified When Started
+      description: Seleccione los dispositivos a los que se les notificará cuando se inicie el dispositivo.
+      default: []
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+          multiple: true
+    start_title:
+      name: Start Notify - Title
+      description: Ingrese el título de la notificación que le gustaría recibir cuando se inicie el dispositivo.
+      default: Washing Machine
+      selector:
+        text:
+    start_message:
+      name: Start Notify - Message
+      description: Ingrese el mensaje de notificación que desea recibir cuando se inicie el electrodoméstico.
+      default: YES! Another load is ON :)
+      selector:
+        text:
+    include_end_notify:
+      name: Use The End Notify Options (Optional)
+      description: Seleccione habilitar si desea recibir una notificación cuando finalice el dispositivo. 
+      default: disable_end_notify_options
+      selector:
+        select:
+          options:
+            - label: Enable End Notify Options
+              value: "enable_end_notify_options"
+            - label: Disable End Notify Options
+              value: "disable_end_notify_options"
+    end_notify_device:
+      name: End Notify - Devices Notified When Finished
+      description: Seleccione los dispositivos a los que se les notificará cuando el electrodoméstico haya finalizado.
+      default: []
+      selector:
+        device:
+          filter:
+            - integration: mobile_app
+          multiple: true
+    end_message_title:
+      name: End Notify - Title
+      description: Ingrese el título de la notificación que le gustaría recibir cuando el electrodoméstico haya terminado.
+      default: Washing Machine
+      selector:
+        text:
+    end_message:
+      name: End Notify - Message
+      description: Ingrese el mensaje de notificación que desea recibir cuando el electrodoméstico haya terminado.
+      default: Yippee the washing machine is finished!
+      selector:
+        text:
+    include_custom_actions:
+      name: Use The Custom Action Options (Optional)
+      description: Puedes agregar cualquier acción que quieras realizar al inicio y/o al final.
+        Esto normalmente se usa si desea reproducir un anuncio en The Voice (HA), Google, Alexa, etc.
+        cuando el aparato ha comenzado y/o terminado.
+      default: []
+      selector:
+        select:
+          options:
+            - label: Enable Custom Actions - Start
+              value: "enable_start_custom_actions"
+            - label: Enable Custom Actions - End
+              value: "enable_end_custom_actions"
+          multiple: true
+    start_custom_actions:
+      name: Custom Actions - Start
+      description: Ingrese las acciones que le gustaría ejecutar al principio.
+      default: []
+      selector:
+        action:
+    end_custom_actions:
+      name: Custom Actions - End
+      description: Ingrese las acciones que desea ejecutar al final.
+      default: []
+      selector:
+        action:
+    include_time:
+      name: Use The Time Options (Optional)
+      description: Utilice los valores de "Hora de inicio", "Hora de finalización" y "Días de la semana" para ejecutar la automatización solo entre los períodos de tiempo.
+        Esto puede resultar útil si alguna vez utiliza un electrodoméstico por la noche mientras duerme y no desea recibir una notificación.
+      default: time_disabled
+      selector:
+        select:
+          options:
+            - label: Enable the time options
+              value: "time_enabled"
+            - label: Disable the time options
+              value: "time_disabled"
+    after_time:
+      name: Start Time
+      description: Establecer la hora de inicio.
+      default: 00:00:00
+      selector:
+        time:
+    before_time:
+      name: End Time
+      description: Establezca la hora de finalización.
+      default: 00:00:00
+      selector:
+        time:
+    weekday_options:
+      name: Weekdays
+      description: Seleccione los días de la semana en los que desea que se ejecute la automatización. Debe seleccionar "Habilitar las opciones de tiempo" arriba para que funcionen las selecciones de días laborables.
+      default:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+            - label: Monday
+              value: "mon"
+            - label: Tuesday
+              value: "tue"
+            - label: Wednesday
+              value: "wed"
+            - label: Thursday
+              value: "thu"
+            - label: Friday
+              value: "fri"
+            - label: Saturday
+              value: "sat"
+            - label: Sunday
+              value: "sun"
+    global_conditions:
+      name: Global Conditions
+      description: Ingrese las condiciones globales que le gustaría aplicar a la automatización.
+      default: []
+      selector:
+        condition:
+
+mode: single
+max_exceeded: silent
+
+variables:
+  power_sensor: !input power_sensor
+  start_appliance_power: !input start_appliance_power
+  start_time_delay: !input start_time_delay
+  end_appliance_power: !input end_appliance_power
+  end_time_delay: !input end_time_delay
+  include_start_notify: !input include_start_notify
+  start_notify_device: !input start_notify_device
+  start_title: !input start_title
+  start_message: !input start_message
+  running_dead_zone: !input running_dead_zone
+  include_end_notify: !input include_end_notify
+  end_notify_device: !input end_notify_device
+  end_message_title: !input end_message_title
+  end_message: !input end_message
+  include_custom_actions: !input include_custom_actions
+  start_custom_actions: !input start_custom_actions
+  end_custom_actions: !input end_custom_actions
+  include_time: !input include_time
+  after_time: !input after_time
+  before_time: !input before_time
+  weekday_options: !input weekday_options
+  global_conditions: !input global_conditions
+
+trigger:
+  - platform: numeric_state
+    id: "t0"
+    entity_id: !input power_sensor
+    above: !input start_appliance_power
+    below: "24000"
+    for:
+      minutes: !input start_time_delay
+
+# All Conditions
+condition:
+# Check The Time Options
+  - condition: or
+    conditions:
+      - "{{ include_time == 'time_disabled' }}"
+      - condition: and
+        conditions:
+        - condition: time
+          after: !input after_time
+          before: !input before_time
+          weekday: !input weekday_options
+        -  "{{ include_time == 'time_enabled' }}"
+
+# Global Conditions
+  - condition: and
+    conditions: !input global_conditions
+
+action:
+  - choose:
+    - alias: "Check if start of notification is enabled"
+      conditions:
+        - "{{ include_start_notify == 'enable_start_notify_options' }}"
+      sequence:
+        - alias: Send a notification to each device
+          repeat:
+            for_each: !input start_notify_device
+            sequence:
+              - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                data:
+                  title: !input start_title
+                  message: !input start_message
+  - choose:
+    - alias: "Perform the custom start action"
+      conditions:
+        - condition: template
+          value_template: "{{ 'enable_start_custom_actions' in include_custom_actions }}"
+      sequence: !input start_custom_actions
+  - alias: "Wait the number of minutes set in running dead zone"
+    delay:
+      minutes: !input running_dead_zone
+  - alias: "Wait until appliance has finished"
+    wait_for_trigger:
+      platform: numeric_state
+      entity_id: !input power_sensor
+      below: !input end_appliance_power
+      for:
+        minutes: !input end_time_delay
+  - choose:
+    - alias: "Check if start of notification is enabled"
+      conditions:
+        - "{{ include_end_notify == 'enable_end_notify_options' }}"
+      sequence:
+        - alias: Send a notification to each device
+          repeat:
+            for_each: !input end_notify_device
+            sequence:
+              - service: "notify.mobile_app_{{ device_attr(repeat.item, 'name') | slugify }}"
+                data:
+                  title: !input end_message_title
+                  message: !input end_message
+  - choose:
+    - alias: "Perform the custom end action"
+      conditions:
+        - condition: template
+          value_template: "{{ 'enable_end_custom_actions' in include_custom_actions }}"
+      sequence: !input end_custom_actions

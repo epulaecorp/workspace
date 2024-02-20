@@ -2,70 +2,69 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: Fvicente Room
+    title: Rooms
     style: |
-      --popup-min-width: calc(540px);
-      
+      --popup-min-width: calc(880px);
+      --ha-card-border-radius: 0;
+
     card_mod:
       style:
-        #popup header
-        .:
+        layout-card:
+          $grid-layout$:
+            hui-entities-card:
+              $: |
+                .card-content {
+                  padding: var(--tablet-popup-content-padding);
+                  padding-bottom:2em;
+                }
+                ha-card {
+                  border-right: 1.5px solid rgba(0, 0, 0, 0.2);
+                  border-radius: 0;
+                  transition: none;
+                }
     content:
       type: vertical-stack
       cards:
 
         - type: grid
-          columns: 3
+          columns: 5
           cards:
 
             - type: custom:button-card
-              entity: switch.fvicente_backlight_switch
-              name: BackLight
+              entity: 
+              name: Mariquita
               template:
                 - light
                 - icon_hue
 
             - type: custom:button-card
-              entity: fan.fvicente_fan
-              name: Ventilador
+              entity: 
+              name: Fvicente
+              tap_action: 
+                action: navigation
+                url_navigation: fvicente
               template:
-                - base
-                - icon_fan2
-                - loader
+                - light
+                - icon_hue
 
             - type: custom:button-card
-              entity: switch.fvicente_wfan
-              name: WindosFan
+              entity: 
+              name: Dayreth
               template:
-                - base
-                - icon_fan2
-                - loader
+                - light
+                - icon_hue
 
             - type: custom:button-card
-              entity: switch.fvicente_monitor_switch
-              name: Monitor
+              entity: 
+              name: Zahid
               template:
-                - base
-                - icon_imac
-                - loader
+                - light
+                - icon_hue
 
             - type: custom:button-card
-              custom_fields:
-                graph:
-                  card:
-                    entities: 
-                      - sensor.fvicente_t_h_temperature
-                    name: Temperatura
-              template: 
-                - sensor
+              entity: 
+              name: Ethan
+              template:
+                - light
+                - icon_hue
 
-            - type: custom:button-card
-              custom_fields:
-                graph:
-                  card:
-                    entities: 
-                      - sensor.fvicente_t_h_humidity
-                    line_color: "#3e77B6"
-                    name: Humedad
-              template: 
-                - sensor
