@@ -5,13 +5,19 @@
         icon: mdi:account-check
         device_class: occupancy
 
-      - unique_id: 'fvicente_movietime'
-        name: 'fvicente movie time'
+      - unique_id: 'fvicente_local_connection'
+        name: 'fvicente local connection'
+        state: >
+          {{ states('sensor.fvicente_iphone_ssid') == 'SwitHome' }}
+        icon: mdi:wifi-settings
+
+      - unique_id: 'fvicente_movie_mode'
+        name: 'fvicente movie mode'
         state: 'off'
         icon: mdi:movie
 
-      - unique_id: 'fvicente_sleeping'
-        name: 'fvicente sleeping'
+      - unique_id: 'fvicente_sleeping_mode'
+        name: 'fvicente sleeping mode'
         state: > #INVERTED
           {{ is_state('sun.sun', 'below_horizon')
           and is_state('switch.fvicente_monitor_switch', 'off') 

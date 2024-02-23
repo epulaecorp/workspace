@@ -3,37 +3,11 @@ homeassistant:
     person.fvicente:
       entity_picture: /local/img/fvicente.png
 
-mqtt:
-  sensor:
-    - name: fvicente_last_changed
-      state_topic: homeassistant/persistence/fvicente
-      value_template: >
-        {{ value | replace(' ', 'T') }}
+person:
+  - name: fvicente
+    id: fvicente
+    device_trackers:
+      - device_tracker.fvicente_phone #ios
 
-automation:
-  - alias: person_in_home
-    id: '8423590985012'
-    mode: parallel
-    trigger:
-      platform: state
-      entity_id:
-        - person.fvicente
-      from:
-        - home
-        - not_home
-      to:
-        - home
-        - not_home
-    action:
-      service: mqtt.publish
-      data:
-        topic_template: >
-          homeassistant/persistence/{{ trigger.to_state.name | lower }}
-        payload_template: >
-          {{ now() }}
-        retain: true
 
-device_tracker:
-  - platform: ping
-    hosts:
-      fvicente_phone: 192.168.0.7
+

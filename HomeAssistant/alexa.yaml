@@ -9,13 +9,13 @@
       include_entities:
         #--- Luces ...#
         - light.fvicente
-        - switch.fvicente_backlight_switch
+        - switch.fvicente_respaldo
         #... Ventiladores ...#
         - fan.fvicente_fan
         - switch.fvicente_wfan
         #... Televisión ...#
         - switch.chromecast
-        - switch.fvicente_monitor_switch
+        - switch.fvicente_monitor
         #... Especiales ...#
         - input_boolean.sleep_interruption
 #      include_entity_globs:
@@ -27,7 +27,7 @@
     
     entity_config:
       
-      switch.fvicente_backlight_switch:
+      switch.fvicente_respaldo:
         name: "Mi Respaldo"
       light.fvicente:
         name: "Mi Luz"
@@ -39,7 +39,7 @@
         name: "Mi Ventilador Exterior"
 
 
-      switch.fvicente_monitor_switch:
+      switch.fvicente_monitor:
         name: "Mi Monitor"
       switch.chromecast:
         name: "Mi televisión"

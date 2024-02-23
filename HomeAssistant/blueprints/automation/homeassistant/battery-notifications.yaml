@@ -19,9 +19,7 @@ blueprint:
       - Tienes la opción de utilizar acciones personalizadas. Esto se puede usar si desea personalizar su notificación o reproducir un anuncio en The Voice (HA), Google, Alexa, TTS, etc. Tiene 10 sensores que pueden usarse en sus acciones personalizadas.
       - Tienes la opción de ingresar en las condiciones globales que desees.
       - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android.
-    
-    ¿Necesitas ayuda? Consulte nuestras preguntas frecuentes: [Haga clic aquí](https://community.home-assistant.io/t/653754/2?u=blacky)
-    
+
   domain: automation
   input:
     include_button:
@@ -121,10 +119,7 @@ blueprint:
       description: Puede seleccionar un grupo personalizado de sensores de batería para usar en su notificación.
         El grupo personalizado tiene su propia configuración independiente de "Nivel de advertencia de batería baja" a continuación.
         Cuando utilice todas las baterías + el grupo personalizado en una automatización, se recomienda excluir también el grupo personalizado de baterías anterior en "Sensores de batería excluidos".
-        
-        
-       Los sensores de batería excluidos no están vinculados a este grupo personalizado.
-        
+        Los sensores de batería excluidos no están vinculados a este grupo personalizado.
         
         **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
       default: { entity_id: [] }
@@ -188,12 +183,8 @@ blueprint:
     notify_message:
       name: Easy Notify - Message
       description: Puede seleccionar 1 de los 3 mensajes preestablecidos en el menú desplegable.
-        
-        
         1 - Sensores de batería baja + % de nivel de batería + Sensores no disponibles.
-        
         2 - Sensores de batería baja + Nivel de batería %.
-        
         3 - Sensores no disponibles.
       default: all_sensors
       selector:

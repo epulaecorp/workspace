@@ -70,14 +70,14 @@ views:
                       - icon_ventilador
 
                   - type: custom:button-card
-                    entity: switch.fvicente_wfan
+                    entity: switch.fvicente_wfan_switch
                     name: WFan
                     template:
                       - switch
                       - icon_ventilador
 
                   - type: custom:button-card
-                    entity: switch.fvicente_monitor_switch
+                    entity: switch.fvicente_monitor
                     name: Monitor
                       #double_tap_action: !include popup/studio_monitorer.yaml
                     template:

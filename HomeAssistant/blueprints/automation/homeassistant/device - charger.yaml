@@ -1,10 +1,10 @@
 blueprint:
-  name: PHONE - Charging Switch
-  description: Enciende o apaga un enchufe inteligente según el nivel de la batería
+  name: DEVICE - Charging Switch
+  description: Enciende o apaga un enchufe inteligente según el nivel de la bateríade un dispositivo.
   domain: automation
   input:
     battery:
-      name: Battery
+      name: Device Battery
       description: Dispositivo a monitorear.
       selector:
         entity:
@@ -70,7 +70,7 @@ blueprint:
     charge_full:
       name: Full Battery Charge
       description: La batería se considera llena en este porcentaje.
-      default: 85
+      default: 95
       selector:
         number:
           min: 0

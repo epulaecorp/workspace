@@ -24,10 +24,10 @@ web_server:
 captive_portal:
 
 time:
-  - platform: sntp
-    id: ntp_time
-    servers: "2.mx.pool.ntp.org"
-    timezone: America/Mexico_City
+#  - platform: sntp
+#    id: ntp_time
+#    servers: "2.mx.pool.ntp.org"
+#    timezone: America/Mexico_City
   - platform: homeassistant
     id: hass_time
 

@@ -1,7 +1,7 @@
 substitutions:
   zone: Home
   area: fvicente
-  device: backlight
+  device: wfan
 
 packages:
   gpio: 

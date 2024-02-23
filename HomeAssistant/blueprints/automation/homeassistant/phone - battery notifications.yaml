@@ -1,0 +1,150 @@
+blueprint:
+  name: PHONE - Battery Level Notifications
+  description: "Sends notifications to a mobile device when the battery level is considered low or full based on a given threshold.
+    Notification are automatically dismissed when you (un)plug the charging cable."
+  domain: automation
+
+  input:
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+    battery_entity:
+      name: Battery
+      description: The battery level indicator of the device to monitor
+      selector:
+        entity:
+          integration: mobile_app
+          domain: sensor
+          device_class: battery
+    charging_indicator_entity:
+      name: Charging indicator
+      description: The charging indicator of the device
+      selector:
+        entity:
+          integration: mobile_app
+          domain: sensor
+    enable_discharging_notification:
+      name: Send start charging notification
+      description: When battery level drops below discharging threshold.
+      default: true
+      selector:
+        boolean: 
+    battery_discharging_threshold:
+      name: Discharging threshold
+      description: When battery level drops below threshold.
+      default: 30
+      selector:
+        number:
+          min: 10
+          max: 50
+          step: 5
+          unit_of_measurement: "%"
+    discharging_notification_title:
+      name: Start charging notification title
+      selector:
+        text: 
+    discharging_notification_message:
+      name: Start charging notification message
+      selector:
+        text: 
+    battery_chargin_threshold:
+      name: Charging threshold
+      description: When battery level equals or gets above threshold.
+      default: 95
+      selector:
+        number:
+          min: 50
+          max: 100
+          step: 5
+          unit_of_measurement: "%"
+    enable_charging_notification:
+      name: Send charging complete notification
+      description: When battery level equals or gets above charging threshold.
+      default: true
+      selector:
+        boolean: 
+    charging_notification_title:
+      name: Charging complete notification title
+      selector:
+        text: 
+    charging_notification_message:
+      name: Charging complete notification message
+      selector:
+        text: 
+
+variables:
+  enable_discharging_notification: !input enable_discharging_notification
+  enable_charging_notification: !input enable_charging_notification
+  discharging_notification_title: !input discharging_notification_title
+  discharging_notification_message: !input discharging_notification_message
+  charging_notification_title: !input charging_notification_title
+  charging_notification_message: !input charging_notification_message
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input charging_indicator_entity
+    id: charging_changed
+  - platform: numeric_state
+    entity_id: !input battery_entity
+    below: !input battery_discharging_threshold
+    id: below_discharging_threshold
+
+action:
+  - device_id: !input 'notify_device'
+    domain: mobile_app
+    type: notify
+    message: clear_notification
+    data:
+      tag: battery-warning
+  - choose:
+    - alias: "Start charging notification"
+      conditions:
+        - condition: template
+          value_template: "{{ enable_discharging_notification }}"
+        - condition: trigger
+          id: below_discharging_threshold
+        - condition: not
+          conditions:
+            - condition: state
+              entity_id: !input charging_indicator_entity
+              state: "on"
+      sequence:
+        - device_id: !input 'notify_device'
+          domain: mobile_app
+          type: notify
+          title: "{{ discharging_notification_title }}" 
+          message: "{{ discharging_notification_message }}"
+          data:
+            notification_icon: mdi:battery-alert-variant-outline
+            tag: battery-warning
+    - alias: "Charging complete notification"
+      conditions:
+        - condition: template
+          value_template: "{{ enable_charging_notification }}"
+        - condition: trigger
+          id: charging_changed
+        - condition: state
+          entity_id: !input charging_indicator_entity
+          state: "on"
+      sequence:
+        - wait_for_trigger:
+            - platform: numeric_state
+              entity_id: !input battery_entity
+              above: !input battery_chargin_threshold
+            - platform: state
+              entity_id: !input battery_entity
+              to: "100"
+        - device_id: !input 'notify_device'
+          domain: mobile_app
+          type: notify
+          title: "{{ charging_notification_title }}" 
+          message: "{{ charging_notification_message }}"
+          data:
+            notification_icon: mdi:battery-charging-high
+            tag: battery-warning

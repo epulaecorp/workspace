@@ -1,7 +1,7 @@
 substitutions:
   zone: Home
   area: fvicente
-  device: monitor
+  device: washer
 
 packages:
   gpio: 

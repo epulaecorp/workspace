@@ -10,22 +10,16 @@ esphome:
   platform: esp8266
   board: esp01_1m
 
-logger:
-  baud_rate: 0
+#logger:
+#  baud_rate: 0
 
 uart:
   rx_pin: RX
   baud_rate: 4800
 
-#globals:
-#  - id: _measureCycles
-#    type: int
-#    restore_value: false
-#    initial_value: "0"
-
 sensor:
   - platform: cse7766
-    update_interval: 10s
+    update_interval: 5s
     current:
       name: "Current"
       accuracy_decimals: 2
@@ -53,20 +47,3 @@ sensor:
             window_size: 3
             send_every: 3
             send_first_at: 1
-#      on_value:
-#          then:
-#            - lambda: |-
-#                if (x > 5){
-#                  id(_measureCycles) = 0;}
-#                else {
-#                    id(_measureCycles) += 1;
-#                    
-#                    if (id(_measureCycles) >= 3 ){
-#                      if (id(relay).state) {
-#                        id(relay).turn_off();
-#                        id(_measureCycles) = 0;
-#                      } 
-#                      else {
-#                        id(_measureCycles)=0;}
-#                    }
-#                }

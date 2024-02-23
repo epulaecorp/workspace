@@ -77,7 +77,7 @@ lovelace:
 #      require_admin: true
     lovelace-fvicente:
       mode: yaml
-      filename: ui-fvicente
+      filename: ui-fvicente.yaml
       title: fvicente
       icon: mdi:cellphone-cog
       show_in_sidebar: true

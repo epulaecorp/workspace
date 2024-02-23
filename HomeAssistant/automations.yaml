@@ -28,7 +28,7 @@
       - service: switch.turn_on
         data: {}
         target:
-          entity_id: switch.fvicente_monitor_switch
+          entity_id: switch.fvicente_monitor
       - service: media_player.volume_set
         metadata: {}
         data:
@@ -44,7 +44,7 @@
       - service: switch.turn_off
         data: {}
         target:
-          entity_id: switch.fvicente_monitor_switch
+          entity_id: switch.fvicente_monitor
       - service: media_player.volume_set
         metadata: {}
         data:
@@ -274,7 +274,9 @@
   action:
   - service: light.turn_on
     metadata: {}
-    data: {}
+    data:
+      transition: 2
+      color_temp: 460
     target:
       entity_id: light.fvicente
   mode: single
@@ -314,88 +316,41 @@
   alias: FVICENTE - wakeup
   description: ''
   use_blueprint:
-    path: homeassistant/lights-wakeup.yaml
+    path: homeassistant/lights - wakeup.yaml
     input:
-      manual_time: 00:00:00
+      manual_time: 07:00:00
       light_entity: light.fvicente
-      check_entity: person.fvicente
-      sunrise_duration: 15
-      timestamp_sensor: sensor.next_alarm_echo_recamara
+      timestamp_sensor: sensor.alarm_echo_recamara
       presence_sensor: binary_sensor.fvicente_inhome
-      effect_duration: 10
-      start_brightness: 5
-      min_mired: 20
-      post_sunrise_actions:
-      - service: media_player.volume_set
-        metadata: {}
-        data:
-          volume_level: 0.3
-        target:
-          entity_id: media_player.echo_recamara
-      - service: media_player.play_media
-        metadata: {}
-        data:
-          media_content_id: album goguear
-          media_content_type: SPOTIFY
-        target:
-          entity_id: media_player.echo_recamara
-      - service: fan.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id: fan.fvicente_fan
 - id: '1707698876630'
   alias: FVICENTE - movie time
   description: ''
   use_blueprint:
-    path: homeassistant/lights-movietime.yaml
+    path: homeassistant/lights - movie_time.yaml
     input:
       trigger_entities:
       - media_player.fvicente_tv
-      trigger_on_state:
-      - playing
+      include_sun: sun_enabled
       app_attribute:
       - Prime Video
-      trigger_off_state:
-      - 'off'
+      light_switch:
+        entity_id: binary_sensor.fvicente_movie_mode
+      include_start_turn_off: enable_start_turn_off
       off_light_switch:
         entity_id:
-        - light.fvicente_backlight_switch
+        - switch.fvicente_respaldo
         - light.fvicente
+      off_include_light_control:
+      - use_transition
+      off_light_transition_off: 2
       include_intermission: intermission_enable
       intermission_light_switch:
         entity_id: light.fvicente
-      include_sun: sun_enabled
-      light_switch:
-        entity_id: binary_sensor.fvicente_movietime
-      include_start_turn_off: enable_start_turn_off
-      include_light_control: []
-      light_brightness: 10
-      light_colour_temperature: 2500
-      light_transition_on: 1.5
-      light_transition_off: 1.5
-      off_light_transition_off: 1
       intermission_include_light_control:
       - use_brightness
-      - use_transition
       - use_colour_temperature
-      intermission_light_brightness: 10
-      intermission_light_colour_temperature: 2500
-      intermission_light_transition_on: 2
-      intermission_light_transition_off: 2
-      time_delay: 3
-- id: '1707986820338'
-  alias: HomeAsistant - Restart
-  description: ''
-  trigger:
-  - platform: time
-    at: 04:30:00
-  condition: []
-  action:
-  - service: homeassistant.restart
-    metadata: {}
-    data: {}
-  mode: single
+      - use_transition
+      end_include_light_control: []
 - id: '1708389440992'
   alias: NOTIFICATIONS - Garbage
   description: ''
@@ -411,3 +366,23 @@
       include_end_notify: enable_end_notify_options
       end_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
+- id: '1708472434293'
+  alias: FVICENTE - Laptop Charger
+  description: ''
+  use_blueprint:
+    path: homeassistant/device - charger.yaml
+    input:
+      end_bedtime: 05:00:00
+      battery: sensor.fvicente_laptop_battery
+      person: person.fvicente
+      target_switch: switch.fvicente_laptop_charger
+- id: '1708472579359'
+  alias: FVICENTE - Phone Charger
+  description: ''
+  use_blueprint:
+    path: homeassistant/device - charger.yaml
+    input:
+      end_bedtime: 05:00:00
+      battery: sensor.fvicente_phone_battery_level
+      person: person.fvicente
+      target_switch: switch.fvicente_phone_charger

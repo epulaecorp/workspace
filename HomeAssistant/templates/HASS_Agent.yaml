@@ -1,0 +1,7 @@
+  - sensor:
+      - unique_id: fvicente_laptop_battery
+        name: 'Fvicente Laptop Battery'  
+        state: >
+          {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
+        icon: mdi:battery
+        device_class: battery

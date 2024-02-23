@@ -1,7 +1,7 @@
 blueprint:
-  name: LIGHTS -  Auto Turn Off
+  name: LIGHT - Auto Off
   description: >
-    # 🪄 Manual Light
+    # 🪄  Auto Turn OFF Light
     
     **Version: 1.0**
 
