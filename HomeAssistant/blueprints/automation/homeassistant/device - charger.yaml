@@ -1,5 +1,5 @@
 blueprint:
-  name: DEVICE - Charging Switch
+  name: DEVICE - Charger Switch
   description: Enciende o apaga un enchufe inteligente según el nivel de la bateríade un dispositivo.
   domain: automation
   input:
@@ -10,41 +10,48 @@ blueprint:
         entity:
           domain: sensor
           device_class: battery
-    person:
-      name: Person
-      description: Sólo cuando esta persona se encuentre en el estado especificado.
-      selector:
-        entity:
-          domain: person
-    state:
-      name: Person State
-      description: El estado en el que debe encontrarse la persona.
-      default: home
+#    person:
+#      name: Person
+#      description: Sólo cuando esta persona se encuentre en el estado especificado.
+#      selector:
+#        entity:
+#          domain: person
+#    state:
+#      name: Person State
+#      description: El estado en el que debe encontrarse la persona.
+#      default: home
     target_switch:
       name: Smart Plug
-      description: Enchufe inteligente para encender o apagar
+      description: Contacto inteligente a controlar
       selector:
         entity:
           domain: switch
+    presence_sensor:
+      name: Home Presence Sensor
+      description: Sensor de presencia en casa.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: occupancy
     charge_min:
       name: Lowest Battery Charge
-      description: La carga minima que se debe permitir que caiga la batería
+      description: La carga minima que se debe permitir llegar a la batería
       default: 20
       selector:
         number:
           min: 0
-          max: 100
+          max: 50
           step: 5
           unit_of_measurement: "%"
           mode: slider
 
     charge_max:
       name: Highest Battery Charge
-      description: La carga máxima que se debe permitir que alcance la batería
+      description: La carga máxima que se debe permitir llegar a la batería
       default: 80
       selector:
         number:
-          min: 0
+          min: 50
           max: 100
           step: 5
           unit_of_measurement: "%"
@@ -52,6 +59,7 @@ blueprint:
 
     use_bedtime:
       name: Charge fully before bed
+      description: Permitir la carga Full en horario de dormir
       selector:
         boolean:
       default: True
@@ -69,11 +77,11 @@ blueprint:
       default: '05:00'
     charge_full:
       name: Full Battery Charge
-      description: La batería se considera llena en este porcentaje.
+      description: La batería se considera Full en este porcentaje.
       default: 95
       selector:
         number:
-          min: 0
+          min: 80
           max: 100
           step: 5
           unit_of_measurement: "%"
@@ -86,15 +94,19 @@ variables:
   use_bedtime: !input use_bedtime
   start_bedtime: !input start_bedtime
   end_bedtime: !input   end_bedtime
+
 trigger:
   - platform: state
     entity_id: !input battery
   - platform: state
-    entity_id: !input person
+    entity_id: !input presence_sensor
 condition:
+#  - condition: state
+#    entity_id: !input person
+#    state: !input state
   - condition: state
-    entity_id: !input person
-    state: !input state
+    entity_id: !input presence_sensor
+    state: 'on'
 action:
   - variables:
       charge: '{{ (states(battery) | float) if is_number(states(battery)) else 1 }}'

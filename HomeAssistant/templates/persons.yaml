@@ -1,15 +1,11 @@
   - binary_sensor:
-      - unique_id: 'fvicente_inhome'
+      - unique_id: 'fvicente_in_home'
         name: 'fvicente in home'
-        state: "{{ is_state('device_tracker.fvicente_phone', 'home') }}"
+        state: >
+          {{ is_state('device_tracker.fvicente_phone', 'home')
+          or is_state('sensor.fvicente_iphone_ssid', 'SwitHome') }}
         icon: mdi:account-check
         device_class: occupancy
-
-      - unique_id: 'fvicente_local_connection'
-        name: 'fvicente local connection'
-        state: >
-          {{ states('sensor.fvicente_iphone_ssid') == 'SwitHome' }}
-        icon: mdi:wifi-settings
 
       - unique_id: 'fvicente_movie_mode'
         name: 'fvicente movie mode'
@@ -18,7 +14,7 @@
 
       - unique_id: 'fvicente_sleeping_mode'
         name: 'fvicente sleeping mode'
-        state: > #INVERTED
+        state: > 
           {{ is_state('sun.sun', 'below_horizon')
           and is_state('switch.fvicente_monitor_switch', 'off') 
           and is_state('light.fvicente_backlight_switch', 'off') 

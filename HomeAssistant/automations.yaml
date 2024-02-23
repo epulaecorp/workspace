@@ -376,6 +376,8 @@
       battery: sensor.fvicente_laptop_battery
       person: person.fvicente
       target_switch: switch.fvicente_laptop_charger
+      start_bedtime: '22:00:00'
+      presence_sensor: binary_sensor.fvicente_in_home
 - id: '1708472579359'
   alias: FVICENTE - Phone Charger
   description: ''
@@ -386,3 +388,5 @@
       battery: sensor.fvicente_phone_battery_level
       person: person.fvicente
       target_switch: switch.fvicente_phone_charger
+      start_bedtime: '22:00:00'
+      presence_sensor: binary_sensor.fvicente_in_home

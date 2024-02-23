@@ -20,16 +20,16 @@ api:
 ota:
   password: !secret ota_password
 
-web_server:
+#web_server:
 captive_portal:
 
-time:
+#time:
 #  - platform: sntp
 #    id: ntp_time
 #    servers: "2.mx.pool.ntp.org"
 #    timezone: America/Mexico_City
-  - platform: homeassistant
-    id: hass_time
+#  - platform: homeassistant
+#    id: hass_time
 
 
 text_sensor:
