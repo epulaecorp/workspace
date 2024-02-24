@@ -321,7 +321,7 @@
       manual_time: 07:00:00
       light_entity: light.fvicente
       timestamp_sensor: sensor.alarm_echo_recamara
-      presence_sensor: binary_sensor.fvicente_inhome
+      presence_sensor: binary_sensor.fvicente_in_home
 - id: '1707698876630'
   alias: FVICENTE - movie time
   description: ''
@@ -390,3 +390,25 @@
       target_switch: switch.fvicente_phone_charger
       start_bedtime: '22:00:00'
       presence_sensor: binary_sensor.fvicente_in_home
+- id: '1708775414430'
+  alias: FVICENTE - Auxiliar Charger AutoOFF
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.fvicente_auxiliar_charger
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.fvicente_auxiliar_charger
+  mode: single

@@ -4,6 +4,7 @@ button_card_templates:
 views:
   # Home
   - type: custom:grid-layout
+    layout_type: custom:grid-layout
     title: Home
     icon: mdi:home
     layout:

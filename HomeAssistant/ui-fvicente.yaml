@@ -10,9 +10,10 @@ views:
     layout:
       #default
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: 0 repeat(1, 1fr) 0
-      grid-template-rows: repeat(3, 1fr)
+      grid-template-columns: 1fr repeat(1, 1fr) 1fr
+      grid-template-rows: 0 repeat(3, 1fr) 0
       grid-template-areas: |
+        ".  .         ."
         ".  devices   ."
         ".  tasks     ."
         ".  sensors   ."
@@ -56,7 +57,7 @@ views:
                       - icon_hue
 
                   - type: custom:button-card
-                    entity: switch.fvicente_backlight_switch
+                    entity: switch.fvicente_respaldo
                     name: Respaldo
                     template:
                       - switch
@@ -91,36 +92,55 @@ views:
                       - switch
                       - icon_chrome
 
-      - type: grid
-        view_layout:
-          grid-area: tasks
-        columns: 1
-        cards:
-          - type: conditional
-            conditions:
-              - condition: state
-                entity: binary_sensor.calendar_pendientes
-                state: "on"
-            card:
-              type: custom:atomic-calendar-revive
-              name: "Pendientes:"
-              maxDaysToShow: 1
-              showProgressBar: false
-              showEventDate: false
-              showAllDayHours: false
-              entities:
-                - entity: calendar.pendientes
-                  color: orange
+              - type: grid
+                columns: 3
+                cards:
+
+                  - type: custom:button-card
+                    entity: switch.fvicente_phone_charger
+                    name: phone
+                    template:
+                      - switch
+                      - icon_charger
+
+                  - type: custom:button-card
+                    entity: switch.fvicente_laptop_charger
+                    name: laptop
+                    template:
+                      - switch
+                      - icon_charger
+
+
+#      - type: grid
+#        view_layout:
+#          grid-area: tasks
+#        columns: 1
+#        cards:
+#          - type: conditional
+#            conditions:
+#              - condition: state
+#                entity: binary_sensor.calendar_pendientes
+#                state: "on"
+#            card:
+#              type: custom:atomic-calendar-revive
+#              name: "Pendientes:"
+#              maxDaysToShow: 1
+#              showProgressBar: false
+#              showEventDate: false
+#              showAllDayHours: false
+#              entities:
+#                - entity: calendar.pendientes
+#                  color: orange
 
       - type: grid
         title: sensors
         view_layout:
-          grid-area: sensors
+          grid-area: tasks
         columns: 1
         cards:
 
           - type: grid
-            columns: 2
+            columns: 1
             cards:
               - type: custom:apexcharts-card
                 graph_span: 24h
@@ -141,21 +161,3 @@ views:
                     show:
                       extremas: true
 
-              - type: custom:apexcharts-card
-                graph_span: 24h
-                show:
-                  last_updated: true
-                header:
-                  show: true
-                  show_states: true
-                  title: Humidity
-                series:
-                  - entity: sensor.fvicente_humidity
-                    type: line
-                    color: orangered
-                    group_by:
-                      func: last
-                      duration: 15m
-                    stroke_width: 2
-                    show:
-                      extremas: true

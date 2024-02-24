@@ -8,10 +8,12 @@ blueprint:
     **El proceso de automatización:**
       - Conecte su lavadora, secadora, lavavajillas o cualquier electrodoméstico a un enchufe inteligente que controle el consumo de energía del electrodoméstico.
       - Cuando el dispositivo se inicia o finaliza, tiene la opción de enviar un mensaje de notificación a uno o varios dispositivos.
-      - Tienes la opción de utilizar acciones personalizadas. Esto se puede utilizar para reproducir un anuncio en The Voice (HA), Google, Alexa, etc. cuando el aparato haya iniciado y/o finalizado.
-      - Tienes la opción de establecer una hora de inicio, una hora de finalización y seleccionar días de la semana. Esto solo permitirá que la automatización se ejecute entre los períodos de tiempo.
+      - Tienes la opción de utilizar acciones personalizadas. Esto se puede utilizar para reproducir un anuncio en The Voice (HA), Google, Alexa, etc.
+        cuando el aparato haya iniciado y/o finalizado.
+      - Tienes la opción de establecer una hora de inicio, una hora de finalización y seleccionar días de la semana.
+        Esto solo permitirá que la automatización se ejecute entre los períodos de tiempo.
       - Tienes la opción de ingresar en las condiciones globales que desees.
-      - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android. Uno para todos y todos para uno.
+      - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android.
 
   domain: automation
   input:
