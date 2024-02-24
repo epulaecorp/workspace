@@ -1,3 +1,4 @@
+input_datetime:
 
   alarm_echo_sala:
     name: 'Alarm Echo Sala'

@@ -233,31 +233,11 @@
     event: leave
   condition: []
   action:
-  - service: switch.turn_off
+  - service: script.turn_on
     metadata: {}
     data: {}
     target:
-      entity_id: switch.fvicente_backlight_switch
-  - service: light.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: light.fvicente
-  - service: remote.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: remote.fvicente_tv
-  - service: fan.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: fan.fvicente_fan
-  - service: media_player.media_stop
-    metadata: {}
-    data: {}
-    target:
-      entity_id: media_player.echo_recamara
+      entity_id: script.fvicente_away
   mode: single
 - id: '1704934606210'
   alias: FVICENTE - arrive

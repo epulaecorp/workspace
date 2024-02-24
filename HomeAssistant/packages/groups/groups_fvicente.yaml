@@ -1,0 +1,30 @@
+group:
+
+  fvicente_fans:
+    name: 'fvicente fans'
+    entities:
+      - fan.fvicente_fan
+      - switch.fvicente_wfan_switch
+
+  fvicente_lights:
+    name: 'fvicente lights'
+    entities:
+      - light.fvicente
+      - switch.fvicente_respaldo
+
+  fvicente_multimedia:
+    name: 'fvicente_multimedia'
+    entities:
+      - remote.fvicente_tv
+      - switch.fvicente_monitor
+      - media_player.echo_recamara
+
+  fvicente_all_devices:
+    name: 'fvicente_all_devices'
+    entities:
+      - fan.fvicente_fan
+      - switch.fvicente_wfan_switch
+      - light.fvicente
+      - switch.fvicente_respaldo
+      - remote.fvicente_tv
+      - switch.fvicente_monitor

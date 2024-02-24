@@ -16,7 +16,15 @@
         name: 'fvicente sleeping mode'
         state: > 
           {{ is_state('sun.sun', 'below_horizon')
-          and is_state('switch.fvicente_monitor_switch', 'off') 
-          and is_state('light.fvicente_backlight_switch', 'off') 
-          and is_state('light.fvicente', 'off') }}
+          and is_state('group.fvicente_lights', 'off') 
+          and is_state('group.fvicente_multimedia', 'off') }}
         icon: mdi:sleep
+
+  - sensor:
+      # HASS Agent Laptop
+      - unique_id: fvicente_laptop_battery
+        name: 'Fvicente Laptop Battery'  
+        state: >
+          {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
+        icon: mdi:battery
+        device_class: battery

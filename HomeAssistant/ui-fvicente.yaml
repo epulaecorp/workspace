@@ -98,14 +98,21 @@ views:
 
                   - type: custom:button-card
                     entity: switch.fvicente_phone_charger
-                    name: phone
+                    name: Phone
                     template:
                       - switch
                       - icon_charger
 
                   - type: custom:button-card
                     entity: switch.fvicente_laptop_charger
-                    name: laptop
+                    name: Laptop
+                    template:
+                      - switch
+                      - icon_charger
+
+                  - type: custom:button-card
+                    entity: switch.fvicente_auxiliar_charger
+                    name: Auxiliar
                     template:
                       - switch
                       - icon_charger
