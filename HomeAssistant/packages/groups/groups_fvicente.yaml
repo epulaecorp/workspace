@@ -4,18 +4,18 @@ group:
     name: 'fvicente fans'
     entities:
       - fan.fvicente_fan
-      - switch.fvicente_wfan_switch
+      - fan.fvicente_wfan
 
   fvicente_lights:
     name: 'fvicente lights'
     entities:
       - light.fvicente
-      - switch.fvicente_respaldo
+      - light.fvicente_respaldo
 
   fvicente_multimedia:
     name: 'fvicente_multimedia'
     entities:
-      - remote.fvicente_tv
+      - switch.fvicente_chromecast
       - switch.fvicente_monitor
       - media_player.echo_recamara
 
@@ -23,8 +23,8 @@ group:
     name: 'fvicente_all_devices'
     entities:
       - fan.fvicente_fan
-      - switch.fvicente_wfan_switch
+      - fan.fvicente_wfan
       - light.fvicente
-      - switch.fvicente_respaldo
-      - remote.fvicente_tv
+      - light.fvicente_respaldo
+      - switch.fvicente_chromecast
       - switch.fvicente_monitor

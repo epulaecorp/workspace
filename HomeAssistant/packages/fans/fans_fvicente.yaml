@@ -3,7 +3,8 @@ fan:
     fans:
       fvicente_wfan:
         friendly_name: 'fvicente_wfan'
-        value_template: "{{ states('switch.fvicente_wfan_switch') }}"
+        value_template: >
+          {{ states('switch.fvicente_wfan_switch') }}"
         turn_on:
           - service: switch.turn_on
             target:

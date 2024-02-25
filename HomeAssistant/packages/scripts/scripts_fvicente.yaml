@@ -1,4 +1,5 @@
 script:
+  #... Home leave ...#
   fvicente_home_leave:
     alias: 'fvicente_home_leave'
     sequence:
@@ -6,28 +7,25 @@ script:
       - service: homeassistant.turn_off
         target:
           entity_id:
-            - fan.fvicente_wfan
-            - fan.fvicente_fan
-            - remote.fvicente_tv
-            - switch.fvicente_monitor_switch
-            - light.fvicente
-            - switch.fvicente_respaldo
+            - group.fvicente_all_devices
       # Detener alexa
       - service: media_player.media_stop
         target:
           entity_id: media_player.echo_recamara
-
+  #... Sleeping Mode ...#
   fvicente_sleeping_mode:
     alias: 'fvicente_sleeping_mode'
     sequence:
-      # Apagar Luces y Tv
+      # Apagar Luces y Multimedia
       - service: homeassistant.turn_off
         target:
           entity_id:
-            - light.fvicente
-            - switch.fvicente_respaldo
-            - switch.fvicente_monitor
-            - remote.fvicente_tv
+            - group.fvicente_lights
+            - group.fvicente_multimedia
+      # Apagar  computadora
+      - service: button.press
+        target:
+          entity_id: fvicente_laptop_shutdown
       # Encender el ventilador
       - service: fan.turn_on
         target:

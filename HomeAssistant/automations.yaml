@@ -53,178 +53,8 @@
           device_id: fb289c0c16ea235873fa897462835efa
       alias: 'OFF'
   mode: single
-- id: '1699591191220'
-  alias: Phone Chargig
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.fvicente_phone_battery_level
-    alias: Battery Changes
-  condition: []
-  action:
-  - alias: CHARGE > 90 / CHARGE < 10
-    choose:
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.fvicente_phone_battery_level
-        above: 90
-      sequence:
-      - alias: 'CHARGING '
-        choose:
-        - conditions:
-          - condition: state
-            entity_id: sensor.fvicente_phone_battery_state
-            state: Charging
-          sequence:
-          - alias: DAY / NIGHT
-            choose:
-            - conditions:
-              - condition: sun
-                before: sunset
-                after: sunrise
-              sequence:
-              - alias: HOME / AWAY
-                choose:
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: home
-                  sequence:
-                  - service: notify.alexa_media_echo_recamara
-                    data:
-                      message: Tu teléfono ya está cargado, sería buena idea desconectarlo
-                  - service: notify.mobile_app_fvicente_phone
-                    data:
-                      data:
-                        push:
-                          sound:
-                            name: findmy.wav
-                            critical: 1
-                            volume: 1
-                      title: BATERÍA
-                      message: Carga completada
-                  alias: HOME
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: not_home
-                  sequence:
-                  - service: notify.mobile_app_fvicente_phone
-                    data:
-                      message: Tu teléfono ya está cargado, sería buena idea desconectarlo
-                  alias: AWAY
-              alias: DAY
-            - conditions:
-              - condition: sun
-                before: sunrise
-                after: sunset
-              sequence:
-              - alias: HOME / AWAY
-                choose:
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: home
-                  sequence:
-                  - service: notify.alexa_media_echo_recamara
-                    data:
-                      message: Tu teleéfono está cargado, sería buena idea desconectarlo
-                  - service: notify.mobile_app_fvicente_phone
-                    data:
-                      message: Carga completa
-                      title: BATERÍA
-                      data:
-                        push:
-                          sound:
-                            name: findmy.wav
-                            critical: 1
-                            volume: 1
-                  alias: HOME
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: not_home
-                  sequence: []
-                  alias: AWAY
-              alias: NIGHT
-          alias: CHARGING
-      alias: BATERY > 90
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.fvicente_phone_battery_level
-        below: 10
-      sequence:
-      - alias: CHARGING / NO CHARGING
-        choose:
-        - conditions:
-          - condition: state
-            entity_id: sensor.fvicente_phone_battery_state
-            state: Not Charging
-          sequence:
-          - alias: DAY / NIGHT
-            choose:
-            - conditions:
-              - condition: sun
-                before: sunset
-                after: sunrise
-              sequence:
-              - alias: HOME / AWAY
-                choose:
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: home
-                  sequence:
-                  - service: notify.alexa_media_echo_recamara
-                    data:
-                      message: Tu teléfono se está quedando sin batería , seria bueno
-                        ponerlo a cargar
-                  - service: notify.mobile_app_fvicente_phone
-                    data:
-                      message: Tu teléfono se está quedando sin batería , seria bueno
-                        ponerlo a cargar
-                  alias: HOME
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: not_home
-                  sequence:
-                  - service: notify.mobile_app_fvicente_phone
-                    data:
-                      message: Tu teléfono se está quedando sin batería , seria bueno
-                        ponerlo a cargar
-                  alias: AWAY
-              alias: DAY
-            - conditions:
-              - condition: sun
-                before: sunrise
-                after: sunset
-              sequence:
-              - alias: HOME / AWAY
-                choose:
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: home
-                  sequence:
-                  - service: notify.alexa_media_echo_recamara
-                    data:
-                      message: Tu teléfono se está descargando, sería buena idea ponerlo
-                        a cargar
-                  alias: HOME
-                - conditions:
-                  - condition: state
-                    entity_id: device_tracker.fvicente_phone
-                    state: not_home
-                  sequence: []
-                  alias: AWAY
-              alias: NIGHT
-          alias: NO CHARGING
-      alias: BATERY < 10
-  mode: single
 - id: '1704934376320'
-  alias: FVICENTE - leave
+  alias: FVICENTE - home leave
   description: ''
   trigger:
   - platform: zone
@@ -237,16 +67,16 @@
     metadata: {}
     data: {}
     target:
-      entity_id: script.fvicente_away
+      entity_id: script.fvicente_home_leave
   mode: single
 - id: '1704934606210'
-  alias: FVICENTE - arrive
+  alias: FVICENTE - home arrive
   description: ''
   trigger:
   - platform: zone
     entity_id: person.fvicente
     zone: zone.home
-    event: leave
+    event: enter
   condition:
   - condition: sun
     before: sunrise
@@ -259,22 +89,6 @@
       color_temp: 460
     target:
       entity_id: light.fvicente
-  mode: single
-- id: '1706750034690'
-  alias: HomeAssistant - Start
-  description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition:
-  - condition: sun
-    before: sunset
-    after: sunrise
-    alias: Solo de dia
-  action:
-  - service: script.homeassistant_start
-    metadata: {}
-    data: {}
   mode: single
 - id: '1707077020260'
   alias: Reminders - Happy Birthday
@@ -335,15 +149,14 @@
   alias: NOTIFICATIONS - Garbage
   description: ''
   use_blueprint:
-    path: homeassistant/calendar-notifications.yaml
+    path: homeassistant/calendar - notifications.yaml
     input:
       calendar: calendar.garbage
       include_calendar_trigger: disable_key_word
       include_start_notify: enable_start_notify_options
       start_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
-      include_start_action_button_confirmation: disable_start_action_button_confirmation
-      include_end_notify: enable_end_notify_options
+      include_end_notify: disable_end_notify_options
       end_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
 - id: '1708472434293'

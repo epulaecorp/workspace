@@ -1,4 +1,3 @@
-
   
   smart_home:
     locale: es-MX
@@ -9,15 +8,16 @@
       include_entities:
         #--- Luces ...#
         - light.fvicente
-        - switch.fvicente_respaldo
+        - light.fvicente_respaldo
         #... Ventiladores ...#
         - fan.fvicente_fan
-        - switch.fvicente_wfan
         #... Televisión ...#
-        - switch.chromecast
+        - switch.fvicente_chromecast
         - switch.fvicente_monitor
         #... Especiales ...#
         - input_boolean.sleep_interruption
+        #... Chargers ...#
+        - switch.fvicente_auxiliar_charger
 #      include_entity_globs:
 #        - binary_sensor.*_motion
 #      include_domains:
@@ -27,23 +27,21 @@
     
     entity_config:
       
-      switch.fvicente_respaldo:
+      light.fvicente_respaldo:
         name: "Mi Respaldo"
       light.fvicente:
         name: "Mi Luz"
-      
 
       fan.fvicente_fan:
         name: "Mi Ventilador"
-      swittch.fvicente_wfan:
-        name: "Mi Ventilador Exterior"
-
 
       switch.fvicente_monitor:
         name: "Mi Monitor"
-      switch.chromecast:
+      switch.fvicente_chromecast:
         name: "Mi televisión"
 
       input_boolean.sleep_interruption:
         name: "sleep interruption"
 
+      switch.fvicente_auxiliar_charger:
+        name: "Mi cargador auxiliar"

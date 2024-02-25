@@ -21,10 +21,19 @@
         icon: mdi:sleep
 
   - sensor:
-      # HASS Agent Laptop
+      # laptop battery
       - unique_id: fvicente_laptop_battery
         name: 'Fvicente Laptop Battery'  
         state: >
           {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
         icon: mdi:battery
         device_class: battery
+
+  - button:
+      # Laptop shutdown
+      - unique_id: fvicente_laptop_shutdown
+        name: 'fvicente_laptop_shutdown'
+        press:
+          - service: button.press
+            target:
+              entity_id: button.nb_fvicente_nb_fvicente_shutdown
