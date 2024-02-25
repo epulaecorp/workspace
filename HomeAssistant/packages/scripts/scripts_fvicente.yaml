@@ -25,7 +25,7 @@ script:
       # Apagar  computadora
       - service: button.press
         target:
-          entity_id: fvicente_laptop_shutdown
+          entity_id: button.fvicente_laptop_shutdown
       # Encender el ventilador
       - service: fan.turn_on
         target:

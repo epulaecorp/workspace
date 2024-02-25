@@ -128,14 +128,14 @@
       app_attribute:
       - Prime Video
       light_switch:
-        entity_id: binary_sensor.fvicente_movie_mode
+        entity_id:
+        - binary_sensor.fvicente_movie_mode
       include_start_turn_off: enable_start_turn_off
       off_light_switch:
         entity_id:
-        - switch.fvicente_respaldo
         - light.fvicente
-      off_include_light_control:
-      - use_transition
+        - light.fvicente_respaldo
+      off_include_light_control: []
       off_light_transition_off: 2
       include_intermission: intermission_enable
       intermission_light_switch:
@@ -145,6 +145,15 @@
       - use_colour_temperature
       - use_transition
       end_include_light_control: []
+      end_light_switch:
+        entity_id:
+        - light.fvicente_respaldo
+      trigger_on_state:
+      - playing
+      time_delay: 1.5
+      trigger_off_state:
+      - idle
+      include_end_turn_on: enable_end_turn_on
 - id: '1708389440992'
   alias: NOTIFICATIONS - Garbage
   description: ''

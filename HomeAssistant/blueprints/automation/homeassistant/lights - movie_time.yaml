@@ -92,7 +92,7 @@ blueprint:
       name: Trigger - ON State *
       description: Estados de activación.
         Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Intro.
-      default: Playing
+      default: playing
       selector:
         select:
           multiple: true
@@ -129,7 +129,7 @@ blueprint:
     time_delay:
       name: Time Delay
       description: Retraso de tiempo que actúa como amortiguador antes de que la automatización se apague o entre en modo INTERMEDIO.
-      default: 3
+      default: 1.5
       selector:
         number:
           min: 0
@@ -271,7 +271,7 @@ blueprint:
     include_intermission:
       name: INTERMEDIO Option (Optional)
       description: Ajustes de iluminación en modo INTERMEDIO.
-      default: intermission_disable
+      default: intermission_enable
       selector:
         select:
           options:
