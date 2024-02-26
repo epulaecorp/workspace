@@ -112,16 +112,16 @@ action:
       charge: '{{ (states(battery) | float) if is_number(states(battery)) else 1 }}'
       is_bedtime: '{{ use_bedtime == True and ( now() >= today_at(start_bedtime) or now() < today_at (end_bedtime) ) }}'
       c_max: '{{ charge_full if is_bedtime else charge_max }}'
-      c_min: '{{ charge_full if is_bedtime else charge_min }}'
+      c_min: '{{ charge_full if is_bedtime else charge_min }} '
   - choose:
     - conditions: >
-        {{ charge < c_min }}
+        {{ charge < (c_min + 1) }}
       sequence:
         - service: switch.turn_on
           target:
             entity_id: !input target_switch
     - conditions: >
-        {{ charge >= c_max }}
+        {{ charge >= (c_max - 1) }}
       sequence:
         - service: switch.turn_off
           target:

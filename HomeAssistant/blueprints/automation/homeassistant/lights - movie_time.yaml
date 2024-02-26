@@ -17,23 +17,33 @@ blueprint:
 
       - **Inicio de la película (reproduciendo):**
         - Las luces, interruptores y escenas se activan en un modo de película.
-        - También puede especificar la aplicación utilizada en el reproductor multimedia (por ejemplo, Apple TV, Netflix, etc.) y activar la automatización solo si se utilizan estas aplicaciones.
+        - También puede especificar la aplicación utilizada en el reproductor multimedia (por ejemplo, Apple TV, Netflix, etc.)
+          y activar la automatización solo si se utilizan estas aplicaciones.
         - Puedes seleccionar qué luces e interruptores se apagarán al comienzo de la película.
-        - Puedes optar por crear una instantánea de tus luces e interruptores antes de que comience la película, lo que te permitirá devolverlos a su estado original una vez que termine la película.
+        - Puedes optar por crear una instantánea de tus luces e interruptores antes de que comience la película,
+          lo que te permitirá devolverlos a su estado original una vez que termine la película.
       
       - **Tiempo de retardo:**
-        - El tiempo de retardo es un período de buffer antes de que la automatización se apague o entre en un modo intermedio. Proporciona un período de gracia para rectificar acciones accidentales.
+        - El tiempo de retardo es un período de buffer antes de que la automatización se apague o entre en un modo intermedio.
+          Proporciona un período de gracia para rectificar acciones accidentales.
 
       - **Intermedio:**
-        - El intervalo permite realizar ajustes de iluminación versátiles, incluido encender diferentes luces, ajustar los niveles de brillo, cambiar la configuración de temperatura del color o seleccionar escenas específicas. Es particularmente útil para configurar luces ligeramente más brillantes durante un descanso intermedio al pausar una película.
+        - El intervalo permite realizar ajustes de iluminación versátiles, incluido encender diferentes luces, ajustar los niveles de brillo,
+          cambiar la configuración de temperatura del color o seleccionar escenas específicas.
+          Es particularmente útil para configurar luces ligeramente más brillantes durante un descanso intermedio al pausar una película.
 
       - **Fin de la película:**
-        - Cuando termina la película, todas las luces, interruptores y escenas se apagan. Alternativamente, si está utilizando la opción de enlace de automatización, la automatización de la luz del sensor se activará, devolviendo las luces a la configuración de automatización de la luz del sensor.
+        - Cuando termina la película, todas las luces, interruptores y escenas se apagan.
+          Alternativamente, si está utilizando la opción de enlace de automatización,
+          la automatización de la luz del sensor se activará, devolviendo las luces a la configuración de automatización de la luz del sensor.
         - Opcionalmente, puede seleccionar luces, interruptores y escenas que se encenderán después de que termine la película.
         - Si has elegido crear una instantánea de tus luces e interruptores al principio, volverán a su estado original cuando termine la película.
 
       - **Opción de enlace de automatización:**
-        - La "Opción de enlace de automatización" se integra perfectamente con otros planos, como el "Plano de luz del sensor", lo que le permite desactivar automatizaciones adicionales cuando se activa una película. Esta función toma el control de las luces, los interruptores, las escenas y los guiones, lo que garantiza una experiencia cinematográfica fluida. Una vez que termina la película, las demás automatizaciones se vuelven a habilitar, restableciendo las luces, interruptores, escenas y guiones a su funcionamiento normal.
+        - La "Opción de enlace de automatización" se integra perfectamente con otros planos, como el "Plano de luz del sensor",
+          lo que le permite desactivar automatizaciones adicionales cuando se activa una película.
+          Esta función toma el control de las luces, los interruptores, las escenas y los guiones, lo que garantiza una experiencia cinematográfica fluida.
+          Una vez que termina la película, las demás automatizaciones se vuelven a habilitar, restableciendo las luces, interruptores, escenas y guiones a su funcionamiento normal.
 
       - **Accionamiento manual:**
         - Utilice "Opciones de derivación" para anular manualmente los sensores de activación, lo que proporciona control manual y personalización adicional.
@@ -50,14 +60,14 @@ blueprint:
   input:
     trigger_entities:
       name: Media Player, House Alarm, Smoke Alarm, Etc*
-      description: Controla los cambios de estado de luces, interruptores y escenas.
+      description: Elemento que controla los cambios de estado de luces, interruptores y escenas.
       selector:
         entity:
           multiple: true
     include_sun:
       name: Use The Sun Option (Optional)
-      description: Esta opción se utiliza para agregar una condición que solo permite que la automatización se ejecute cuando está oscuro o por debajo de la configuración de 'Elevación del sol'.
-        Es una condición global que puede funcionar junto con otras opciones. No es necesario habilitar esta opción para que funcione la condición de elevación del sol de las luces nocturnas.
+      description: Permite que la automatización se ejecute cuando está oscuro o por debajo de la configuración de 'Elevación del sol'.
+        No es necesario habilitar esta opción para que funcione la condición de elevación del sol de las luces nocturnas.
       default: sun_disabled
       selector:
         select:
@@ -89,8 +99,8 @@ blueprint:
           step: 0.5
           unit_of_measurement: degrees
     trigger_on_state:
-      name: Trigger - ON State *
-      description: Estados de activación.
+      name: ON State - trigger
+      description: Estados de activación inicial.
         Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Intro.
       default: playing
       selector:
@@ -104,7 +114,7 @@ blueprint:
               value: "playing"
 
     app_attribute:
-      name: Use The APP Option (Optional)
+      name: ON State - APP start Option (Optional)
       description: Puede seleccionar las aplicaciones utilizadas en el reproductor multimedia (por ejemplo, Apple TV, Netflix, etc.)
         que activarán la automatización.
       default: []
@@ -138,7 +148,7 @@ blueprint:
           unit_of_measurement: seconds
 
     light_switch:
-      name: START - Lights, Switches, Scenes *
+      name: ON State - Turn ON Lights, Switches, Scenes *
       description: Luces, interruptores y escenas que se activan al inicio de la automatización.
 
         **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
@@ -151,7 +161,7 @@ blueprint:
               - scene
               - binary_sensor
     end_scenes:
-      name: START - Scenes To Turn OFF
+      name: ON State - Scenes To Turn OFF
       description: Si ha optado por activar una escena en "Luces - Interruptores - Escenas" o
         Secciones "Intermedio - Luces - Interruptores - Escenas" y deseo que las entidades se apaguen después,
         necesitarás crear una escena adicional. Esta escena debe incluir todas las entidades (por ejemplo, luces, interruptores, etc.)
@@ -165,7 +175,7 @@ blueprint:
               - scene
 
     include_light_control:
-      name: START Turn ON - Light Control Options (Optional)
+      name: ON State - Turn ON Light Options (Optional)
       default: []
       selector:
         select:
@@ -178,7 +188,7 @@ blueprint:
             - label: Use transition
               value: "use_transition"
     light_brightness:
-      name: Brightness
+      name: ON State - Brightness
       default: 10
       selector:
         number:
@@ -189,7 +199,7 @@ blueprint:
           unit_of_measurement: '%'
 
     light_colour_temperature:
-      name: Colour Temperature
+      name: ON State - Colour Temperature
       default: 2500
       selector:
         number:
@@ -200,7 +210,7 @@ blueprint:
           unit_of_measurement: 'kelvin'
 
     light_transition_on:
-      name: Transition - ON
+      name: ON State - Transition - OFF --> ON
       default: 2
       selector:
         number:
@@ -211,7 +221,7 @@ blueprint:
           unit_of_measurement: seconds
 
     light_transition_off:
-      name: Transition - OFF
+      name: ON State -Transition - ON --> OFF
       default: 1.5
       selector:
         number:
@@ -222,7 +232,7 @@ blueprint:
           unit_of_measurement: seconds
 
     include_start_turn_off:
-      name: START Turn OFF Options (Optional)
+      name: ON State - Turn OFF Option (Optional)
       description: Luces y/o Interruptores que se APAGARAN cuando se inicia la automatización por primera vez. 
       default: disable_start_turn_off
       selector:
@@ -234,10 +244,10 @@ blueprint:
               value: "disable_start_turn_off"
     
     off_light_switch:
-      name: START Turn OFF - Lights/Switches
+      name: ON State - Turn OFF Lights/Switches
       description: luces y/o Interruptores que se APAGARAN cuando se inicie la automatización por primera vez.
 
-        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
+        **NOTA** - No se admiten áreas ni dispositivos.
       default: {}
       selector:
         target:
@@ -247,7 +257,7 @@ blueprint:
               - switch
 
     off_include_light_control:
-      name: START Turn OFF - Light Control Options (Optional)
+      name: ON State -  Turn OFF Light Options (Optional)
       description: Utilizar la transición de apagado (luces).
       default: []
       selector:
@@ -257,7 +267,7 @@ blueprint:
             - label: Use transition
               value: "use_transition"
     off_light_transition_off:
-      name: START Turn OFF - Transition
+      name: ON State - Turn OFF Transition
       description: Tiempo de transición de apagado.
       default: 1.5
       selector:
@@ -269,7 +279,7 @@ blueprint:
           unit_of_measurement: seconds
 
     include_intermission:
-      name: INTERMEDIO Option (Optional)
+      name: INTERMEDIO State - Option (Optional)
       description: Ajustes de iluminación en modo INTERMEDIO.
       default: intermission_enable
       selector:
@@ -281,7 +291,7 @@ blueprint:
               value: "intermission_disable"
 
     intermission_state:
-      name: INTERMEDIO - Trigger State
+      name: INTERMEDIO State - Trigger
       description: Estado que activa el modo INTERMEDIO.
         Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Intro.
         
@@ -296,7 +306,7 @@ blueprint:
               value: "paused"
 
     intermission_light_switch:
-      name: INTERMEDIO - Lights, Switches, Scenes
+      name: INTERMEDIO State - Turn ON Lights, Switches, Scenes
       description: Las luces, interruptores y/o escenas que se activarán durante el modo INTERMEDIO.
 
         **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
@@ -310,7 +320,7 @@ blueprint:
               - scene
 
     intermission_end_scenes:
-      name: INTERMEDIO - Scenes To Turn OFF
+      name: INTERMEDIO State - Turn OFF Scenes
       default: []
       selector:
         entity:
@@ -320,7 +330,7 @@ blueprint:
               - scene
 
     intermission_include_light_control:
-      name: INTERMEDIO - Light Control Options (Optional)
+      name: INTERMEDIO State - Light Options (Optional)
       default: []
       selector:
         select:
@@ -334,7 +344,7 @@ blueprint:
               value: "use_transition"
 
     intermission_light_brightness:
-      name: INTERMEDIO - Brightness
+      name: INTERMEDIO State - Brightness
       default: 10
       selector:
         number:
@@ -345,7 +355,7 @@ blueprint:
           unit_of_measurement: '%'
 
     intermission_light_colour_temperature:
-      name: INTERMEDIO - Colour Temperature
+      name: INTERMEDIO State - Colour Temperature
       default: 5000
       selector:
         number:
@@ -356,7 +366,7 @@ blueprint:
           unit_of_measurement: 'kelvin'
     
     intermission_light_transition_on:
-      name: INTEREMDIO - Transition  OFF --> ON
+      name: INTEREMDIO State - Transition  OFF --> ON
       default: 2
       selector:
         number:
@@ -367,7 +377,7 @@ blueprint:
           unit_of_measurement: seconds
     
     intermission_light_transition_off:
-      name: INTERMEDIO - Transition  ON --> OFF
+      name: INTERMEDIO State - Transition  ON --> OFF
       default: 2
       selector:
         number:
@@ -378,10 +388,10 @@ blueprint:
           unit_of_measurement: seconds
 
     trigger_off_state:
-      name: Trigger - OFF State *
+      name: END State - Trigger
       description: Estados de desactivación.
         Si el estado que desea no aparece en la lista, simplemente escríbalo y presione Enter.
-      default: OFF.
+      default: 'off'
       selector:
         select:
           multiple: true
@@ -397,7 +407,7 @@ blueprint:
               value: "standby"
 
     include_end_turn_on:
-      name: END Turn ON Options (Optional)
+      name: END State - Turn ON Options (Optional)
       description: Las luces, interruptores y escenas que se activarán cuando finalice la automatización.
       default: disable_end_turn_on
       selector:
@@ -411,7 +421,7 @@ blueprint:
               value: "disable_end_turn_on"
 
     end_snapshot_name:
-      name: END Turn ON - Snapshot Name
+      name: END State - Turn ON Snapshot Name
       description: Si ha elegido crear una instantánea de sus luces e interruptores arriba, asegúrese de proporcionar un nombre único para la instantánea.
         Cada automatización que cree utilizando este modelo con instantáneas debe tener un nombre de instantánea único que cree aquí.
       
@@ -421,7 +431,7 @@ blueprint:
       selector:
         text:
     end_snapshot_helper:
-      name: END Turn ON - Snapshot Toggle Helper
+      name: END State - Turn ON Snapshot Toggle Helper
       description: Si ha seleccionado crear una instantánea de sus luces e interruptores arriba, debe crear un asistente de alternancia e ingresarlo aquí.
         El asistente de conmutación debe estar en estado APAGADO cuando se inicia la automatización.
       default: []
@@ -431,7 +441,7 @@ blueprint:
             domain:
               - input_boolean
     end_light_switch:
-      name: END Turn ON - Lights, Switches, Scenes
+      name: END State - Turn ON Lights, Switches, Scenes
       description: Especifica las luces, interruptores y escenas que deseas activar al final de esta automatización.
 
         **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
@@ -446,7 +456,7 @@ blueprint:
               - binary_sensor
 
     end_include_light_control:
-      name: END Turn ON - Light Control Options (Optional)
+      name: END State - Turn ON Light Options (Optional)
       description: Seleccione si desea utilizar brillo, temperatura de color o transición.
       default: []
       selector:
@@ -460,7 +470,7 @@ blueprint:
             - label: Use transition
               value: "use_transition"
     end_light_brightness:
-      name: END Turn ON - Brightness
+      name: END State - Turn ON Brightness
       description: Brillo de las luces al finalizar la automatización.
       default: 100
       selector:
@@ -471,7 +481,7 @@ blueprint:
           step: 10
           unit_of_measurement: '%'
     end_light_colour_temperature:
-      name: END Turn ON - Colour Temperature
+      name: END State - Turn ON Colour Temperature
       description: Temperatura de color de las luces al finalizar la automatización.
       default: 5000
       selector:
@@ -482,7 +492,7 @@ blueprint:
           step: 100
           unit_of_measurement: 'kelvin'
     end_light_transition_on:
-      name: END Turn ON - Transition  OFF --> ON
+      name: END State - Transition  OFF --> ON
       description: Transición para las luces al finalizar la automatización.
       default: 1
       selector:

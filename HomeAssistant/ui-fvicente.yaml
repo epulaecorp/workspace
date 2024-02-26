@@ -49,34 +49,35 @@ views:
               - type: grid
                 columns: 3
                 cards:
+                  # Luz
                   - type: custom:button-card
                     entity: light.fvicente
                     name: Luz
                     template:
                       - switch
                       - icon_hue
-
+                  # Respaldo    
                   - type: custom:button-card
-                    entity: switch.fvicente_respaldo
+                    entity: light.fvicente_respaldo
                     name: Respaldo
                     template:
                       - switch
                       - icon_spot
-
+                  # Ventilador
                   - type: custom:button-card
                     entity: fan.fvicente_fan
                     name: Ventilador
                     template:
                       - switch
                       - icon_ventilador
-
+                  # Ventilador de ventana
                   - type: custom:button-card
                     entity: switch.fvicente_wfan_switch
                     name: WFan
                     template:
                       - switch
                       - icon_ventilador
-
+                  # Monitor
                   - type: custom:button-card
                     entity: switch.fvicente_monitor
                     name: Monitor
@@ -84,9 +85,9 @@ views:
                     template:
                       - switch
                       - icon_tv
-                  
+                  # Chromecast
                   - type: custom:button-card
-                    entity: remote.fvicente_tv
+                    entity: switch.fvicente_chromecast
                     name: Chomecast                      #double_tap_action: !include popup/studio_monitorer.yaml
                     template:
                       - switch
@@ -95,21 +96,21 @@ views:
               - type: grid
                 columns: 3
                 cards:
-
+                  # Phone Charger
                   - type: custom:button-card
                     entity: switch.fvicente_phone_charger
                     name: Phone
                     template:
                       - switch
                       - icon_charger
-
+                  # Laptop Charger
                   - type: custom:button-card
                     entity: switch.fvicente_laptop_charger
                     name: Laptop
                     template:
                       - switch
                       - icon_charger
-
+                  # Auxiliar Charger
                   - type: custom:button-card
                     entity: switch.fvicente_auxiliar_charger
                     name: Auxiliar

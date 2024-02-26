@@ -4,7 +4,6 @@ input_text:
     max: 255
     initial: '{"text": "This is a test of the alexa actions custom skill. Did it work?", "event": "actionable.skill.test"}'
     
-
 script:
   alexa_actionable_notification:
     description: Activates an actionable notification on a specific echo device

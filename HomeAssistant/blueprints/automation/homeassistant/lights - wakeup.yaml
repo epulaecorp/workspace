@@ -24,8 +24,8 @@ blueprint:
       selector:
         time: {}
     presence_sensor:
-      name: Presence Sensor
-      description: Sensor de presencia.
+      name: Room Presence Sensor
+      description: Sensor de presencia en la habitación.
       selector:
         entity:
           domain: binary_sensor
@@ -84,7 +84,7 @@ blueprint:
       default: []
       selector:
         action: {}
-#  source_url: https://gist.github.com/sbyx/96c43b13b90ae1c35b872313ba1d2d2d
+
 variables:
   light_entity: !input 'light_entity'
   sensor: !input 'timestamp_sensor'

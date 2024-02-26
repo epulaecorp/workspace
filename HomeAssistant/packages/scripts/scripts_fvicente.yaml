@@ -12,6 +12,7 @@ script:
       - service: media_player.media_stop
         target:
           entity_id: media_player.echo_recamara
+  
   #... Sleeping Mode ...#
   fvicente_sleeping_mode:
     alias: 'fvicente_sleeping_mode'

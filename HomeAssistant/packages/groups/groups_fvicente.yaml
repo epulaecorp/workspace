@@ -17,7 +17,6 @@ group:
     entities:
       - switch.fvicente_chromecast
       - switch.fvicente_monitor
-      - media_player.echo_recamara
 
   fvicente_all_devices:
     name: 'fvicente_all_devices'

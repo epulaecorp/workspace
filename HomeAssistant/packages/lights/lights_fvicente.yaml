@@ -14,3 +14,5 @@ light:
           - service: switch.turn_off
             target:
               entity_id: switch.fvicente_respaldo
+
+              

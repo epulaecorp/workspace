@@ -117,7 +117,7 @@
       timestamp_sensor: sensor.alarm_echo_recamara
       presence_sensor: binary_sensor.fvicente_in_home
 - id: '1707698876630'
-  alias: FVICENTE - movie time
+  alias: FVICENTE - Movie Time
   description: ''
   use_blueprint:
     path: homeassistant/lights - movie_time.yaml
@@ -145,15 +145,12 @@
       - use_colour_temperature
       - use_transition
       end_include_light_control: []
-      end_light_switch:
-        entity_id:
-        - light.fvicente_respaldo
       trigger_on_state:
       - playing
       time_delay: 1.5
       trigger_off_state:
       - idle
-      include_end_turn_on: enable_end_turn_on
+      include_end_turn_on: disable_end_turn_on
 - id: '1708389440992'
   alias: NOTIFICATIONS - Garbage
   description: ''
