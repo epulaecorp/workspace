@@ -3,11 +3,5 @@ homeassistant:
     person.fvicente:
       entity_picture: /local/img/fvicente.png
 
-person:
-  - name: fvicente
-    id: fvicente
-    device_trackers:
-      - device_tracker.fvicente_phone #ios
-
 
 

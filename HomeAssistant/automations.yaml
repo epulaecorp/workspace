@@ -162,9 +162,14 @@
       include_start_notify: enable_start_notify_options
       start_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
-      include_end_notify: disable_end_notify_options
+      include_end_notify: enable_end_notify_options
       end_notify_device:
       - 3bfd4bb2ffe977888371f72bfe976eec
+      global_conditions:
+      - condition: state
+        entity_id: binary_sensor.fvicente_in_home
+        state: 'on'
+      include_start_action_button_confirmation: disable_start_action_button_confirmation
 - id: '1708472434293'
   alias: FVICENTE - Laptop Charger
   description: ''

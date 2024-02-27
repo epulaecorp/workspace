@@ -31,6 +31,9 @@ script:
       - service: fan.turn_on
         target:
           entity_id: fan.fvicente_fan
+      # Esperar 15 segundos
+      - delay:
+          seconds: 15
       # Alexa volumen 2
       - service: media_player.volume_set
         target:

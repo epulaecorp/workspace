@@ -10,29 +10,22 @@ blueprint:
         entity:
           domain: sensor
           device_class: battery
-#    person:
-#      name: Person
-#      description: Sólo cuando esta persona se encuentre en el estado especificado.
-#      selector:
-#        entity:
-#          domain: person
-#    state:
-#      name: Person State
-#      description: El estado en el que debe encontrarse la persona.
-#      default: home
+
     target_switch:
       name: Smart Plug
       description: Contacto inteligente a controlar
       selector:
         entity:
           domain: switch
+
     presence_sensor:
-      name: Home Presence Sensor
-      description: Sensor de presencia en casa.
+      name: Room Presence Sensor
+      description: Sensor de presencia en la habitación.
       selector:
         entity:
           domain: binary_sensor
           device_class: occupancy
+
     charge_min:
       name: Lowest Battery Charge
       description: La carga minima que se debe permitir llegar a la batería
@@ -63,18 +56,21 @@ blueprint:
       selector:
         boolean:
       default: True
+
     start_bedtime:
       name: Start Bedtime
       description: Incio del horario de dormir
       selector:
         time:
       default: '22:00'
+
     end_bedtime:
       name: End Bedtime
       description: Fin del horario de dormir
       selector:
         time:
       default: '05:00'
+
     charge_full:
       name: Full Battery Charge
       description: La batería se considera Full en este porcentaje.
@@ -86,6 +82,7 @@ blueprint:
           step: 5
           unit_of_measurement: "%"
           mode: slider
+
 variables:
   battery: !input battery
   charge_min: !input charge_min
@@ -101,9 +98,6 @@ trigger:
   - platform: state
     entity_id: !input presence_sensor
 condition:
-#  - condition: state
-#    entity_id: !input person
-#    state: !input state
   - condition: state
     entity_id: !input presence_sensor
     state: 'on'

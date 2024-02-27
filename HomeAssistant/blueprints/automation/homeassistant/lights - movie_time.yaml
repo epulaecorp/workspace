@@ -124,7 +124,6 @@ blueprint:
           custom_value: true
           sort: true
           options:
-
             - label: Amazon Prime - Chromecast
               value: Prime Video
             - label: Netflix - Chromecast
@@ -151,7 +150,7 @@ blueprint:
       name: ON State - Turn ON Lights, Switches, Scenes *
       description: Luces, interruptores y escenas que se activan al inicio de la automatización.
 
-        **NOTA** - Sólo puedes utilizar entidades. No se admiten áreas ni dispositivos.
+        **NOTA** - No se admiten áreas ni dispositivos.
       selector:
         target:
           entity:

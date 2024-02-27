@@ -1606,7 +1606,7 @@ icon_charger:
       [[[
         let state = variables.state === 'on' ? 'animate' : null;
         return `
-          <svg viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24" stroke-width="2">
             <style>
               @keyframes animate { 
                 0% {
