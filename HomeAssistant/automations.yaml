@@ -82,13 +82,11 @@
     before: sunrise
     after: sunset
   action:
-  - service: light.turn_on
+  - service: script.turn_on
     metadata: {}
-    data:
-      transition: 2
-      color_temp: 460
+    data: {}
     target:
-      entity_id: light.fvicente
+      entity_id: script.fvicente_home_arrive
   mode: single
 - id: '1707077020260'
   alias: Reminders - Happy Birthday
