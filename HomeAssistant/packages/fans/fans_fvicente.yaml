@@ -13,9 +13,5 @@ fan:
           - service: switch.turn_off
             target:
               entity_id: switch.fvicente_wfan_switch
-      
 
-homeassistant:
-  customize:
-    fan.fvicente_wfan:
-      icon: mdi:fan
+      

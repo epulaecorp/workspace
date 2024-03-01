@@ -13,7 +13,6 @@
               - type: grid
                 columns: 2
                 cards:
-
                   # Luces
                   - type: custom:button-card
                     entity: 

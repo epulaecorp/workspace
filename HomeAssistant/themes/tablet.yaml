@@ -157,6 +157,9 @@ tablet:
         background: none !important;
       }
 
+    
+
+
     #################################################
     #                                               #
     #              GRID CARD HEADINGS               #
@@ -306,6 +309,10 @@ tablet:
       padding: var(--tablet-popup-content-padding);
     }
 
+    
+
+    
+
     /* * * * * * * * * * * * * * * * * *
       *                                 *
       *         CUSTOM BAR CARD         *
@@ -375,3 +382,4 @@ tablet:
       div.mdc-dialog__surface {
         background-color: var(--popup-background-color) !important;
       }
+

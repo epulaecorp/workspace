@@ -25,11 +25,11 @@
             entity: light.fvicente
             name: Luz
             template:
-              - switch
+              - light
               - icon_hue
 
           - type: custom:button-card
-            entity: switch.fvicente_backlight_switch
+            entity: light.fvicente_respaldo
             name: Respaldo
             template:
               - switch
@@ -39,12 +39,12 @@
             entity: fan.fvicente_fan
             name: Ventilador
             template:
-              - light
+              - fan
               - icon_ventilador
               
 
           - type: custom:button-card
-            entity: switch.fvicente_wfan
+            entity: fan.fvicente_wfan
             name: wFan
             template:
               - switch
@@ -52,7 +52,7 @@
             
 
           - type: custom:button-card
-            entity: switch.fvicente_monitor_switch
+            entity: switch.fvicente_monitor
             name: Monitor
             #double_tap_action: !include popup/studio_monitorer.yaml
             template:
@@ -134,11 +134,11 @@
                   stroke_width: 2
 
                   
-              style: |
-                ha-card {
-                  background: none  !important;
-                  box-shadow: none !important;
-                  border: none !important;
-                  padding: 0 !important;
-                }
+#              style: |
+#                ha-card {
+#                  background: none  !important;
+#                  box-shadow: none !important;
+#                  border: none !important;
+#                  padding: 0 !important;
+##               }
             

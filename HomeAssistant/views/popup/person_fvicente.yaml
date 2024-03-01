@@ -91,8 +91,7 @@ browser_mod:
               show_state: false
               entities:
   
-
-                - entity: device_tracker.fvicente_phone
+                - entity: device_tracker.fvicente_iphone
                   name: Wifi
                   icon: mdi:wifi
                   card_mod:
@@ -101,13 +100,13 @@ browser_mod:
                         color: {{ is_state(config.entity, 'home') | iif('#3182b7', '#3c3f3f') }};
                       }
 
-                - entity: device_tracker.fvicente_phone
+                - entity: device_tracker.fvicente_iphone
                   name: Bluetooth
                   icon: mdi:bluetooth
                   card_mod:
                     style: *state
 
-                - entity: device_tracker.fvicente_phone
+                - entity: device_tracker.fvicente_iphone
                   name: Position
                   icon: cil:iphone-modern
                   card_mod:
@@ -148,10 +147,11 @@ browser_mod:
             grid-area: map
           default_zoom: 16
           dark_mode: true
+          hours_to_show: 24
           entities:
-            - device_tracker.fvicente_phone
+            - device_tracker.fvicente_iphone
           card_mod:
-            style:
+            style: 
               .: |
                 #root {
                   height: 25em;
@@ -164,7 +164,7 @@ browser_mod:
                 }
                 ha-card {
                   border-top: 2px solid #1a1a1a;
-                  border-radius: 0;
+                  border-radius: 5%;
                   transition: none;
                   margin-bottom: -4px !important;
                   height: 24em !important;

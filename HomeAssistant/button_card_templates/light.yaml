@@ -39,8 +39,8 @@ light:
                           "primary_info": "name",
                           "secondary_info": "state",
                           "icon_type": "icon",
-                          "show_brightness_control": true,
                           "use_light_color": true,
+                          "show_brightness_control": true,
                           "show_color_temp_control": true,
                           "show_color_control": true,
                           "collapsible_controls": true
@@ -59,7 +59,7 @@ light:
                     ? Math.round(states[child[0]].attributes.brightness / 2.54)
                     : Math.round(entity.attributes.brightness / 2.54);
             return brightness === 0 && entity.state !== 'off'
-                ? 100
+                ? 1
                 : brightness
         }
       ]]]

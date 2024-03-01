@@ -161,7 +161,6 @@ extra_styles:
           letter-spacing: var(--button-card-letter-spacing);
         }
 
-
         /* portrait */
         @media screen and (max-width: 1200px) {
           #name, #state {
