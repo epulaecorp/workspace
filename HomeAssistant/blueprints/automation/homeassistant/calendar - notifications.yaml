@@ -5,29 +5,20 @@ blueprint:
 
     **Version: 1.3**
 
-
-    Háganos saber lo que piensa de este plan y del apoyo de la comunidad, incluidas las actualizaciones: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326?u=blacky)
-
-
-    **El proceso de automatización:**
+    ** Proceso: **
       - Puede activarse con una palabra clave en un evento del calendario o con todos los eventos del calendario.
       - Tiene la opción de activar al inicio y al final de un evento del calendario con compensaciones de tiempo.
-      - Cuando se activa, tienes la opción de enviar notificaciones a uno o varios dispositivos. La notificación tiene opciones para incluir 3 botones de acción + un botón de cancelar. También tiene la opción de enviar un mensaje de confirmación cuando se presiona un botón de acción. Esto puede resultar útil al enviar notificaciones a varios dispositivos, ya que permitirá que los demás dispositivos sepan cuándo se ha pulsado una acción.
+      - Cuando se activa, tienes la opción de enviar notificaciones a uno o varios dispositivos.
+        La notificación tiene opciones para incluir 3 botones de acción + un botón de cancelar.
+        También tiene la opción de enviar un mensaje de confirmación cuando se presiona un botón de acción.
+        Esto puede resultar útil al enviar notificaciones a varios dispositivos, ya que permitirá que los demás dispositivos sepan cuándo se ha pulsado una acción.
       - Las notificaciones pueden funcionar con dispositivos Apple IOS y Android. Uno para todos y todos para uno.
-      - Cuando se activa, tienes la opción de configurar 3 grupos de acciones diferentes. Cada grupo de acciones puede tener tantas acciones como desee.
+      - Cuando se activa, tienes la opción de configurar 3 grupos de acciones diferentes.
+        Cada grupo de acciones puede tener tantas acciones como desee.
       
       
     Nota: el evento del calendario debe agregarse al menos 15 minutos antes del activador o la automatización no se ejecutará.
       
-    Requerido = *
-
-
-    Pautas de configuración y mejores prácticas: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326/3?u=blacky)
-
-    ¿Necesitas ayuda? Consulte nuestras preguntas frecuentes: [Haga clic aquí](https://community.home-assistant.io/t/calendar-notifications-actions/612326/2?u=blacky)
-
-
-    **¿Si te gustan mis planos y te gustaría mostrar tu apoyo o simplemente decir gracias?** [Haz clic aquí](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8) 🙂
   domain: automation
   input:
     # Trigger
@@ -42,8 +33,7 @@ blueprint:
     include_calendar_trigger:
       name: Use The Calendar Trigger - Key Word (Optional)
       description: 
-        Elija si desea utilizar una "Palabra clave" para activar la automatización.
-
+        Palabra clave para activar la automatización.
 
         **Nota** - si elige no utilizar una "palabra clave", se activarán todos los eventos del calendario.
       default: enable_key_word
@@ -57,11 +47,9 @@ blueprint:
     calendar_trigger:
       name: Calendar Trigger - Key Word In Calendar Summary & / or Description
       description:
-        Ingrese una palabra clave que esté en el resumen del evento del calendario o en la descripción del evento del calendario. Esto vincula el evento del calendario a esta automatización como desencadenante.
-        Una palabra clave puede contener letras, números y símbolos similares a una contraseña.
-        Tenga en cuenta la palabra clave que utiliza, ya que se activará en cada evento con la palabra clave en el resumen o descripción del calendario seleccionado.
-        Prefiero usar los símbolos "@" o "#" seguidos de la palabra clave en un evento del calendario, por ejemplo "@bins" o "#bins" para evitar activaciones falsas.
-        For more information on how to use Trigger Key Words [Click Here](https://community.home-assistant.io/t/calendar-notifications-actions/612326/4?u=blacky)
+        Ingrese una Palabra Clave que esté en el resumen del evento del calendario o en la descripción del evento del calendario.
+        Utilice los símbolos "@" o "#" seguidos de la palabra clave en un evento del calendario, 
+        por ejemplo "@bins" o "#bins" para evitar activaciones falsas.
       default: []
       selector:
         text:
@@ -69,7 +57,6 @@ blueprint:
       name: Calendar Start - Offset
       description:
         Desfazaminto desde el inicio del evento del calendario.
-        Si desea enviar un activador antes del inicio de un evento del calendario, deberá colocar un signo menos "-" y luego el valor de tiempo.
       default:
         days: 0
         hours: 0
@@ -82,7 +69,6 @@ blueprint:
       name: Calendar End - Offset
       description:
         Desfazaminto desde el final del evento del calendario.
-        Si desea enviar un activador antes del final de un evento del calendario, deberá colocar un signo menos "-" y luego el valor de tiempo.
       default:
         days: 0
         hours: 0

@@ -55,5 +55,5 @@ script:
         target: 
           entity_id: media_player.echo_recamara
         data:
-          media_content_id: 'Sonidos de tormenta'
+          media_content_id: 'sonidos de tormenta'
           media_content_type: 'custom'
