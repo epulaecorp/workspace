@@ -1,4 +1,4 @@
-
+  
       #################################################
       #                                               #
       #                    SIDEBAR                    #
@@ -8,7 +8,13 @@
         view_layout:
           grid-area: sidebar
         cards:
-          !include sidebar/fvicente.yaml
+#          !include sidebar/fvicente.yaml
+          - type: custom:decluttering-card
+            template: person_sidebar
+            variables:  
+              - person: person.fvicente
+              - notify_mobile: notify.mobile_app_fvicente_phone
+              - device_tracker: device_tracker.fvicente_phone
 
       #################################################
       #                                               #
@@ -155,11 +161,11 @@
                   stroke_width: 2
 
                   
-#              style: |
-#                ha-card {
-#                  background: none  !important;
-#                  box-shadow: none !important;
-#                  border: none !important;
-#                  padding: 0 !important;
-##               }
+              style: |
+                ha-card {
+                  background: none  !important;
+                  box-shadow: none !important;
+                  border: none !important;
+                  padding: 0 !important;
+                }
             

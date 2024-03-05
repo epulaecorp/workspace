@@ -2,8 +2,8 @@
       - unique_id: 'fvicente_in_home'
         name: 'fvicente in home'
         state: >
-          {{ is_state('device_tracker.fvicente_iphone', 'home')
-          or is_state('sensor.fvicente_iphone_ssid', 'SwitHome') }}
+          {{ is_state('device_tracker.fvicente_phone', 'home')
+          or is_state('sensor.fvicente_phone_ssid', 'SwitHome') }}
         icon: mdi:account-check
         device_class: occupancy
 

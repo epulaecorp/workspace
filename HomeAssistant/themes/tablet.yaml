@@ -309,7 +309,24 @@ tablet:
       padding: var(--tablet-popup-content-padding);
     }
 
-    
+    /* * * * * * * * * * * * * * * * * *
+      *                                 *
+      *       TRANSPARENT CARDS         *
+      *                                 *
+      * * * * * * * * * * * * * * * * * */
+    ha-card.type-history-graph,
+    ha-card.type-entities,
+    ha-card.type-custom-bar-card,
+    ha-card.type-picture-elements,
+    ha-card.type-custom-battery-state-card,
+    ha-card.type-custom-atomic-calendar-revive,
+    ha-card.type-custom-mushroom-person-card,
+    ha-card.type-custom-clock-weather-card,
+    ha-card.type-glance {
+      background: none;
+      border: none !important;
+      box-shadow:  none;
+    }
 
     
 

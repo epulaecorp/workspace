@@ -1,5 +1,6 @@
 button_card_templates: 
   !include_dir_merge_named button_card_templates
+decluttering_templates: !include decluttering_templates.yaml
 
 views:
   # Home
@@ -303,20 +304,23 @@ views:
     visible: true
     layout: !include  views/layout.yaml
     cards: !include views/view_fvicente.yaml
+    decluttering_templates: !include decluttering_templates.yaml
 
   # Zahid
   - type: custom:grid-layout
     title: zahid
     visible: false
     layout: !include  views/layout.yaml
-    cards: !include views/view_zahid.yaml 
+    cards: !include views/view_zahid.yaml
+    decluttering_templates: !include decluttering_templates.yaml 
 
   # Ethan
   - type: custom:grid-layout
     title: ethan
     visible: false
     layout: !include  views/layout.yaml
-    cards: !include views/view_ethan.yaml 
+    cards: !include views/view_ethan.yaml
+    decluttering_templates: !include decluttering_templates.yaml 
 
   # Dayreth
   - type: custom:grid-layout
@@ -324,3 +328,4 @@ views:
     visible: false
     layout: !include  views/layout.yaml
     cards: !include views/view_dayreth.yaml 
+    decluttering_templates: !include decluttering_templates.yaml

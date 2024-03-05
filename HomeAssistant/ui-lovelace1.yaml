@@ -1,6 +1,9 @@
-button_card_templates: 
-  !include_dir_merge_named button_card_templates
+button_card_templates: !include_dir_merge_named button_card_templates
 
+decluttering_templates: !include decluttering_templates.yaml
+resources:
+  - url: /local/decluttering-card.js
+    type: module
 views:
   # Home
   - type: custom:layout-card

@@ -57,13 +57,14 @@ lovelace:
       { url: /hacsfiles/battery-state-card/battery-state-card.js,                   type: module },
       { url: /hacsfiles/clock-weather-card/clock-weather-card.js,                   type: module },
       { url: /hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js,           type: module },
+      { url: /hacsfiles/decluttering-card/decluttering-card.js,                     type: module },
 
       { url: /hacsfiles/TodoIst-Task-List/todoist-task-list.js,                     type: module },
 
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
       { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },
-      { url: /local/mini-graph-card-bundle.js?v=0.12.0,                             type: module },
+      { url: '/local/mini-graph-card-bundle.js?v=0.12.0',                           type: module },
       { url: '/local/fonts.css?v=2.1',                                              type: css }
     ]
   dashboards:
@@ -122,5 +123,6 @@ sensor:
 recorder:
   db_url: mysql://homeassistant:iothome@192.168.0.250/hass_db?charset=utf8mb4
   purge_keep_days: 30
+
 
     
