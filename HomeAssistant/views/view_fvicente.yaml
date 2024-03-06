@@ -9,12 +9,23 @@
           grid-area: sidebar
         cards:
 #          !include sidebar/fvicente.yaml
+#          - type: custom:decluttering-card
+#            template: person_sidebar
+#            variables:  
+#              - person: person.fvicente
+#              - notify_mobile: notify.mobile_app_fvicente_phone
+#              - device_tracker: device_tracker.fvicente_phone
           - type: custom:decluttering-card
-            template: person_sidebar
-            variables:  
+            template: person_sidebar2
+            variables:
               - person: person.fvicente
-              - notify_mobile: notify.mobile_app_fvicente_phone
               - device_tracker: device_tracker.fvicente_phone
+              - connection: sensor.fvicente_phone_connection_type
+              - person_inHome: binary_sensor.fvicente_in_home
+              - home_distance: sensor.home_fvicente_distance
+              - battery_level: sensor.fvicente_phone_battery_level
+              - battery_state: sensor.fvicente_phone_battery_state
+              - steps: sensor.fvicente_phone_steps
 
       #################################################
       #                                               #
@@ -99,12 +110,15 @@
 
           - type: custom:button-card
             entity: person.fvicente
-            name: fvicente
+            name: Fvicente
             triggers_update:
               - sensor.fvicente_last_changed
             tap_action: !include popup/person_fvicente.yaml
             variables:
               retain: sensor.fvicente_last_changed
+              battery_level: sensor.fvicente_phone_battery_level
+              battery_state: sensor.fvicente_phone_battery_state
+              home_distance: sensor.home_fvicente_distance
             template:
               - person
 

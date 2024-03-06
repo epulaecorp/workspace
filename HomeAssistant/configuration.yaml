@@ -61,6 +61,7 @@ lovelace:
 
       { url: /hacsfiles/TodoIst-Task-List/todoist-task-list.js,                     type: module },
 
+      { url: '/local/vertical-stack-in-card.js?v=0.4.4',                            type: js },
       { url: '/local/marked.min.js?v=4.3.0',                                        type: module },
       { url: '/local/vanilla-tilt.min.js?v=1.8.0',                                  type: module },
       { url: '/local/browser_mod_icon.js?v=0.5',                                    type: module },

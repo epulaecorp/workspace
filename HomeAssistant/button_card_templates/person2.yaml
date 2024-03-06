@@ -1,0 +1,235 @@
+person2:
+  variables:
+    state_on: >
+      [[[ return ['Gym', 'home', 'Office'].indexOf(!entity || entity.state) !== -1; ]]]
+    state: >
+      [[[ return !entity || entity.satate; ]]]
+    entity_id: >
+      [[[ return !entity || entity.entity_id; ]]]
+    entity_picture: >
+      [[[ return !entity || entity.attributes.entity_picture; ]]]
+    timeout: >
+      [[[ return !entity || Date.now() - Date.parse(entity.last_changed); ]]]
+    battery_level: >
+      [[[ battery_level ]]]
+    battery_state: >
+      [[[battery_state]]]
+    home_distance: >
+      [[[home_distance]]]
+
+
+  aspect_ratio: 1/1
+  triggers_update: sensor.time
+  name: Person
+  show_entity_picture: true
+  show_name: false
+  tap_action:
+    ui_sound_tablet: |
+      [[[
+        let screensaver = states[variables.entity_tablet] === undefined ||
+            states[variables.entity_tablet].state;
+
+        if (variables.state === 'off' && screensaver === 'off') {
+            hass.callService('media_player', 'play_media', {
+                entity_id: variables.entity_browser_mod,
+                media_content_id: '/local/sound/on.m4a',
+                media_content_type: 'music'
+            });
+        }
+        if (variables.state_on && screensaver === 'off') {
+            hass.callService('media_player', 'play_media', {
+                entity_id: variables.entity_browser_mod,
+                media_content_id: '/local/sound/off.m4a',
+                media_content_type: 'music'
+            });
+        }
+      ]]]
+    card_bounce: |
+      [[[
+        // add animation
+        if (this.getElementsByTagName("style").length === 0) {
+
+            // phone condition
+            let mq = window.matchMedia('(max-width: 800px)').matches;
+
+            let style = document.createElement('style');
+
+            style.innerHTML = `
+                @keyframes card_bounce {
+                    0%   { transform: scale(1); }
+                    10%  { transform: scale(${ mq ? '0.92' : '0.94' }); }
+                    25%  { transform: scale(1); }
+                    30%  { transform: scale(${ mq ? '0.96' : '0.98' }); }
+                    100% { transform: scale(1); }
+                }
+            `;
+
+            this.appendChild(style);
+        }
+
+        // duration
+        let duration = 800;
+
+        // animate
+        this.style.animation = `card_bounce ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+
+        // reset
+        window.setTimeout(() => { this.style.animation = "none"; }, duration + 100)
+      ]]]
+  double_tap_action:
+    haptic: success
+  hold_action:
+    action: bloc
+
+  
+  state:
+    - value: home
+      styles:
+        custom_fields:
+          icon:
+            - border-color: '#77c66e'
+    - value: not_home
+      styles:
+        card:
+          - background-color: '#dedede'
+        custom_fields:
+          icon:
+            - border-color: '#EF4F1A'
+    - value: Work
+      styles:
+        custom_fields:
+          icon:
+            - border-color: deepskyblue
+  styles:
+    card:
+      - background-color: white
+      - border-radius: var(--button-card-border-radius)
+      - border-width: 0
+      - font-size: 10px
+      - text-shadow: 0px 0px 0px black
+      - text-transform: capitalize
+      - -webkit-tap-highlight-color: rgba(0,0,0,0)
+      - transition: none
+      - --mdc-ripple-color: >
+          [[[
+            return variables.state_on
+                ? 'rgb(0, 0, 0)'
+                : '#97989c';
+          ]]]
+      - color: >
+          [[[
+            return variables.state_on
+                ? '#4b5254'
+                : '#97989c';
+          ]]]
+      - background-color: >
+          [[[
+            return variables.state_on
+                ? 'rgba(255, 255, 255, 0.85)'
+                : 'rgba(115, 115, 115, 0.25)';
+          ]]]
+    grid:
+      - grid-template-columns: repeat(2, 1frm)
+      - grid-template-rows: auto repeat(2, min-content)
+      - gap: 1.3%
+      - align-items: start
+      - will-change: transform
+      - grid-template-areas: |
+          ".  icon       status ." 
+          ".  proximity  ss     ." 
+          ".  battery    wifi   ." 
+    name:
+      - font-size: 15px
+      - align-self: middle
+      - justify-self: start
+      - padding-bottom: 10px
+    custom_fields:
+      icon:
+        - clip-path: circle()
+        - width: 70%
+        - margin-top: 0%
+        - margin-left: 0%
+        - pointer-events: none
+        - display: grid
+        - justify-self: start
+        - margin: 0 +10% 0 0
+        - opacity: 1
+        - border: 5px solid
+        - border-color: red
+        - border-radius: 500px
+      status:
+        - align-self: lower
+        - justify-self: start
+        - color: gray
+      proximity:
+        - padding: 0.5em 0px
+#        - align-self: middle
+        - justify-self: start
+        - color: gray
+      wifi:
+        - padding: 0.2em 0px
+#        - align-self: middle
+        - justify-self: start
+        - color: gray
+      battery:
+        - padding: 0.2em 0px
+        - align-self: middle
+        - justify-self: start
+        - color: gray
+
+  custom_fields:
+    icon: >
+      [[[
+        return entity && variables.entity_picture
+            ? `<img src="${variables.entity_picture}" width="100%">`
+            : null;
+      ]]]
+    status: |
+      [[[
+        if (states[variables.entity_id].state =='not_home') { 
+        return `<ha-icon icon="mdi:home-export-outline"
+          style="width: 20px; height: 20px; color: '#888888';">`;
+        } 
+        if (states[variables.entity_id].state =='home') { 
+        return `<ha-icon 
+          icon="mdi:home"
+          style="width: 20px; height: 20px; color: #3182b7;">`;
+        } else {
+        return `<ha-icon 
+          icon="mdi:map-marker-radius"
+          style="width: 20px; height: 20px; color: 888888;">`;
+        }
+      ]]]
+    proximity: |
+      [[[
+        return `<ha-icon
+          icon="mdi:map-marker-distance"
+          style="width: 20px; height: 20px; color: #3182b7;">
+          </ha-icon>  <span>\<span style="color: #3182b7;">${states[variables.home_distance].state} Kms</span></span>`
+      ]]]
+    battery: |
+      [[[
+        if (states[variables.battery_state].state =='charging') { 
+          return `<ha-icon
+          icon="mdi:battery-charging"
+          style="width: 20px; height: 20px; color: #888888;">
+          </ha-icon> <span><span style="color: #3182b7;">${states[variables.battery_level].state}%</span></span>`;
+        } else {
+          return `<ha-icon
+          icon="mdi:battery"
+          style="width: 20px; height: 20px; color: #888888;">
+          </ha-icon> <span><span style="color: #3182b7;">${states[variables.battery_level].state}%</span></span>`;
+        }
+      ]]]
+    wifi: |
+      [[[
+        if (states['sensor.fvicente_phone_connection_type'].state =='Wi-Fi') { 
+          return `<ha-icon
+          icon="mdi:wifi"
+          style="width: 20px; height: 20px; color: #3182b7;">`; 
+        } else {
+          return `<ha-icon
+          icon="mdi:wifi"
+          style="width: 20px; height: 20px; color: #888888;">`;
+        }
+      ]]]

@@ -3,25 +3,26 @@
       type: map
       entities: 
         - '[[device_tracker]]'
-      default_zoom: 16
+      default_zoom: 17
       dark_mode: true
       hours_to_show: 24
       card_mod:
         style: 
           .: |
+          
             #root {
-              height: 25em;
+              height: 20em;
               padding-bottom: 0 !important;
             }
             ha-icon-button {
               color: var(--primary-color);
               zoom: 140%;
-              margin-left: -0.2em;
+              margin-left: 1em;
             }
             ha-card {
-              border: none !important;
+              
               border-top: 2px solid #1a1a1a;
-              border-radius: 5%;
+              border-radius: 10%;
               transition: none;
               margin-bottom: -4px !important;
               height: 24em !important;
@@ -94,6 +95,215 @@
                           critical: 1
                           volume: 1
 
+        - type: custom:decluttering-card
+          template: map_template
+          variables: 
+            - device_tracker: '[[device_tracker]]'
+
+  person_sidebar2:
+    card:
+      type: custom:vertical-stack-in-card
+      style: |
+        ha-card{
+          box-shadow: none;
+          background: none;     
+        }
+      cards:
+        - type: custom:button-card
+          triggers_update: all
+          show_name: false
+          show_icon: false
+          show_state: false
+          show_label: false
+          styles:
+            card:
+              - box-shadow: none
+              - border: none !important
+              - border-radius: 15px
+              - padding: 0
+              - height: 130px
+              - background: none
+            grid:
+              - grid-template-areas: '"item1" "item2"'
+              - grid-template-columns: 1fr
+              - grid-template-rows: min-content  min-content
+              - row-gap: 0px
+          custom_fields:
+            item1:
+              card:
+                type: custom:button-card
+                styles:
+                  card:
+                    - height: 50px
+                    - border-radius: 0
+                    - border: none !important
+                    - box-shadow: none
+                    - padding: 0
+                    - background: none #'rgba(115, 115, 115, 0.15)'
+            item2:
+              card:
+                type: custom:button-card
+                entity: '[[person]]'
+                show_entity_picture: true
+                show_name: false
+                show_icon: false
+                show_state: false
+                styles:
+                  card:
+                    - padding: 0
+                    - height: 120px
+                    - box-shadow: none
+                    - border: none 
+                    - border-radius: 3px 3px 0 0
+                    - background: null
+                    - background-size: cover
+                    - background-position: center
+                    - overflow: visible
+                  img_cell:
+                    - width: 80px
+                    - height: 80px
+                    - border-radius: 509%
+                    - border: 5px solid
+                    - border-color: |
+                        [[[
+                          if (states['[[person]]'].state == 'home' )
+                            return "var(--state-icon-active-color)";
+                          return "var(--state-icon-color)";
+                        ]]]
+                    - place-self: center
+                    - position: relative
+                    - top: '-29%'
+                  grid:
+                    - grid-template-areas: '"i"'
+                  entity_picture:
+                    - width: 85px
+                    - filter: |
+                        [[[
+                          if (states['[[person]]'].state != 'home' )
+                            return 'grayscale(100%)';
+                          return 'null';
+                        ]]]
+        
+        - type: history-graph
+          show_names: false
+          entities:
+            - entity: '[[person]]'
+          styles:
+            card:
+              - border: 5px solid
+        
+        - type: horizontal-stack
+          cards:
+            - entity: '[[home_distance]]'
+              show_entity_picture: true
+              show_name: false
+              font-size: 11px
+              show_state: true
+              icon: mdi:map-marker-distance
+              styles:
+                card:
+                  - height: 55px
+                  - border: 5px solid
+                  - background: none
+                  - padding-top: 9px
+                  - margin-bottom: 2px
+                  - font-size: 11px
+              state:
+                - operator: '=='
+                  value: 0
+                  color: var(--state-icon-color)
+                - operator: '!='
+                  value: 0
+                  color: var(--state-icon-active-color)
+              type: custom:button-card
+            - entity: '[[battery_level]]'
+              show_entity_picture: true
+              show_name: false
+              show_state: true
+              show_label: true
+              font-size: 11px
+              styles:
+                card:
+                  - height: 55px
+                  - border: none !important
+                  - background: none
+                  - padding-top: 9px
+                  - margin-bottom: 2px
+                  - font-size: 11px
+                icon:
+                  - color: |
+                      [[[
+                        if (states['[[battery_state]]'].state == 'Charging' )
+                          return "var(--state-icon-active-color)";
+                        return "var(--state-icon-color)";
+                      ]]]
+              state:
+                - operator: '>'
+                  value: 90
+                  icon: |
+                    [[[
+                      if (states['[[battery_state]]'].state == 'Charging')
+                        return 'mdi:battery-charging-100';
+                        return 'mdi:battery';
+                    ]]]
+                - operator: <
+                  value: 89
+                  icon: |
+                    [[[
+                      if (states['[[battery_state]]'].state == 'Charging')
+                        return 'mdi:battery-charging-' + Math.ceil(entity.state / 10) * 10;
+                      return 'mdi:battery-' + Math.ceil(entity.state / 10) * 10;
+                    ]]]
+              type: custom:button-card
+            - entity: '[[connection]]'
+              show_name: false
+              font-size: 11px
+              show_state: true
+              icon: >
+                [[[
+                  if (states['[[connection]]'].state == 'Wi-Fi' )
+                    return "mdi:wifi"
+                  return "mdi:wifi-off"
+                ]]]
+              styles:
+                card:
+                  - height: 55px
+                  - background: none
+                  - border: none !important
+                  - padding-top: 9px
+                  - margin-bottom: 2px
+                  - font-size: 11px
+
+              type: custom:button-card
+            - entity: '[[steps]]'
+              show_entity_picture: true
+              show_name: false
+              show_last_changed: true
+              show_state: false
+              show_label: true
+              icon: mdi:walk
+              styles:
+                card:
+                  - height: 55px
+                  - background: none
+                  - border: none !important
+                  - padding-top: 9px
+                  - margin-bottom: 2px
+                  - font-size: 11px
+              state:
+                - value: still
+                  icon: mdi:human-female
+                  label: null
+                  color: var(--state-icon-color)
+                  font-size: 11px
+                - value: in_vehicle
+                  label: null
+                  color: var(--state-icon-active-color)
+                  font-size: 11px
+              type: custom:button-card
+        
+        - type: custom:button-card
+        
         - type: custom:decluttering-card
           template: map_template
           variables: 
