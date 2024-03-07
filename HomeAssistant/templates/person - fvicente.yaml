@@ -1,3 +1,53 @@
+  - sensor:
+      # person fvicente
+      - unique_id: fvicente
+        name: fvicente
+        state: >
+          {{ states('person.fvicente')}}
+        attributes:
+          phone_battery_level: >
+            {{states('sensor.fvicente_phone_battery_level')}}
+          phone_battery_state: >
+            {{states('sensor.fvicente_phone_battery_state')}}
+          phone_connection_type: >
+            {{states('sensor.fvicente_phone_connection_type')}}
+          phone_ssid: >
+            {{states('sensor.fvicente_phone_ssid')}}
+          phone_storage: >
+            {{states('sensor.fvicente_phone_storage')}}
+          laptop_battery: >
+            {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
+          in_home: >
+            {{ is_state('person.fvicente', 'home')
+            or is_state('sensor.fvicente_phone_ssid', 'SwitHome') }}
+          home_distance: >
+            {{states('sensor.home_fvicente_distance')}}
+          steps: >
+            {{states('sensor.fvicente_phone_steps')}}
+
+
+      # laptop battery
+      - unique_id: fvicente_laptop_battery
+        name: 'Fvicente Laptop Battery'  
+        state: >
+          {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
+        icon: mdi:battery
+        device_class: battery
+      
+      # Temeperature
+      - unique_id: "fvicente_temperature"
+        name: "fvicente_temperature"
+        unit_of_measurement: '°C'
+        state: "{{ states ('sensor.fvicente_forecast_temperature') }}"
+        device_class: temperature
+
+      # Humidity
+      - unique_id: "fvicente_humidity"
+        name: "fvicente_humidity"
+        unit_of_measurement: '%'
+        state: "{{ states ('sensor.fvicente_forecast_humidity') }}"
+        device_class: humidity
+
   - binary_sensor:
       - unique_id: 'fvicente_in_home'
         name: 'fvicente in home'
@@ -20,15 +70,6 @@
           and is_state('group.fvicente_multimedia', 'off') }}
         icon: mdi:sleep
 
-  - sensor:
-      # laptop battery
-      - unique_id: fvicente_laptop_battery
-        name: 'Fvicente Laptop Battery'  
-        state: >
-          {{ states('sensor.nb_fvicente_nb_fvicente_battery_charge_remaining_percentage')}}
-        icon: mdi:battery
-        device_class: battery
-
   - button:
       # Laptop shutdown
       - unique_id: fvicente_laptop_shutdown
@@ -37,3 +78,4 @@
           - service: button.press
             target:
               entity_id: button.nb_fvicente_nb_fvicente_shutdown
+

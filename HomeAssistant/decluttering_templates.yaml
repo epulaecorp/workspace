@@ -109,6 +109,8 @@
           background: none;     
         }
       cards:
+
+        # Person
         - type: custom:button-card
           triggers_update: all
           show_name: false
@@ -142,6 +144,7 @@
                     - background: none #'rgba(115, 115, 115, 0.15)'
             item2:
               card:
+                # Person
                 type: custom:button-card
                 entity: '[[person]]'
                 show_entity_picture: true
@@ -184,6 +187,7 @@
                           return 'null';
                         ]]]
         
+        # History Grap
         - type: history-graph
           show_names: false
           entities:
@@ -194,16 +198,24 @@
         
         - type: horizontal-stack
           cards:
+
+            # Home Distance
             - entity: '[[home_distance]]'
               show_entity_picture: true
               show_name: false
               font-size: 11px
               show_state: true
-              icon: mdi:map-marker-distance
+              icon: >
+                [[[ 
+                  if (states['[[home_distance]]'].state <= 100 )
+                    return "mdi:map-marker-radius-outline"
+                  return "mdi:map-marker-distance"
+                ]]] 
+              
               styles:
                 card:
                   - height: 55px
-                  - border: 5px solid
+                  - border: none !important
                   - background: none
                   - padding-top: 9px
                   - margin-bottom: 2px
@@ -216,6 +228,8 @@
                   value: 0
                   color: var(--state-icon-active-color)
               type: custom:button-card
+
+            # Battery Level
             - entity: '[[battery_level]]'
               show_entity_picture: true
               show_name: false
@@ -255,6 +269,8 @@
                       return 'mdi:battery-' + Math.ceil(entity.state / 10) * 10;
                     ]]]
               type: custom:button-card
+            
+            # Connection Type
             - entity: '[[connection]]'
               show_name: false
               font-size: 11px
@@ -273,14 +289,21 @@
                   - padding-top: 9px
                   - margin-bottom: 2px
                   - font-size: 11px
-
+                icon: 
+                  - color: |
+                      [[[
+                        if (states['[[connection]]'].state == 'Wi-Fi' )
+                          return "var(--state-icon-active-color)";
+                        return "var(--state-icon-color)";
+                      ]]]
+                
               type: custom:button-card
+
+            # Steps
             - entity: '[[steps]]'
-              show_entity_picture: true
               show_name: false
-              show_last_changed: true
-              show_state: false
-              show_label: true
+              show_state: true
+              show_label: false
               icon: mdi:walk
               styles:
                 card:
@@ -290,20 +313,19 @@
                   - padding-top: 9px
                   - margin-bottom: 2px
                   - font-size: 11px
-              state:
-                - value: still
-                  icon: mdi:human-female
-                  label: null
-                  color: var(--state-icon-color)
-                  font-size: 11px
-                - value: in_vehicle
-                  label: null
-                  color: var(--state-icon-active-color)
-                  font-size: 11px
+                icon:
+                  - color: |
+                      [[[
+                        if (states['[[steps]]'].state >= 10000 )
+                          return "var(--state-icon-active-color)";
+                        return "var(--state-icon-color)";
+                      ]]]
               type: custom:button-card
-        
+
+        # Blanck space
         - type: custom:button-card
         
+        # Map
         - type: custom:decluttering-card
           template: map_template
           variables: 

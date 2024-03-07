@@ -291,41 +291,10 @@ views:
                 ]]]
             template: footer
       
-  # Mariquita 
-  - type: custom:grid-layout
-    title: mariquita
-    visible: false
-    layout: !include  views/layout.yaml
-    cards: !include views/view_mariquita.yaml
-
   # Fvicente 
   - type: custom:grid-layout
     title: fvicente
     visible: true
     layout: !include  views/layout.yaml
     cards: !include views/view_fvicente.yaml
-    decluttering_templates: !include decluttering_templates.yaml
-
-  # Zahid
-  - type: custom:grid-layout
-    title: zahid
-    visible: false
-    layout: !include  views/layout.yaml
-    cards: !include views/view_zahid.yaml
-    decluttering_templates: !include decluttering_templates.yaml 
-
-  # Ethan
-  - type: custom:grid-layout
-    title: ethan
-    visible: false
-    layout: !include  views/layout.yaml
-    cards: !include views/view_ethan.yaml
-    decluttering_templates: !include decluttering_templates.yaml 
-
-  # Dayreth
-  - type: custom:grid-layout
-    title: dayreth
-    visible: false
-    layout: !include  views/layout.yaml
-    cards: !include views/view_dayreth.yaml 
     decluttering_templates: !include decluttering_templates.yaml

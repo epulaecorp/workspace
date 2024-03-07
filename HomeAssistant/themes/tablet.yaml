@@ -8,7 +8,7 @@ tablet:
 
   state-active-color: "#3182b7"
   state-icon-color: "#9da0a2"
-  state-icon-active-color: "#3182b7"
+  state-icon-active-color: "#87a1ab" #"#3182b7"
 
   grid-card-gap: 5%
   masonry-view-card-margin: 0px
