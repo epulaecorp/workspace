@@ -1,5 +1,6 @@
   #.. Forecast ..#
   - sensor:
+    
     # ...Views... # 
     - unique_id: sidebar
       state: template

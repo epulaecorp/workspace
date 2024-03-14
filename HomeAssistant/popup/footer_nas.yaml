@@ -3,7 +3,7 @@ browser_mod:
   service: browser_mod.popup
   data:
     title: NAS
-    timeout: 10000
+#    timeout: 10000
     style: >
       --popup-max-width: calc(385px + 385px + 385px + 50px);
       --ha-card-border-radius: 0;
@@ -76,9 +76,10 @@ browser_mod:
                 - entity: binary_sensor.docker_hub_update_available
                   name: Estado
                   icon: mdi:arrow-up-bold-hexagon-outline
-
+            # Buttons
             - type: horizontal-stack
               cards:
+                # Restart
                 - type: custom:button-card
                   name: HomeAssistant
                   icon: mdi:reload
@@ -96,7 +97,7 @@ browser_mod:
                             time: 3000
                         - service: homeassistant.restart
                   template: icon_name
-
+                # Container
                 - type: custom:button-card
                   name: Cotenedor
                   icon: mdi:reload

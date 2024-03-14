@@ -35,6 +35,12 @@
           volume_level: 0.75
         target:
           device_id: fb289c0c16ea235873fa897462835efa
+      - service: media_player.select_source
+        metadata: {}
+        data:
+          source: fvicente_tv
+        target:
+          entity_id: media_player.echo_recamara
       alias: 'ON'
     - conditions:
       - condition: trigger
@@ -110,10 +116,12 @@
   use_blueprint:
     path: homeassistant/lights - wakeup.yaml
     input:
-      manual_time: 07:00:00
+      manual_time: '17:41:00'
       light_entity: light.fvicente
-      timestamp_sensor: sensor.alarm_echo_recamara
       presence_sensor: binary_sensor.fvicente_in_home
+      effect_duration: 5
+      end_brightness: 255
+      timestamp_sensor: sensor.alarm_echo_recamara
 - id: '1707698876630'
   alias: FVICENTE - Movie Time
   description: ''

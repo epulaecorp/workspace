@@ -20,7 +20,7 @@
                     name: Frente
                     template:
                       - switch
-                      - icon_luzExterior
+                      - icon_externallight
 
                   # Patio
                   - type: custom:button-card
@@ -28,7 +28,7 @@
                     name: Patio
                     template:
                       - switch
-                      - icon_luzExterior
+                      - icon_externallight
                   
                   # Taller
                   - type: custom:button-card

@@ -3,7 +3,7 @@
             name: Lámpara
             template:
               - switch
-              - icon_lampara
+              - icon_ceilinglight
 
           - type: custom:button-card
             entity: switch.comedor_cafetera

@@ -20,9 +20,7 @@
               margin-left: 1em;
             }
             ha-card {
-              
-              border-top: 2px solid #1a1a1a;
-              border-radius: 10%;
+              border-radius: 8%;
               transition: none;
               margin-bottom: -4px !important;
               height: 24em !important;
@@ -47,155 +45,98 @@
               filter: invert(0.95) grayscale(0.95) contrast(95%);
             }
 
-  person_sidebar:
-    card:
-      type: vertical-stack
-      cards:
-        - type: entities
-          entities:
-            - entity: '[[person]]'
-              secondary_info: last-changed
-
-        - type: history-graph
-          entities:
-            - entity: '[[person]]'
-          show_names: false
-          card_mod:
-            style: |
-              ha-card {
-                border: 0;
-              }
-
-        - type: custom:mod-card
-          card_mod:
-            style:
-              hui-horizontal-stack-card$: |
-                #root {
-                  justify-content: space-evenly !important;
-                  padding: var(--tablet-popup-button-padding);
-                }
-          card:
-            type: horizontal-stack
-            cards:
-              - type: custom:button-card
-                name: Encontrar mi teléfono
-                icon: mdi:volume-high
-                template: icon_name
-                tap_action:
-                  action: call-service
-                  service: '[[notify_mobile]]'
-                  service_data:
-                    title: "Hey"
-                    message: "Aquí estoy!"
-                    data:
-                      command: "vibrate"
-                      push:
-                        sound:
-                          name: findmy.wav
-                          critical: 1
-                          volume: 1
-
-        - type: custom:decluttering-card
-          template: map_template
-          variables: 
-            - device_tracker: '[[device_tracker]]'
 
   person_sidebar2:
     card:
-      type: custom:vertical-stack-in-card
-      style: |
-        ha-card{
-          box-shadow: none;
-          background: none;     
-        }
+      type: custom:stack-in-card
+      mode: vertical
       cards:
 
         # Person
         - type: custom:button-card
+          entity: '[[person]]'
           triggers_update: all
+          tap_action: none
+          show_entity_picture: true
           show_name: false
           show_icon: false
           show_state: false
-          show_label: false
           styles:
             card:
+              - padding: 0
+              - height: 120px
               - box-shadow: none
               - border: none !important
-              - border-radius: 15px
-              - padding: 0
-              - height: 130px
-              - background: none
+              - border-radius: 3px 3px 0 0
+              - background: null
+              - background-size: cover
+              - background-position: center
+              - overflow: visible
+            img_cell:
+              - width: 90px
+              - height: 90px
+              - border-radius: 509%
+              - border: 5px solid
+              - border-color: |
+                  [[[
+                    if (states['[[person]]'].state == 'home' )
+                      return "var(--state-icon-active-color)";
+                    return "var(--state-icon-color)";
+                  ]]]
+              - place-self: center
+              - position: relative
+
             grid:
-              - grid-template-areas: '"item1" "item2"'
-              - grid-template-columns: 1fr
-              - grid-template-rows: min-content  min-content
-              - row-gap: 0px
+              - grid-template-areas: '"i" "location"'
+              - grid-tamplete-rows: 75% 25%
+
+            custom_fields:
+              location:
+                - align-self: center
+                - justify-self: end
+
+            
+            entity_picture:
+              - width: 100%
+              - filter: |
+                  [[[
+                    if (states['[[person]]'].state != 'home' )
+                      return 'grayscale(100%)';
+                    return 'null';
+                  ]]]
+            
           custom_fields:
-            item1:
-              card:
-                type: custom:button-card
-                styles:
-                  card:
-                    - height: 50px
-                    - border-radius: 0
-                    - border: none !important
-                    - box-shadow: none
-                    - padding: 0
-                    - background: none #'rgba(115, 115, 115, 0.15)'
-            item2:
-              card:
-                # Person
-                type: custom:button-card
-                entity: '[[person]]'
-                show_entity_picture: true
-                show_name: false
-                show_icon: false
-                show_state: false
-                styles:
-                  card:
-                    - padding: 0
-                    - height: 120px
-                    - box-shadow: none
-                    - border: none 
-                    - border-radius: 3px 3px 0 0
-                    - background: null
-                    - background-size: cover
-                    - background-position: center
-                    - overflow: visible
-                  img_cell:
-                    - width: 80px
-                    - height: 80px
-                    - border-radius: 509%
-                    - border: 5px solid
-                    - border-color: |
-                        [[[
-                          if (states['[[person]]'].state == 'home' )
-                            return "var(--state-icon-active-color)";
-                          return "var(--state-icon-color)";
-                        ]]]
-                    - place-self: center
-                    - position: relative
-                    - top: '-29%'
-                  grid:
-                    - grid-template-areas: '"i"'
-                  entity_picture:
-                    - width: 85px
-                    - filter: |
-                        [[[
-                          if (states['[[person]]'].state != 'home' )
-                            return 'grayscale(100%)';
-                          return 'null';
-                        ]]]
-        
+            location: >
+              [[[
+                if (states['[[person]]'].state == "home")
+                  return `<ha-icon
+                    icon="mdi:home-import-outline"
+                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+                
+                if (states['[[person]]'].state == "Gym")
+                  return `<ha-icon
+                    icon="mdi:dumbbell"
+                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+
+                if (states['[[person]]'].state == "Office QRO")
+                  return `<ha-icon
+                    icon="mdi:briefcase-outline"
+                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+
+                if (states['[[person]]'].state == "not_home")
+                  return `<ha-icon
+                    icon="mdi:map-marker-multiple-outline"
+                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-color);">`
+              ]]]
+  
         # History Grap
         - type: history-graph
           show_names: false
           entities:
             - entity: '[[person]]'
-          styles:
-            card:
-              - border: 5px solid
+          tap_action: none
         
+        # Phone Sensors
         - type: horizontal-stack
           cards:
 
@@ -210,16 +151,22 @@
                   if (states['[[home_distance]]'].state <= 100 )
                     return "mdi:map-marker-radius-outline"
                   return "mdi:map-marker-distance"
-                ]]] 
-              
+                ]]]               
               styles:
                 card:
                   - height: 55px
-                  - border: none !important
                   - background: none
                   - padding-top: 9px
                   - margin-bottom: 2px
                   - font-size: 11px
+                icon:
+                  - color: |
+                      [[[
+                        if (states['[[home_distance]]'].state <= 100 )
+                          return "var(--state-icon-color)";
+                        return "var(--state-icon-active-color)";
+                      ]]]
+
               state:
                 - operator: '=='
                   value: 0
@@ -239,7 +186,6 @@
               styles:
                 card:
                   - height: 55px
-                  - border: none !important
                   - background: none
                   - padding-top: 9px
                   - margin-bottom: 2px
@@ -285,7 +231,6 @@
                 card:
                   - height: 55px
                   - background: none
-                  - border: none !important
                   - padding-top: 9px
                   - margin-bottom: 2px
                   - font-size: 11px
@@ -309,7 +254,6 @@
                 card:
                   - height: 55px
                   - background: none
-                  - border: none !important
                   - padding-top: 9px
                   - margin-bottom: 2px
                   - font-size: 11px
@@ -322,10 +266,39 @@
                       ]]]
               type: custom:button-card
 
-        # Blanck space
-        - type: custom:button-card
-        
-        # Map
+        # find My Phone
+        - type: custom:mod-card
+          card_mod:
+            style:
+              hui-horizontal-stack-card$: |
+                #root {
+                  justify-content: space-evenly !important;
+                  padding: var(--tablet-popup-button-padding);
+                }
+          card:
+            type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Encontrar mi teléfono
+                icon: mdi:volume-high
+                template: icon_name
+                tap_action:
+                  action: call-service
+                  service: notify.mobile_app_fvicente_phone
+                  service_data:
+                    title: "Hey"
+                    message: "Aquí Estoy!"
+                    data:
+                      push:
+                        sound:
+                          name: findmy.wav
+                          critical: 1
+                          volume: 1
+                styles:
+                  icon: 
+                    - color: var(--state-icon-active-color)
+
+        # Map Location
         - type: custom:decluttering-card
           template: map_template
           variables: 

@@ -5,14 +5,17 @@ tablet:
   #edited default dark mode
   ha-card-box-shadow: none
   ha-card-background: none
+  ha-card-border-width: 0px
 
   state-active-color: "#3182b7"
+
   state-icon-color: "#9da0a2"
-  state-icon-active-color: "#87a1ab" #"#3182b7"
+  state-icon-active-color: var(--state-active-color)
 
   grid-card-gap: 5%
   masonry-view-card-margin: 0px
-  switch-checked-color: "#7a7d7f"
+
+  switch-checked-color: var(--state-active-color)
   switch-unchecked-button-color: "#3b4041"
   switch-unchecked-track-color: "#0c0d0d"
 
@@ -21,6 +24,7 @@ tablet:
   paper-slider-pin-color: "#626a6f"
   paper-slider-active-color: "#626a6f"
   paper-slider-container-color: "#202020"
+
   paper-toast-color: var(--primary-text-color)
   paper-toast-background-color: "#1b1b1bf2"
   
@@ -28,6 +32,9 @@ tablet:
 
   #temporarily revert 2022.12 icon colors
   rgb-state-default-color: 49, 130, 183
+
+  state-switch-active-color: var(--state-active-color)
+  
   state-alarm_control_panel-armed_away-color: var(--rgb-state-default-color)
   state-alarm_control_panel-armed_custom_bypass-color: var(--rgb-state-default-color)
   state-alarm_control_panel-armed_home-color: var(--rgb-state-default-color)
@@ -37,8 +44,10 @@ tablet:
   state-alarm_control_panel-disarming-color: var(--rgb-state-default-color)
   state-alarm_control_panel-pending-color: var(--rgb-state-default-color)
   state-alarm_control_panel-triggered-color: var(--rgb-state-default-color)
+  
   state-alert-off-color: var(--rgb-state-default-color)
   state-alert-on-color: var(--state-active-color)
+  
   state-binary_sensor-active-color: var(--state-active-color)
   state-binary_sensor-battery-on-color: var(--state-active-color)
   state-binary_sensor-carbon_monoxide-on-color: var(--state-active-color)
@@ -51,32 +60,46 @@ tablet:
   state-binary_sensor-smoke-on-color: var(--state-active-color)
   state-binary_sensor-sound-on-color: var(--state-active-color)
   state-binary_sensor-tamper-on-color: var(--state-active-color)
+  
   state-climate-auto-color: var(--rgb-state-default-color)
   state-climate-cool-color: var(--rgb-state-default-color)
   state-climate-dry-color: var(--rgb-state-default-color)
   state-climate-fan_only-color: var(--rgb-state-default-color)
   state-climate-heat-color: var(--rgb-state-default-color)
   state-climate-heat-cool-color: var(--rgb-state-default-color)
+  
   state-cover-active-color: var(--state-active-color)
+  
   state-device_tracker-active-color: var(--state-active-color)
   state-device_tracker-home-color: var(--state-active-color)
+  
   state-fan-active-color: var(--state-active-color)
+  
   state-humidifier-active-color: var(--state-active-color)
+  
   state-light-active-color: var(--state-active-color)
+  
   state-lock-jammed-color: var(--rgb-state-default-color)
   state-lock-locked-color: var(--rgb-state-default-color)
   state-lock-pending-color: var(--rgb-state-default-color)
   state-lock-unlocked-color: var(--rgb-state-default-color)
+  
   state-media_player-active-color: var(--state-active-color)
+  
   state-person-active-color: var(--state-active-color)
   state-person-home-color: var(--state-active-color)
+  
   state-plant-active-color: var(--state-active-color)
+  
   state-siren-active-color: var(--state-active-color)
+  
   state-sun-above_horizon-color: var(--rgb-state-default-color)
   state-sun-below_horizon-color: var(--rgb-state-default-color)
-  state-switch-active-color: var(--state-active-color)
+  
   state-update-active-color: var(--state-active-color)
+  
   state-vacuum-active-color: var(--state-active-color)
+  
   state-sensor-battery-high-color: var(--rgb-state-default-color)
   state-sensor-battery-low-color: var(--rgb-state-default-color)
   state-sensor-battery-medium-color: var(--rgb-state-default-color)
@@ -95,8 +118,8 @@ tablet:
   mdc-typography-font-family: var(--primary-font-family)
 
   #custom variables
-  primary-background-color: rgba(34,38,39,0.9)
-  ha-card-background-color: rgba(34,38,39,0.9)
+  primary-background-color: rgba(34,38,39,0.1)
+  ha-card-background-color: rgba(34,38,39,0.1)
   ha-card-header-background-color: rgba(48,52,52,0.8)
   custom-layout-card-padding: 3.3vw
 
@@ -104,12 +127,18 @@ tablet:
   sidebar-time-line-height: 4.3vw
   sidebar-font-size: 1.42vw
   sidebar-line-height: 2vw
-  bar-card-color: "#303435"
+
+  bar-card-color: var(--state-active-color)
 
   #button_card_templates
-  button-card-font-size: 1.35vw
+  button-card-font-size: 1.75vw
+  button-card-font-weight: 300
+  button-card-font-name-size: 1.5vw
+  button-card-font-name-weight: 300
+  button-card-font-state-size: 1.2vw
+  button-card-font-state-weight: 300
+
   z-axis-adjustment: 0.05vw #tilt compensation
-  button-card-font-weight: 500
   button-card-letter-spacing: -0.02vw
   button-card-border-radius: 10%
 
@@ -127,13 +156,14 @@ tablet:
   button-card-light-color-temp: hsl(204, 58%, 38%)
 
   #browser_mod.popup
-  dialog-backdrop-filter: blur(2em) brightness(0.75)
+  dialog-backdrop-filter: blur(1em) brightness(0.1)
   popup-background-color: rgba(34,38,39,0.9)
   popup-border-width: 1px
   popup-border-radius: 1em
   popup-padding-x: 0px
   popup-padding-y: 0px
   popup-min-width: 440px
+
   tablet-popup-header-color: rgba(200, 218, 222, 0.05)
   tablet-popup-content-padding: 1.1em 2.2em 1.6em 1.5em
   tablet-popup-button-padding: 0.1em 2em 1.8em 2em
@@ -161,15 +191,11 @@ tablet:
         background: none !important;
       }
 
-    
-
-
     #################################################
     #                                               #
     #              GRID CARD HEADINGS               #
     #                                               #
     #################################################
-
     grid-layout$:
       hui-grid-card:
         .: |
@@ -181,7 +207,7 @@ tablet:
           h1 {
             font-size: 2.5vw !important;
             line-height: 0 !important;
-            font-weight: 600 !important;
+            font-weight: 300 !important;
             color: rgba(255, 255, 255, 0.8) !important;
             padding: 0.2vw 0 2vw 0 !important;
             letter-spacing: normal !important;
@@ -208,7 +234,6 @@ tablet:
     #               SWIPE CARD MARGIN               #
     #                                               #
     #################################################
-
         $swipe-card$:
           .: |
             div {
@@ -229,12 +254,9 @@ tablet:
     #            SIDEBAR VERTICAL-STACK             #
     #                                               #
     #################################################
-
     grid-layout$hui-vertical-stack-card$: |
       #root {
-        background-color: rgba(0, 0, 0, 0.06);
         border-radius: 0;
-        border-right: 0.1vw solid rgba(58, 69, 73, 0.2);
         min-height: 100vh;
       }
       /* phone */
@@ -253,7 +275,6 @@ tablet:
     #             SIDEBAR LAUNDRY TIMER             #
     #                                               #
     #################################################
-
     grid-layout$hui-vertical-stack-card$hui-conditional-card:
       .: |
         hui-conditional-card {
@@ -274,7 +295,6 @@ tablet:
     #                    FOOTER                     #
     #                                               #
     #################################################
-
     grid-layout$hui-horizontal-stack-card:
       $: |
         #root {
@@ -318,7 +338,6 @@ tablet:
       *       TRANSPARENT CARDS         *
       *                                 *
       * * * * * * * * * * * * * * * * * */
-    ha-card.type-history-graph,
     ha-card.type-entities,
     ha-card.type-custom-bar-card,
     ha-card.type-picture-elements,
@@ -331,8 +350,6 @@ tablet:
       border: none !important;
       box-shadow:  none;
     }
-
-    
 
     /* * * * * * * * * * * * * * * * * *
       *                                 *
@@ -374,6 +391,11 @@ tablet:
       :host {
         --ha-card-border-width: 0;
       }
+
+      .mdc-dialog {
+        background: none;
+      }
+
 
       ha-dialog {
         --vertical-align-dialog: var(--tablet-popup-align-dialog) !important;

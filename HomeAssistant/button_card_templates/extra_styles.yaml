@@ -150,13 +150,13 @@ extra_styles:
         }
 
         #name {
-          font-size: var(--button-card-name-size);
-          font-weight: var(--button-card-name-weight);
+          font-size: var(--button-card-font-name-size);
+          font-weight: var(--button-card-font-name-weight);
           letter-spacing: var(--button-card-letter-spacing);
         }
         #state {
-          font-size: var(--button-card-state-size);
-          font-weight: var(--button-card-sate-weight);
+          font-size: var(--button-card-font-state-size);
+          font-weight: var(--button-card-font-state-weight);
 
           letter-spacing: var(--button-card-letter-spacing);
         }
