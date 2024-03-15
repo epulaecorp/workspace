@@ -222,3 +222,21 @@
     target:
       entity_id: switch.fvicente_auxiliar_charger
   mode: single
+- id: '1710383431048'
+  alias: FVICENTE - alexa_next_alarm
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.echo_recamara_next_alarm
+    attribute: status
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.alarm_echo_recamara
+    data_template:
+      datetime: "{% set x = states('sensor.echo_recamara_next_alarm') %} {% if x not
+        in ['unavailable', 'none', 'unknown'] %} \n  {{ as_timestamp(states('sensor.echo_recamara_next_alarm'))|timestamp_custom('%Y-%m-%d
+        %H:%M:00') }}\n{%else%}\n  {{ \"1977-04-13 05:04:20\" }}\n{% endif %}\n"
+  mode: single
