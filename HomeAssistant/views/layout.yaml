@@ -1,9 +1,9 @@
       #default
       margin: 0
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: repeat(4, 1fr) 0
+      grid-template-columns: repeat(7, 1fr) 0
       grid-template-rows: 0 repeat(2, fit-content(100%))
       grid-template-areas: |
-        ".        .         .         .     "
-        "sidebar  devices   devices   person"
-        "sidebar  sensor    sensor    sensor"
+        ".        .           .           .           .           .           .         "
+        "sidebar  devices     devices     devices     chargers    sensor      sensor    "
+        "sidebar  enviroment  enviroment  enviroment  enviroment  enviroment  enviroment"

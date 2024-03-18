@@ -92,8 +92,9 @@
 
             custom_fields:
               location:
-                - align-self: center
+                - align-self: end
                 - justify-self: end
+                - font-size: 1vw
 
             
             entity_picture:
@@ -109,24 +110,28 @@
             location: >
               [[[
                 if (states['[[person]]'].state == "home")
-                  return `<ha-icon
+                  return `<span>Home  <span><ha-icon
                     icon="mdi:home-import-outline"
-                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+                    style="; --mdc-icon-size: 34px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">
+                    </ha-icon>`
                 
                 if (states['[[person]]'].state == "Gym")
-                  return `<ha-icon
+                  return `<span>GYM  <span><ha-icon
                     icon="mdi:dumbbell"
-                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+                    style="; --mdc-icon-size: 34px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">
+                    </ha-icon>`
 
                 if (states['[[person]]'].state == "Office QRO")
-                  return `<ha-icon
+                  return `<span>Work  <span><ha-icon
                     icon="mdi:briefcase-outline"
-                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">`
+                    style="; --mdc-icon-size: 34px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-active-color);">
+                    </ha-icon>`
 
                 if (states['[[person]]'].state == "not_home")
-                  return `<ha-icon
+                  return `<span>Away  <span><ha-icon
                     icon="mdi:map-marker-multiple-outline"
-                    style="; --mdc-icon-size: 24px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-color);">`
+                    style="; --mdc-icon-size: 34px; padding-left: 6px; padding-right: 5px; color: var(--state-icon-color);">
+                    </ha-icon>`
               ]]]
   
         # History Grap

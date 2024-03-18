@@ -12,7 +12,7 @@
           - person: person.fvicente
           - device_tracker: device_tracker.fvicente_phone
           - connection: sensor.fvicente_phone_connection_type
-#          - person_inHome: binary_sensor.fvicente_in_home
+
           - home_distance: sensor.home_fvicente_distance
           - battery_level: sensor.fvicente_phone_battery_level
           - battery_state: sensor.fvicente_phone_battery_state
@@ -26,64 +26,120 @@
       - type: grid
         view_layout:
           grid-area: devices
-        columns: 4
+        columns: 1
         title: Dispositivos
         cards:
-          - type: custom:button-card
-            entity: light.fvicente
-            name: Luz
-            template:
-              - light
-              - icon_hue
-              
-          - type: custom:button-card
-            entity: fan.fvicente_fan
-            name: Ventilador
-            template:
-              - fan
-              - icon_ventilador
-              
-          - type: custom:button-card
-            entity: switch.fvicente_monitor
-            name: Monitor
-            template:
-              - switch
-              - icon_tv
+          - type: custom:swipe-card
+            parameters:
+              parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+              - type: grid
+                columns: 3
+                cards:
+                # luz
+                - type: custom:button-card
+                  entity: light.fvicente
+                  name: Luz
+                  template:
+                    - light
+                    - icon_hue
+                # Ventilador    
+                - type: custom:button-card
+                  entity: fan.fvicente_fan
+                  name: Ventilador
+                  template:
+                    - fan
+                    - icon_ventilador
+                # Chromecast  
+                - type: custom:button-card
+                  entity: switch.fvicente_chromecast
+                  name: Chromecast
+                  template:
+                    - switch
+                    - icon_chrome
+                # Respaldo
+                - type: custom:button-card
+                  entity: light.fvicente_respaldo
+                  name: Respaldo
+                  template:
+                    - switch
+                    - icon_hue    
+                # wFan
+                - type: custom:button-card
+                  entity: fan.fvicente_wfan
+                  name: wFan
+                  template:
+                    - switch
+                    - icon_ventilador
+                # Monitor    
+                - type: custom:button-card
+                  entity: switch.fvicente_monitor
+                  name: Monitor
+                  template:
+                    - switch
+                    - icon_tv
 
-          - type: custom:button-card
-            entity: switch.fvicente_phone_charger
-            name: Phone Charger
-            template:
-              - switch
-              - icon_charger
-
-          - type: custom:button-card
-            entity: light.fvicente_respaldo
-            name: Respaldo
-            template:
-              - switch
-              - icon_hue
-
-          - type: custom:button-card
-            entity: fan.fvicente_wfan
-            name: wFan
-            template:
-              - switch
-              - icon_ventilador
-            
-          - type: custom:button-card
-            entity: switch.fvicente_chromecast
-            name: Chromecast
-            template:
-              - switch
-              - icon_chrome
+      #################################################
+      #                                               #
+      #                   CHARGERS                    #
+      #                                               #
+      #################################################
+      # Chargers
+      - type: grid
+        view_layout:
+          grid-area: chargers
+        columns: 1
+        title: ' '
+        cards:
+          - type: custom:swipe-card
+            parameters:
+              parameters:
+              roundLengths: true
+              effect: coverflow
+              speed: 650
+              spaceBetween: 20
+              threshold: 7
+              coverflowEffect:
+                rotate: 80
+                depth: 300
+            cards:
+              - type: grid
+                columns: 1
+                cards:
+                  # Laptop Charger
+                  - type: custom:button-card
+                    entity: switch.fvicente_laptop_charger
+                    name: Laptop Charger
+                    template:
+                      - switch
+                      - icon_charger
+                  # Phone Charger
+                  - type: custom:button-card
+                    entity: switch.fvicente_phone_charger
+                    name: Phone Charger
+                    template:
+                      - switch
+                      - icon_charger
           
-          - type: custom:button-card
-            entity: switch.fvicente_laptop_charger
-            name: Laptop Charger
-            template:
-              - switch
-              - icon_charger
+              - type: grid
+                columns: 1
+                cards:
+                  # Charger
+                  - type: custom:button-card
+                    entity: switch.fvicente_auxiliar_charger
+                    name: Charger
+                    template:
+                      - switch
+                      - icon_charger
+                  - type: custom:button-card
 
       #################################################
       #                                               #
@@ -92,7 +148,7 @@
       #################################################
       - type: grid
         view_layout:
-          grid-area: person
+          grid-area: sensor
         columns: 2
         title: ' '
         cards:
@@ -127,7 +183,7 @@
       #################################################                   
       - type: horizontal-stack
         view_layout:
-          grid-area: sensor
+          grid-area: enviroment
         cards:
 
             - type: custom:apexcharts-card

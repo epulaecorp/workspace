@@ -29,10 +29,10 @@
                       - switch
                       - icon_ventilador
 
+                  # Television
                   - type: custom:button-card
                     entity: 
                     name: Tv
-                    #double_tap_action: !include popup/vardagsrum_tv.yaml
                     template:
                       - switch
                       - icon_tv

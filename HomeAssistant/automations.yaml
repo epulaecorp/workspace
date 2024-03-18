@@ -133,6 +133,7 @@
       include_sun: sun_enabled
       app_attribute:
       - Prime Video
+      - Plex
       light_switch:
         entity_id:
         - binary_sensor.fvicente_movie_mode
