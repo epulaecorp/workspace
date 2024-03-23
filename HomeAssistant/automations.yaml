@@ -142,7 +142,8 @@
         entity_id:
         - light.fvicente
         - light.fvicente_respaldo
-      off_include_light_control: []
+      off_include_light_control:
+      - use_transition
       off_light_transition_off: 2
       include_intermission: intermission_enable
       intermission_light_switch:
@@ -158,6 +159,7 @@
       trigger_off_state:
       - idle
       include_end_turn_on: disable_end_turn_on
+      include_light_control: []
 - id: '1708389440992'
   alias: NOTIFICATIONS - Garbage
   description: ''

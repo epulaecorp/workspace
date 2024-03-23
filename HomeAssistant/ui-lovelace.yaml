@@ -6,6 +6,7 @@ views:
   # Home
   - type: custom:grid-layout
     title: Home
+    visible: true
     icon: mdi:home
     layout:
       #default
@@ -78,8 +79,7 @@ views:
         view_layout:
           grid-area: sidebar
 
-        cards: 
-                
+        cards:        
           # Sidebar sensor
           - type: custom:button-card
             entity: sensor.template_sidebar

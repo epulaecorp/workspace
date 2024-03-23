@@ -27,10 +27,10 @@
     
     entity_config:
       
-      light.fvicente_respaldo:
-        name: "Mi Respaldo"
       light.fvicente:
         name: "Mi Luz"
+      light.fvicente_respaldo:
+        name: "Mi Respaldo"
 
       fan.fvicente_fan:
         name: "Mi Ventilador"
@@ -38,10 +38,10 @@
       switch.fvicente_monitor:
         name: "Mi Monitor"
       switch.fvicente_chromecast:
-        name: "Mi televisión"
+        name: "Mi Televisión"
+
+      switch.fvicente_auxiliar_charger:
+        name: "Mi Cargador"
 
       input_boolean.sleep_interruption:
         name: "sleep interruption"
-
-      switch.fvicente_auxiliar_charger:
-        name: "Mi cargador auxiliar"
