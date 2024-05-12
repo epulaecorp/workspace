@@ -6,7 +6,7 @@ blueprint:
     El ventilador de ventana se enciende si todas estas condiciones se cumplen:
 
       - La Temperatura Interior es Mayor a la Temperatura Objetivo Superior   (Ti >= ToS)
-      - La Temperatura Interior es Mayor que la Temperatura Exterior          (Te < Ti)
+      - La Temperatura Interior es Mayor que la Temperatura Exterior          (Ti > Te)
       - Hay alguien en la habitación                                          (P == on)
 
     El ventolador se apagará en las siguientes condiciones:

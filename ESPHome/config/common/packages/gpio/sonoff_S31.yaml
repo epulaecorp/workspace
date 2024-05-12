@@ -19,7 +19,6 @@ uart:
 
 sensor:
   - platform: cse7766
-    update_interval: 5s
     current:
       name: "Current"
       accuracy_decimals: 2

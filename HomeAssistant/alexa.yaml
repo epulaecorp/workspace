@@ -18,6 +18,8 @@
         - input_boolean.sleep_interruption
         #... Chargers ...#
         - switch.fvicente_auxiliar_charger
+        #... Aromatizante ...#
+        - switch.fvicente_flavoring_switch
 #      include_entity_globs:
 #        - binary_sensor.*_motion
 #      include_domains:
@@ -42,6 +44,9 @@
 
       switch.fvicente_auxiliar_charger:
         name: "Mi Cargador"
+
+      switch.fvicente_flavoring_switch:
+        name: "Mi Aromatizante"
 
       input_boolean.sleep_interruption:
         name: "sleep interruption"

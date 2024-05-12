@@ -69,11 +69,21 @@
     event: leave
   condition: []
   action:
-  - service: script.turn_on
+  - service: homeassistant.turn_off
     metadata: {}
     data: {}
     target:
-      entity_id: script.fvicente_home_leave
+      label_id: enviroment
+  - service: homeassistant.turn_off
+    metadata: {}
+    data: {}
+    target:
+      label_id: ilumination
+  - service: homeassistant.turn_off
+    metadata: {}
+    data: {}
+    target:
+      label_id: multimedia
   mode: single
 - id: '1704934606210'
   alias: FVICENTE - home arrive
@@ -111,7 +121,7 @@
       message: Felicidades
   mode: single
 - id: '1707273663688'
-  alias: FVICENTE - wakeup
+  alias: FVICENTE - Wakeup
   description: ''
   use_blueprint:
     path: homeassistant/lights - wakeup.yaml
@@ -119,9 +129,15 @@
       manual_time: '17:41:00'
       light_entity: light.fvicente
       presence_sensor: binary_sensor.fvicente_in_home
-      effect_duration: 5
+      effect_duration: 10
       end_brightness: 255
       timestamp_sensor: sensor.alarm_echo_recamara
+      pre_sunrise_actions:
+      - service: homeassistant.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.fvicente_flavoring_switch
 - id: '1707698876630'
   alias: FVICENTE - Movie Time
   description: ''
@@ -180,7 +196,7 @@
         state: 'on'
       include_start_action_button_confirmation: disable_start_action_button_confirmation
 - id: '1708472434293'
-  alias: FVICENTE - Laptop Charger
+  alias: FVICENTE - Charger Laptop
   description: ''
   use_blueprint:
     path: homeassistant/device - charger.yaml
@@ -192,7 +208,7 @@
       start_bedtime: '22:00:00'
       presence_sensor: binary_sensor.fvicente_in_home
 - id: '1708472579359'
-  alias: FVICENTE - Phone Charger
+  alias: FVICENTE - Charger Phone
   description: ''
   use_blueprint:
     path: homeassistant/device - charger.yaml
@@ -203,28 +219,6 @@
       target_switch: switch.fvicente_phone_charger
       start_bedtime: '22:00:00'
       presence_sensor: binary_sensor.fvicente_in_home
-- id: '1708775414430'
-  alias: FVICENTE - Auxiliar Charger AutoOFF
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.fvicente_auxiliar_charger
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - delay:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.fvicente_auxiliar_charger
-  mode: single
 - id: '1710383431048'
   alias: FVICENTE - alexa_next_alarm
   description: ''
@@ -242,4 +236,74 @@
       datetime: "{% set x = states('sensor.echo_recamara_next_alarm') %} {% if x not
         in ['unavailable', 'none', 'unknown'] %} \n  {{ as_timestamp(states('sensor.echo_recamara_next_alarm'))|timestamp_custom('%Y-%m-%d
         %H:%M:00') }}\n{%else%}\n  {{ \"1977-04-13 05:04:20\" }}\n{% endif %}\n"
+  mode: single
+- id: '1713747197678'
+  alias: SUNSET
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition:
+  - condition: zone
+    entity_id: person.fvicente
+    zone: zone.home
+  action:
+  - service: homeassistant.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.fvicente
+  - service: homeassistant.turn_on
+    metadata: {}
+    data: {}
+    target:
+      label_id: enviroment
+  mode: single
+- id: '1713965075365'
+  alias: FVICENTE - Aromatizante Auto OFF
+  description: ''
+  use_blueprint:
+    path: homeassistant/device - Auto OFF.yaml
+    input:
+      target_light: switch.fvicente_flavoring_switch
+      light_wait:
+        hours: 1
+        minutes: 30
+        seconds: 0
+- id: '1713965182848'
+  alias: FVICENTE - Charger Auto OFF
+  description: ''
+  use_blueprint:
+    path: homeassistant/device - Auto OFF.yaml
+    input:
+      target_light: switch.fvicente_auxiliar_charger
+      light_wait:
+        hours: 1
+        minutes: 0
+        seconds: 0
+- id: '1714302209078'
+  alias: FVICENTE - Wfan
+  description: ''
+  use_blueprint:
+    path: homeassistant/fan - windows.yaml
+    input:
+      fan:
+        entity_id: fan.fvicente_wfan
+      temp_inside: sensor.fvicente_forecast_temperature
+      presence_sensor: binary_sensor.fvicente_in_home
+      lower_target: 22
+- id: '1714315567760'
+  alias: SUNRISE
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: '60'
+  condition: []
+  action:
+  - service: homeassistant.turn_off
+    metadata: {}
+    data: {}
+    target:
+      label_id: ilumination
   mode: single

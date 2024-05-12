@@ -1,0 +1,48 @@
+blueprint:
+  name: DEVICE - Auto OFF
+  description: Turn off a device after a certain time unless switched off manually
+  domain: automation
+  input:
+    target_light:
+      name: device
+      description: The device to turn off Automatic
+      selector:
+        entity:
+          domain: 
+            - light
+            - switch
+    light_wait:
+      name: Wait time
+      description: Time to leave the light on
+      selector:
+        duration:
+      default:
+          hours: 0
+          minutes: 5
+          seconds: 0
+
+trigger:
+  platform: state
+  entity_id: !input target_light
+  from: "off"
+  to: "on"
+condition: []
+action:
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input target_light
+        to: "off"
+    timeout: !input light_wait
+    continue_on_timeout: true
+  - if:
+      - condition: state
+        entity_id: !input target_light
+        state: "off"
+    then:
+      - stop: ""
+    else:
+      - alias: "turn off the light"
+        service: homeassistant.turn_off
+        target: 
+          entity_id: !input target_light
+mode: single

@@ -133,38 +133,106 @@
       #################################################                   
       - type: custom:apexcharts-card
         view_layout:
-          grid-area: enviroment
-        chart_type: line
+          grid-area: enviroment        
         apex_config:
+          tooltip:
+            enabled: true
+          yaxis:
+            - show: true
+              decimalsInFloat: 0   
+              #min: 17
+              #max: 30
+              #range: 20               
+              #min: { return min }
+              #max: { return max }
+              labels:
+                style:
+                  colors: '#FFB62E'
+                  fontSize: 12px
+                  fontWeight: bold
+                  fontFamily: Raleway    
+              forceNiceScale: true                   
+            - show: true
+              decimalsInFloat: 0
+              opposite: true
+              #range: 20
+              #min: 20
+              #max: 100 
+              labels:
+                style:
+                  colors: '#2eb9ff'
+                  fontSize: 12px
+                  fontWeight: bold
+                  fontFamily: Raleway
+              forceNiceScale: true
+          xaxis:
+            axisBorder:
+              show: false
+            labels:
+              style:
+                fontSize: 14px
+                #fontWeight: bold
+                fontFamily: Raleway
           chart:
             height: 150%
+          grid:
+            show: false
+            #borderColor: '#404040'
+            #strokeDashArray: 3
+            #position: back
+          legend:
+            show: false
+          dataLabels:
+            enabled: false
+          stroke:
+            width: 2
+            curve: smooth
+          fill:
+            type: gradient
+            gradient:
+              type: vertical
+              shadeIntensity: 0.75
+              inverseColors: false
+              opacityFrom: 0.5
+              opacityTo: 0.25
+              stops:
+                - [0, 50, 100] 
         graph_span: 12h
-        now:
-          show: true
-          color: red
-          label: Ahora
         header:
+          title: Enviroment
           show: true
           show_states: true
           colorize_states: true
           standard_format: true
+          
         series:
           - entity: sensor.fvicente_temperature   
             name: Temperatura
-            type: line
-            color: '#fa2f2f'
-            stroke_width: 3
-            opacity: 0.1
-
+            show:
+              extremas: true
+            type: area
+            color: '#FFB62E'
+            fill_raw: last
+            float_precision: 0
+            group_by:
+              duration: 10min
+              func: avg
+          
           - entity: sensor.fvicente_humidity
             name: Humedad
-            type: column
+            show:
+              extremas: true
+            type: area
+            color: '#2eb9ff'
+            fill_raw: last
+            float_precision: 0
+            group_by:
+              duration: 10min
+              func: avg
 
           - entity: sensor.forecast_temperature
             name: Exterior
-            type: line
-            color: orange
-            stroke_width: 2
+            
             
         style: |
           ha-card {
