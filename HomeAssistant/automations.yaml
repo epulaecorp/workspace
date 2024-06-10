@@ -291,7 +291,8 @@
         entity_id: fan.fvicente_wfan
       temp_inside: sensor.fvicente_forecast_temperature
       presence_sensor: binary_sensor.fvicente_in_home
-      lower_target: 22
+      lower_target: 25
+      upper_target: 27
 - id: '1714315567760'
   alias: SUNRISE
   description: ''

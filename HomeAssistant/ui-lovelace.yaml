@@ -86,10 +86,12 @@ views:
             template: sidebar
 
           - type: custom:clock-weather-card
-            entity: weather.openweathermap
+            entity: weather.tomorrow_io_home_daily
             hide_clock: true
             hide_date: true
             forecast_rows: 1
+            show_decimal: true
+            show_humidity: true
             locale: es
 
           # Pendientes

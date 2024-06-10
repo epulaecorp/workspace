@@ -5,6 +5,7 @@ blueprint:
 
     El ventilador de ventana se enciende si todas estas condiciones se cumplen:
 
+      - La temperatura Exterior es menor al humbral exterior                  (Ta < He)
       - La Temperatura Interior es Mayor a la Temperatura Objetivo Superior   (Ti >= ToS)
       - La Temperatura Interior es Mayor que la Temperatura Exterior          (Ti > Te)
       - Hay alguien en la habitación                                          (P == on)
@@ -71,6 +72,18 @@ blueprint:
           step: 1
           unit_of_measurement: °C
 
+
+    thres_hold:
+      name: Threshold
+      description: 'Humbral de temperaratura exterior.'
+      default: 3
+      selector:
+        number:
+          min: 0
+          max: 5
+          step: 1
+          unit_of_measurement: °C
+
 variables:
   fan: !input fan
   temp_inside_entity: !input temp_inside
@@ -80,6 +93,9 @@ variables:
   presence_sensor: !input presence_sensor
   upper_target: !input upper_target
   lower_target: !input lower_target
+
+  thres_hold: !input thres_hold
+  threshold: "{{upper_target|int + thres_hold}}"
 
 
 max_exceeded: silent
@@ -94,6 +110,10 @@ condition: []
 action:
 - choose:
   - conditions:
+    - alias: "temp_outside minor than threshold"
+      condition: template
+      value_template: >
+        {{ temp_outside|int <= threshold|int }}
     - alias: "temp_inside greater than temp_outside"
       condition: template
       value_template: >
@@ -112,6 +132,10 @@ action:
   - conditions:
     - condition: or
       conditions:
+      - alias: "temp_outside greater than threshold"
+        condition: template
+        value_template: >
+          {{ temp_outside|int > threshold|int }}
       - alias: "there is no one in the bedroom"
         condition: state
         entity_id: !input presence_sensor

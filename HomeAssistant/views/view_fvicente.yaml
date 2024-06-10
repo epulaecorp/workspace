@@ -74,7 +74,7 @@
           # Laptop Charger
           - type: custom:button-card
             entity: switch.fvicente_laptop_charger
-            name: Laptop Charger
+            name: Laptop
             template:
               - switch
               - icon_charger
@@ -88,7 +88,7 @@
           # Phone Charger
           - type: custom:button-card
             entity: switch.fvicente_phone_charger
-            name: Phone Charger
+            name: Phone
             template:
               - switch
               - icon_charger
@@ -140,28 +140,28 @@
           yaxis:
             - show: true
               decimalsInFloat: 0   
-              #min: 17
-              #max: 30
-              #range: 20               
+              range: 5               
+              min: 0
+              max: 40
               #min: { return min }
               #max: { return max }
               labels:
                 style:
-                  colors: '#FFB62E'
-                  fontSize: 12px
+                  colors: var(--state-active-color)
+                  fontSize: 14px
                   fontWeight: bold
                   fontFamily: Raleway    
               forceNiceScale: true                   
             - show: true
-              decimalsInFloat: 0
+              decimalsInFloat: 1
               opposite: true
-              #range: 20
-              #min: 20
-              #max: 100 
+              range: 5
+              min: 0
+              max: 40 
               labels:
                 style:
-                  colors: '#2eb9ff'
-                  fontSize: 12px
+                  colors: gray
+                  fontSize: 14px
                   fontWeight: bold
                   fontFamily: Raleway
               forceNiceScale: true
@@ -191,12 +191,16 @@
             type: gradient
             gradient:
               type: vertical
+#              fill: dark
               shadeIntensity: 0.75
               inverseColors: false
               opacityFrom: 0.5
               opacityTo: 0.25
               stops:
-                - [0, 50, 100] 
+                - [0, 50, 100]
+          plotOptions:
+            bar:
+              columnWidth: 50% 
         graph_span: 12h
         header:
           title: Enviroment
@@ -207,31 +211,31 @@
           
         series:
           - entity: sensor.fvicente_temperature   
-            name: Temperatura
+            name: Interior
             show:
               extremas: true
             type: area
-            color: '#FFB62E'
+            color: var(--state-active-color)
             fill_raw: last
-            float_precision: 0
+            float_precision: 1
             group_by:
               duration: 10min
               func: avg
           
-          - entity: sensor.fvicente_humidity
-            name: Humedad
+          - entity: sensor.forecast_temperature
+            name: Exterior
             show:
               extremas: true
             type: area
-            color: '#2eb9ff'
+            color: gray
             fill_raw: last
-            float_precision: 0
+            float_precision: 1
             group_by:
               duration: 10min
               func: avg
 
-          - entity: sensor.forecast_temperature
-            name: Exterior
+#          - entity: sensor.forecast_temperature
+#            name: Exterior
             
             
         style: |

@@ -47,7 +47,7 @@
       name: "forecast_temperature"
       unit_of_measurement: '°C'
 #      state: "{{ state_attr('weather.openweathermap', 'temperature')}}"
-      state: "{{ states('sensor.openweathermap_forecast_temperature')}}"
+      state: "{{ state_attr('weather.tomorrow_io_home_daily', 'temperature')}}"
       device_class: temperature
 
     - unique_id: "forecast_humidity"
